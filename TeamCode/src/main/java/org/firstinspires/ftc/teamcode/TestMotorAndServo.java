@@ -18,6 +18,7 @@ public class TestMotorAndServo extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+
         waitForStart();
         servo = hardwareMap.get(CRServo.class, "servo");
         motor = hardwareMap.get(DcMotorEx.class, "motor");
