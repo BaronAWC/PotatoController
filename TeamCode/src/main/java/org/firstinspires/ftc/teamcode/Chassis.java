@@ -2,10 +2,13 @@ package org.firstinspires.ftc.teamcode;
 
 import android.util.Pair;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import com.qualcomm.hardware.bosch.BHI260IMU;
+import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -20,7 +23,7 @@ public class Chassis {
     final DcMotor BackR;
 
     final Telemetry telemetry;
-    final BNO055IMU imu;
+    final BHI260IMU imu;
 
     static final int ADJ_FACTOR = 50;
     static final double MAX_DRIVE_PWR = 0.80;
@@ -30,13 +33,25 @@ public class Chassis {
     final double powerFactor = 1;
 
     public Chassis(HardwareMap hardwareMap, Telemetry telemetry) {
-        FrontL = hardwareMap.get(DcMotor.class, "FrontL");
-        FrontR = hardwareMap.get(DcMotor.class, "FrontR");
-        BackL = hardwareMap.get(DcMotor.class, "BackL");
-        BackR = hardwareMap.get(DcMotor.class, "BackR");
+        FrontL = hardwareMap.get(DcMotor.class, "fl(eet footwork)");
+        FrontR = hardwareMap.get(DcMotor.class, "fr(ank)");
+        BackL = hardwareMap.get(DcMotor.class, "bl(itzcrank)");
+        BackR = hardwareMap.get(DcMotor.class, "br(iar)");
+
+        FrontL.setDirection(DcMotor.Direction.FORWARD);
+        FrontR.setDirection(DcMotor.Direction.REVERSE);
+        BackL.setDirection(DcMotor.Direction.FORWARD);
+        BackR.setDirection(DcMotor.Direction.FORWARD);
 
         this.telemetry = telemetry;
-        imu = getIMU(hardwareMap);
+
+        imu = hardwareMap.get(BHI260IMU.class, "imu");
+        BHI260IMU.Parameters parameters = new IMU.Parameters( new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.FORWARD,
+                RevHubOrientationOnRobot.UsbFacingDirection.UP
+        ));
+        imu.initialize(parameters);
+        imu.resetYaw();
     }
 
     void gamepadDrive(double y, double x, double rx, boolean isSlow) {
@@ -120,28 +135,7 @@ public class Chassis {
     }
 
     double getAngleRadians() {
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
-        return angles.firstAngle;
-    }
-
-    private BNO055IMU getIMU(HardwareMap hardwareMap) {
-        // from sample code
-        // Set up the parameters with which we will use our IMU. Note that integration
-        // algorithm here just reports accelerations to the logcat log; it doesn't actually
-        // provide positional information.
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "AdafruitIMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
-        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
-        // and named "imu".
-        BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-        return imu;
+        double rad = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        return rad;
     }
 }
