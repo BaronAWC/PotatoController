@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.Range;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 
 
-@TeleOp(name="Basic: Linear OpMode", group="Linear OpMode")
+@TeleOp(name="TestOpMode", group="Linear OpMode")
 @Disabled
 public class TestOpMode extends LinearOpMode {
 
@@ -35,12 +35,24 @@ public class TestOpMode extends LinearOpMode {
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
 
+        Chassis chassis = new Chassis(hardwareMap, telemetry);
+
         // Wait for the game to start (driver presses START)
         waitForStart();
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
+        while(opModeIsActive()) {
+            // TODO: in aaron's version this determined if you were red or blue alliance
+            int factor = 1;
+            double y = -gamepad1.left_stick_y*factor;
+            double x = gamepad1.left_stick_x*factor;
+            double rx = gamepad1.right_stick_x;
+
+
+        }
+
+        /*while (opModeIsActive()) {
 
             // Setup a variable for each drive wheel to save power level for telemetry
             double leftPower;
@@ -69,6 +81,6 @@ public class TestOpMode extends LinearOpMode {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.update();
-        }
+        }*/
     }
 }
