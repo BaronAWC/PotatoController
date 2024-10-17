@@ -26,21 +26,27 @@ public class TestMotorAndServo extends LinearOpMode {
         while(opModeIsActive()){
             if(gamepad1.x){
                 motor.setPower(1);
+                telemetry.addLine("Motor power 1");
             }
             else if(gamepad1.b){
                 motor.setPower(-1);
+                telemetry.addLine("Motor power -1");
             }
             else{
                 motor.setPower(0);
+                telemetry.addLine("Motor power 0");
             }
             if(gamepad1.y){
                 servo.setPower(1);
+                telemetry.addLine("Servo power 1");
             }
             else if(gamepad1.a){
                 servo.setPower(-1);
+                telemetry.addLine("Servo power -1");
             }
             else{
                 servo.setPower(0);
+                telemetry.addLine("Servo power 0");
             }
             double current = motor.getCurrent(CurrentUnit.AMPS);
             totalCurrent += current;
