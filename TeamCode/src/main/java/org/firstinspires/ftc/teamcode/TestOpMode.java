@@ -9,38 +9,46 @@ import com.qualcomm.robotcore.util.Range;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 
 
-@TeleOp(name="Basic: Linear OpMode", group="Linear OpMode")
-@Disabled
+@TeleOp(name="TestOpMode", group="Linear OpMode")
+
 public class TestOpMode extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftDrive = null;
-    private DcMotor rightDrive = null;
 
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
-        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-
-        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-        // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
-        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        Chassis chassis = new Chassis(hardwareMap, telemetry);
+        boolean isSlowMode = true;
+        boolean prevXPressed = false;
 
         // Wait for the game to start (driver presses START)
         waitForStart();
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
+        while(opModeIsActive()) {
+            // TODO: in aaron's version this determined if you were red or blue alliance
+            int factor = 1;
+            double y = -gamepad1.left_stick_y*factor;
+            double x = gamepad1.left_stick_x*factor;
+            double rx = gamepad1.right_stick_x;
+
+            // rising edge of x pressed
+            boolean isXPressed = gamepad1.x;
+            // detecting the moment when button x is pressed
+            if (isXPressed && !prevXPressed) {
+                isSlowMode = !isSlowMode; // toggle slow mode
+            }
+            prevXPressed = isXPressed; // update state
+
+            chassis.gamepadDrive(y, x, rx, isSlowMode);
+        }
+
+        /*while (opModeIsActive()) {
 
             // Setup a variable for each drive wheel to save power level for telemetry
             double leftPower;
@@ -69,6 +77,6 @@ public class TestOpMode extends LinearOpMode {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.update();
-        }
+        }*/
     }
 }
