@@ -1,36 +1,24 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.CommandBase;
-import com.arcrobotics.ftclib.command.OdometrySubsystem;
-import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 
 public class DriveCommand extends CommandBase {
+    // see DefaultDrive in examples
+    private final DriveSubsystem driveSubsystem;
+    private final double x, y, rx;
+    private final boolean isSlow;
 
-    private MecanumDrive m_drive;
-    private OdometrySubsystem odometry;
-
-    public DriveCommand(MecanumDrive m_drive, OdometrySubsystem odometry){
-        this.m_drive = m_drive;
-        this.odometry = odometry;
-    }
-
-    @Override
-    public void initialize(){
-
+    public DriveCommand(DriveSubsystem driveSubsystem, double x, double y, double rx, boolean isSlow){
+        this.driveSubsystem = driveSubsystem;
+        this.x = x;
+        this.y = y;
+        this.rx = rx;
+        this.isSlow = isSlow;
+        addRequirements(driveSubsystem);
     }
 
     @Override
     public void execute(){
-
-    }
-
-    @Override
-    public void end(boolean interrupted){
-
-    }
-
-    @Override
-    public boolean isFinished(){
-        return false;
+        driveSubsystem.drive(x, y, rx, isSlow);
     }
 }
