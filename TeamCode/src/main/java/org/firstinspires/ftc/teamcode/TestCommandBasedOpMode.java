@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
@@ -18,10 +20,15 @@ public class TestCommandBasedOpMode extends CommandOpMode {
 
     private GamepadEx driver, operator;
     private MotorEx FrontL, FrontR, BackL, BackR;
+    private DcMotorEx arm, pivot;
     private BHI260IMU imu;
     private DriveSubsystem driveSubsystem;
     private DriveCommand driveCommand;
-    private Button slowButton;
+    private ArmSubsystem armSubsystem;
+    private ArmExtendCommand armExtendCommand;
+    private ArmRetractCommand armRetractCommand;
+    private ArmStopCommand armStopCommand;
+    private Button extendButton, retractButton, pivotUpButton, pivotDownButton;
     @Override
     public void initialize(){
         telemetry.addData("Status", "Initialized");
@@ -49,5 +56,18 @@ public class TestCommandBasedOpMode extends CommandOpMode {
 
         register(driveSubsystem);
         driveSubsystem.setDefaultCommand(driveCommand);
+
+        arm = hardwareMap.get(DcMotorEx.class, "Arm");
+        pivot = hardwareMap.get(DcMotorEx.class, "Pivot");
+
+        armSubsystem = new ArmSubsystem(arm);
+        armExtendCommand = new ArmExtendCommand(armSubsystem);
+        armRetractCommand = new ArmRetractCommand(armSubsystem);
+        armStopCommand = new ArmStopCommand(armSubsystem);
+
+        extendButton = (new GamepadButton(operator, GamepadKeys.Button.DPAD_RIGHT)).whenPressed(armExtendCommand);
+        retractButton = (new GamepadButton(operator, GamepadKeys.Button.DPAD_LEFT)).whenPressed(armRetractCommand);
+        extendButton.whenReleased(armStopCommand);
+        retractButton.whenReleased(armStopCommand);
     }
 }
