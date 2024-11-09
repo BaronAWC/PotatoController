@@ -6,10 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 public class ArmSubsystem extends SubsystemBase {
     private DcMotorEx arm;
 
-
     public ArmSubsystem(DcMotorEx arm){
         this.arm = arm;
-        //pivot = new Pivot(pivotMotor);
     }
     public void extend(){
         arm.setPower(1);

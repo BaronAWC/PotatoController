@@ -3,24 +3,23 @@ package org.firstinspires.ftc.teamcode;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-public class ArmSubsystem extends SubsystemBase {
-    private DcMotorEx arm;
+public class PivotSubsystem extends SubsystemBase {
+    private DcMotorEx pivot;
 
 
-    public ArmSubsystem(DcMotorEx arm){
-        this.arm = arm;
-        //pivot = new Pivot(pivotMotor);
+    public PivotSubsystem(DcMotorEx pivot){
+        this.pivot = pivot;
     }
-    public void extend(){
-        arm.setPower(1);
+    public void raise(){
+        pivot.setPower(1);
     }
 
-    public void retract(){
-        arm.setPower(-1);
+    public void lower(){
+        pivot.setPower(-1);
     }
 
     public void stop(){
-        arm.setPower(0);
+        pivot.setPower(0);
     }
 
 

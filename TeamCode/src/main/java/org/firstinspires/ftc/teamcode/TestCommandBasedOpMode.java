@@ -12,6 +12,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.button.Button;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
+import com.qualcomm.robotcore.hardware.CRServo;
 
 
 @TeleOp(name="Test CommandBase OpMode")
@@ -21,14 +22,27 @@ public class TestCommandBasedOpMode extends CommandOpMode {
     private GamepadEx driver, operator;
     private DcMotorEx FrontL, FrontR, BackL, BackR;
     private DcMotorEx arm, pivot;
+    private CRServo intake;
     private BHI260IMU imu;
     private DriveSubsystem driveSubsystem;
     private DriveCommand driveCommand;
+
     private ArmSubsystem armSubsystem;
     private ArmExtendCommand armExtendCommand;
     private ArmRetractCommand armRetractCommand;
     private ArmStopCommand armStopCommand;
-    private Button extendButton, retractButton, pivotUpButton, pivotDownButton;
+
+    private PivotSubsystem pivotSubsystem;
+    private PivotRaiseCommand pivotRaiseCommand;
+    private PivotLowerCommand pivotLowerCommand;
+    private PivotStopCommand pivotStopCommand;
+
+    private IntakeSubsystem intakeSubsystem;
+    private IntakeForwardCommand intakeForwardCommand;
+    private IntakeBackwardCommand intakeBackwardCommand;
+    private IntakeStopCommand intakeStopCommand;
+
+    private Button extendButton, retractButton, pivotUpButton, pivotDownButton, intakeForwardButton, intakeBackwardButton;
     @Override
     public void initialize(){
         telemetry.addData("Status", "Initialized");
@@ -50,7 +64,7 @@ public class TestCommandBasedOpMode extends CommandOpMode {
         imu.initialize(parameters);
         imu.resetYaw();
 
-        driveSubsystem = new DriveSubsystem(FrontL, FrontR, BackL, BackR, imu);
+        driveSubsystem = new DriveSubsystem(FrontL, FrontR, BackL, BackR, imu, telemetry);
         driveCommand = new DriveCommand(driveSubsystem, driver.getLeftX(), driver.getLeftY(),
                                         driver.getRightX(), driver.isDown(GamepadKeys.Button.X));
 
@@ -59,15 +73,36 @@ public class TestCommandBasedOpMode extends CommandOpMode {
 
         arm = hardwareMap.get(DcMotorEx.class, "Arm");
         pivot = hardwareMap.get(DcMotorEx.class, "Pivot");
+        intake = hardwareMap.get(CRServo.class, "spinnything");
 
         armSubsystem = new ArmSubsystem(arm);
         armExtendCommand = new ArmExtendCommand(armSubsystem);
         armRetractCommand = new ArmRetractCommand(armSubsystem);
         armStopCommand = new ArmStopCommand(armSubsystem);
 
+        pivotSubsystem = new PivotSubsystem(pivot);
+        pivotRaiseCommand = new PivotRaiseCommand(pivotSubsystem);
+        pivotLowerCommand = new PivotLowerCommand(pivotSubsystem);
+        pivotStopCommand = new PivotStopCommand(pivotSubsystem);
+
+        intakeSubsystem = new IntakeSubsystem(intake);
+        intakeForwardCommand = new IntakeForwardCommand(intakeSubsystem);
+        intakeBackwardCommand = new IntakeBackwardCommand(intakeSubsystem);
+        intakeStopCommand = new IntakeStopCommand(intakeSubsystem);
+
         extendButton = (new GamepadButton(operator, GamepadKeys.Button.DPAD_RIGHT)).whenPressed(armExtendCommand);
         retractButton = (new GamepadButton(operator, GamepadKeys.Button.DPAD_LEFT)).whenPressed(armRetractCommand);
         extendButton.whenReleased(armStopCommand);
         retractButton.whenReleased(armStopCommand);
+
+        pivotUpButton = (new GamepadButton(operator, GamepadKeys.Button.DPAD_UP)).whenPressed(pivotRaiseCommand);
+        pivotDownButton = (new GamepadButton(operator, GamepadKeys.Button.DPAD_DOWN)).whenPressed(pivotLowerCommand);
+        pivotUpButton.whenReleased(pivotStopCommand);
+        pivotDownButton.whenReleased(pivotStopCommand);
+
+        intakeForwardButton = (new GamepadButton(operator, GamepadKeys.Button.B)).whenPressed(intakeForwardCommand);
+        intakeBackwardButton = (new GamepadButton(operator, GamepadKeys.Button.X)).whenPressed(intakeBackwardCommand);
+        intakeForwardButton.whenReleased(intakeStopCommand);
+        intakeBackwardButton.whenReleased(intakeStopCommand);
     }
 }
