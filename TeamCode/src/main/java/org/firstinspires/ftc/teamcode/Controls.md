@@ -1,0 +1,14 @@
+- Driver:
+  - Left joystick = movement/strafing
+  - Right joystick = turning (only based on x position)
+  - X = slow mode
+- Operator:
+  - Pivot:
+    - Dpad Up = raise arm (pivot toward the back of the robot)
+    - Dpad Down = lower arm (pivot toward the front of the robot)
+  - Arm:
+    - Dpad Right = extend arm
+    - Dpad Left = retract arm
+  - Intake:
+    - B = Spin forward (intake)
+    - X = Spin backward (outtake)

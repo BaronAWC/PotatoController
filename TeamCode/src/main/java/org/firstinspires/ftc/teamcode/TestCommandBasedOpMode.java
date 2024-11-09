@@ -5,6 +5,7 @@ import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
@@ -65,8 +66,8 @@ public class TestCommandBasedOpMode extends CommandOpMode {
         imu.resetYaw();
 
         driveSubsystem = new DriveSubsystem(FrontL, FrontR, BackL, BackR, imu, telemetry);
-        driveCommand = new DriveCommand(driveSubsystem, driver.getLeftX(), driver.getLeftY(),
-                                        driver.getRightX(), driver.isDown(GamepadKeys.Button.X));
+        driveCommand = new DriveCommand(driveSubsystem, () -> driver.getLeftX(), () -> driver.getLeftY(),
+                () -> driver.getRightX(), () ->driver.isDown(GamepadKeys.Button.X));
 
         register(driveSubsystem);
         driveSubsystem.setDefaultCommand(driveCommand);

@@ -19,7 +19,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void drive(double x, double y, double rx, boolean isSlow){
         drive.driveFieldCentric(x, y, rx, isSlow);
-        telemetry.addLine("Driving");
+        telemetry.addLine(x + " " + y + " " + rx + " " + isSlow);
         telemetry.update();
     }
 }

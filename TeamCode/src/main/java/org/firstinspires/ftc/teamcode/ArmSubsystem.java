@@ -10,11 +10,11 @@ public class ArmSubsystem extends SubsystemBase {
         this.arm = arm;
     }
     public void extend(){
-        arm.setPower(1);
+        arm.setPower(-1);
     }
 
     public void retract(){
-        arm.setPower(-1);
+        arm.setPower(1);
     }
 
     public void stop(){
