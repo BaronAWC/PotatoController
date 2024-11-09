@@ -19,7 +19,7 @@ import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 public class TestCommandBasedOpMode extends CommandOpMode {
 
     private GamepadEx driver, operator;
-    private MotorEx FrontL, FrontR, BackL, BackR;
+    private DcMotorEx FrontL, FrontR, BackL, BackR;
     private DcMotorEx arm, pivot;
     private BHI260IMU imu;
     private DriveSubsystem driveSubsystem;
@@ -37,10 +37,10 @@ public class TestCommandBasedOpMode extends CommandOpMode {
         driver = new GamepadEx(gamepad1);
         operator = new GamepadEx(gamepad2);
 
-        FrontL = hardwareMap.get(MotorEx.class, "fl(eet footwork)");
-        FrontR = hardwareMap.get(MotorEx.class, "fr(ank)");
-        BackL = hardwareMap.get(MotorEx.class, "bl(itzcrank)");
-        BackR = hardwareMap.get(MotorEx.class, "br(iar)");
+        FrontL = hardwareMap.get(DcMotorEx.class, "fl(eet footwork)");
+        FrontR = hardwareMap.get(DcMotorEx.class, "fr(ank)");
+        BackL = hardwareMap.get(DcMotorEx.class, "bl(itzcrank)");
+        BackR = hardwareMap.get(DcMotorEx.class, "br(iar)");
 
         imu = hardwareMap.get(BHI260IMU.class, "imu");
         BHI260IMU.Parameters parameters = new IMU.Parameters( new RevHubOrientationOnRobot(

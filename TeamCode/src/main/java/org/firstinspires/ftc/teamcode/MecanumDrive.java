@@ -6,16 +6,17 @@ import com.arcrobotics.ftclib.geometry.Vector2d;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.hardware.bosch.BHI260IMU;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 public class MecanumDrive {
     // see MecanumDrive in examples
-    final Motor FrontL;
-    final Motor FrontR;
-    final MotorEx BackL;
-    final MotorEx BackR;
+    final DcMotorEx FrontL;
+    final DcMotorEx FrontR;
+    final DcMotorEx BackL;
+    final DcMotorEx BackR;
     final BHI260IMU imu;
     static final int ADJ_FACTOR = 50;
     static final double MAX_DRIVE_PWR = 0.80;
@@ -23,7 +24,7 @@ public class MecanumDrive {
     static final double SLOW_MODE_POWER = 0.4;
     final double powerFactor = 1;
 
-    public MecanumDrive(MotorEx FrontL, MotorEx FrontR, MotorEx BackL, MotorEx BackR, BHI260IMU imu){
+    public MecanumDrive(DcMotorEx FrontL, DcMotorEx FrontR, DcMotorEx BackL, DcMotorEx BackR, BHI260IMU imu){
         this.FrontL = FrontL;
         this.FrontR = FrontR;
         this.BackL = BackL;
@@ -98,9 +99,9 @@ public class MecanumDrive {
 
     public void driveWithMotorPowers(double FrontLSpeed, double FrontRSpeed, double BackLSpeed, double BackRSpeed){
         // add any necessary multipliers here
-        FrontL.set(FrontLSpeed * MAX_DRIVE_PWR);
-        FrontR.set(FrontRSpeed * MAX_DRIVE_PWR);
-        BackL.set(BackLSpeed * MAX_DRIVE_PWR);
-        BackR.set(BackRSpeed * MAX_DRIVE_PWR);
+        FrontL.setPower(FrontLSpeed * MAX_DRIVE_PWR);
+        FrontR.setPower(FrontRSpeed * MAX_DRIVE_PWR);
+        BackL.setPower(BackLSpeed * MAX_DRIVE_PWR);
+        BackR.setPower(BackRSpeed * MAX_DRIVE_PWR);
     }
 }

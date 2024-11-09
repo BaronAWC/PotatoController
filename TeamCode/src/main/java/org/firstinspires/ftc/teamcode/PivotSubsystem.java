@@ -1,19 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.arcrobotics.ftclib.hardware.motors.MotorEx;
+import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-public class Arm {
-    public enum ArmDirection{
-      Extend,
-      Retract,
-      Stop
-    };
+public class ArmSubsystem extends SubsystemBase {
     private DcMotorEx arm;
-    public Arm(DcMotorEx arm){
-        this.arm = arm;
-    }
 
+
+    public ArmSubsystem(DcMotorEx arm){
+        this.arm = arm;
+        //pivot = new Pivot(pivotMotor);
+    }
     public void extend(){
         arm.setPower(1);
     }
@@ -25,4 +22,6 @@ public class Arm {
     public void stop(){
         arm.setPower(0);
     }
+
+
 }
