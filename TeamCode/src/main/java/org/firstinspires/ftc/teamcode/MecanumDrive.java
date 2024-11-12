@@ -9,6 +9,7 @@ import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 public class MecanumDrive {
@@ -23,13 +24,15 @@ public class MecanumDrive {
     static final double X_AXIS_ADJ = 1.15; // x axis is a bit slower than y axis on strafer wheels
     static final double SLOW_MODE_POWER = 0.4;
     final double powerFactor = 1;
+    private Telemetry telemetry;
 
-    public MecanumDrive(DcMotorEx FrontL, DcMotorEx FrontR, DcMotorEx BackL, DcMotorEx BackR, BHI260IMU imu){
+    public MecanumDrive(DcMotorEx FrontL, DcMotorEx FrontR, DcMotorEx BackL, DcMotorEx BackR, BHI260IMU imu, Telemetry telemetry){
         this.FrontL = FrontL;
         this.FrontR = FrontR;
         this.BackL = BackL;
         this.BackR = BackR;
         this.imu = imu;
+        this.telemetry = telemetry;
     }
 
     public void driveFieldCentric(double x, double y, double rx, boolean isSlow){
@@ -94,6 +97,8 @@ public class MecanumDrive {
         double targetAngle = jsAngle - botAngle - (Math.PI / 2);
         double botX = jsMagnitude * Math.cos(targetAngle);
         double botY = jsMagnitude * Math.sin(targetAngle);
+        telemetry.addLine("angles: " + (jsAngle * 180 / Math.PI) + " " + (botAngle * 180 / Math.PI));
+        telemetry.addLine("target: " + (targetAngle * 180 / Math.PI) + " " + botX + " " + botY);
         return new Pair<>(botX, botY);
     }
 

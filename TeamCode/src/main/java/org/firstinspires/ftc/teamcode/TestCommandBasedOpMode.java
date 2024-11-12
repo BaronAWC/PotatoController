@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -57,20 +59,18 @@ public class TestCommandBasedOpMode extends CommandOpMode {
         BackL = hardwareMap.get(DcMotorEx.class, "bl(itzcrank)");
         BackR = hardwareMap.get(DcMotorEx.class, "br(iar)");
 
+        FrontL.setDirection(DcMotor.Direction.FORWARD);
+        FrontR.setDirection(DcMotor.Direction.REVERSE);
+        BackL.setDirection(DcMotor.Direction.FORWARD);
+        BackR.setDirection(DcMotor.Direction.FORWARD);
+
         imu = hardwareMap.get(BHI260IMU.class, "imu");
         BHI260IMU.Parameters parameters = new IMU.Parameters( new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.FORWARD,
-                RevHubOrientationOnRobot.UsbFacingDirection.UP
+                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
+                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
         ));
         imu.initialize(parameters);
         imu.resetYaw();
-
-        driveSubsystem = new DriveSubsystem(FrontL, FrontR, BackL, BackR, imu, telemetry);
-        driveCommand = new DriveCommand(driveSubsystem, () -> driver.getLeftX(), () -> driver.getLeftY(),
-                () -> driver.getRightX(), () ->driver.isDown(GamepadKeys.Button.X));
-
-        register(driveSubsystem);
-        driveSubsystem.setDefaultCommand(driveCommand);
 
         arm = hardwareMap.get(DcMotorEx.class, "Arm");
         pivot = hardwareMap.get(DcMotorEx.class, "Pivot");
@@ -105,5 +105,13 @@ public class TestCommandBasedOpMode extends CommandOpMode {
         intakeBackwardButton = (new GamepadButton(operator, GamepadKeys.Button.X)).whenPressed(intakeBackwardCommand);
         intakeForwardButton.whenReleased(intakeStopCommand);
         intakeBackwardButton.whenReleased(intakeStopCommand);
+
+        driveSubsystem = new DriveSubsystem(FrontL, FrontR, BackL, BackR, imu, telemetry);
+        driveCommand = new DriveCommand(driveSubsystem, () -> driver.getLeftX(), () -> driver.getLeftY(),
+                () -> driver.getRightX(), () -> driver.isDown(GamepadKeys.Button.RIGHT_BUMPER));
+
+        register(driveSubsystem);
+        driveSubsystem.setDefaultCommand(driveCommand);
+        CommandScheduler.getInstance();
     }
 }

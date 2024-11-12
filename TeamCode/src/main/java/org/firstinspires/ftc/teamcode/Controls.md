@@ -1,7 +1,7 @@
 - Driver:
   - Left joystick = movement/strafing
   - Right joystick = turning (only based on x position)
-  - X = slow mode
+  - Right Bumper = slow mode
 - Operator:
   - Pivot:
     - Dpad Up = raise arm (pivot toward the back of the robot)
