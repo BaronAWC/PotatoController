@@ -50,8 +50,8 @@ public class MecanumDrive {
 
         double fLPwr = yPower + xPower + rx;
         double bLPwr = yPower - xPower + rx;
-        double fRPwr = yPower - xPower - rx;
-        double bRPwr = yPower + xPower - rx;
+        double fRPwr = yPower + xPower - rx;
+        double bRPwr = yPower - xPower - rx;
 
         // Put powers in the range of -1 to 1 only if they aren't already (not
         // checking would cause us to always drive at full speed)
@@ -94,11 +94,11 @@ public class MecanumDrive {
 
         // "Math.PI / 2" is for the offset between the driver orientation and the robot
         // orientation at the start of tele-op
-        double targetAngle = jsAngle - botAngle - (Math.PI / 2);
+        double targetAngle = jsAngle;// - botAngle - (Math.PI / 2);
         double botX = jsMagnitude * Math.cos(targetAngle);
         double botY = jsMagnitude * Math.sin(targetAngle);
-        telemetry.addLine("angles: " + (jsAngle * 180 / Math.PI) + " " + (botAngle * 180 / Math.PI));
-        telemetry.addLine("target: " + (targetAngle * 180 / Math.PI) + " " + botX + " " + botY);
+        //telemetry.addLine("angles: " + (jsAngle * 180 / Math.PI) + " " + (botAngle * 180 / Math.PI));
+        //telemetry.addLine("target: " + (targetAngle * 180 / Math.PI) + " " + botX + " " + botY);
         return new Pair<>(botX, botY);
     }
 
