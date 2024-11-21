@@ -24,15 +24,15 @@ public class MecanumDrive {
     static final double X_AXIS_ADJ = 1.15; // x axis is a bit slower than y axis on strafer wheels
     static final double SLOW_MODE_POWER = 0.4;
     final double powerFactor = 1;
-    private Telemetry telemetry;
 
-    public MecanumDrive(DcMotorEx FrontL, DcMotorEx FrontR, DcMotorEx BackL, DcMotorEx BackR, BHI260IMU imu, Telemetry telemetry){
+    private double autoFL, autoFR, autoBL, autoBR, autoSpeed;
+
+    public MecanumDrive(DcMotorEx FrontL, DcMotorEx FrontR, DcMotorEx BackL, DcMotorEx BackR, BHI260IMU imu){
         this.FrontL = FrontL;
         this.FrontR = FrontR;
         this.BackL = BackL;
         this.BackR = BackR;
         this.imu = imu;
-        this.telemetry = telemetry;
     }
 
     public void driveFieldCentric(double x, double y, double rx, boolean isSlow){
@@ -75,6 +75,59 @@ public class MecanumDrive {
         driveWithMotorPowers(fLPwr, fRPwr, bLPwr, bRPwr);
     }
 
+    public void setDrive(double angle, double speed, boolean end){
+        double xPower = Math.cos(angle);
+        double yPower = Math.sin(angle);
+
+        double fLPwr = yPower + xPower;
+        double bLPwr = yPower - xPower;
+        double fRPwr = yPower + xPower;
+        double bRPwr = yPower - xPower;
+        // **this part is wrong, must add the current auto powers first
+        // figure out how to do the subtraction while taking into account the division
+        // maybe return difference
+
+        // Put powers in the range of -1 to 1 only if they aren't already (not
+        // checking would cause us to always drive at full speed)
+
+        if (Math.abs(fLPwr) > MAX_DRIVE_PWR || Math.abs(bLPwr) > MAX_DRIVE_PWR ||
+                Math.abs(fRPwr) > MAX_DRIVE_PWR || Math.abs(bRPwr) > MAX_DRIVE_PWR) {
+            // Find the largest power
+            double max;
+            max = Math.max(Math.abs(fLPwr), Math.abs(bLPwr));
+            max = Math.max(Math.abs(fRPwr), max);
+            max = Math.max(Math.abs(bRPwr), max);
+
+            // Divide everything by max (it's positive so we don't need to worry
+            // about signs), scale everything to the max
+            fLPwr /= max;
+            bRPwr /= max;
+            fRPwr /= max;
+            bRPwr /= max;
+        }
+
+        if(!end) {
+            autoFL += fLPwr * autoSpeed;
+            autoFR += fRPwr * autoSpeed;
+            autoBL += bLPwr * autoSpeed;
+            autoBR += bRPwr * autoSpeed;
+        }
+        else{ // undo power changes to end the command
+            autoFL -= fLPwr * autoSpeed;
+            autoFR -= fRPwr * autoSpeed;
+            autoBL -= bLPwr * autoSpeed;
+            autoBR -= bRPwr * autoSpeed;
+        }
+    }
+
+    public void setRotation(double speed, boolean end){
+
+    }
+
+    public void autoDrive(){
+        driveWithMotorPowers(autoFL, autoFR, autoBL, autoBR);
+    }
+
     private double adjPwr(Double n, boolean isSlow) {
         // when fine-tuning, just do linear scale so the max power is 25%
         if(isSlow) {
@@ -108,5 +161,17 @@ public class MecanumDrive {
         FrontR.setPower(FrontRSpeed * MAX_DRIVE_PWR);
         BackL.setPower(BackLSpeed * MAX_DRIVE_PWR);
         BackR.setPower(BackRSpeed * MAX_DRIVE_PWR);
+    }
+
+    public void stop(){
+        FrontL.setPower(0);
+        FrontR.setPower(0);
+        BackL.setPower(0);
+        BackR.setPower(0);
+        autoFL = 0;
+        autoFR = 0;
+        autoBL = 0;
+        autoBR = 0;
+        autoSpeed = 0;
     }
 }

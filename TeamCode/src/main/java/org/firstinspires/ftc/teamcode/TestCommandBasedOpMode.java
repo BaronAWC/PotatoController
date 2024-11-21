@@ -144,7 +144,7 @@ public class TestCommandBasedOpMode extends CommandOpMode {
         liftButton.whenReleased(liftStopCommand);
         lowerButton.whenReleased(liftStopCommand);
 
-        driveSubsystem = new DriveSubsystem(FrontL, FrontR, BackL, BackR, imu, telemetry);
+        driveSubsystem = new DriveSubsystem(FrontL, FrontR, BackL, BackR, imu);
         driveCommand = new DriveCommand(driveSubsystem, () -> driver.getLeftX(), () -> driver.getLeftY(),
                 () -> driver.getRightX(), () -> driver.isDown(GamepadKeys.Button.RIGHT_BUMPER));
 
