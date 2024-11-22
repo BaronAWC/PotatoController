@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.CommandBase;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 
 public class DriveDistanceCommand extends CommandBase {
 
@@ -9,7 +10,7 @@ public class DriveDistanceCommand extends CommandBase {
     public DriveDistanceCommand(DriveSubsystem driveSubsystem, double distance, double angle, double speed){
         this.driveSubsystem = driveSubsystem;
         this.distance = distance;
-        this.angle = angle; // angle to drive at
+        this.angle = Math.toRadians(angle); // angle to drive at
         this.speed = speed;
     }
 
@@ -19,10 +20,10 @@ public class DriveDistanceCommand extends CommandBase {
         driveSubsystem.setDrive(angle, speed, false);
     }
 
-    @Override
-    public void execute(){
-        driveSubsystem.autoDrive();
-    }
+//    @Override
+//    public void execute(){
+//        driveSubsystem.autoDrive();
+//    }
 
     @Override
     public void end(boolean interrupted){

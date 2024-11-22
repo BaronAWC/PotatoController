@@ -36,7 +36,7 @@ public class DriveSubsystem extends SubsystemBase {
         BREncoder.reset();
     }
 
-    public double getAverageEncoderDistance(){
+    public double getAverageEncoderDistance(){ // probably need to change this based on what the encoder is reporting
         return (FLEncoder.getDistance() + FREncoder.getDistance() + BLEncoder.getDistance() +
                 BREncoder.getDistance()) / 4.0;
     }
@@ -49,11 +49,15 @@ public class DriveSubsystem extends SubsystemBase {
         drive.stop();
     }
 
-    public void autoDrive(){
-        drive.autoDrive();
-    }
+//    public void autoDrive(){
+//        drive.autoDrive();
+//    }
 
     public void setDrive(double angle, double speed, boolean end){
         drive.setDrive(angle, speed, end);
+    }
+
+    public void setRotation(double angle, double speed, boolean end){
+        drive.setRotation(angle, speed, end);
     }
 }

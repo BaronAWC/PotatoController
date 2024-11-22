@@ -79,17 +79,49 @@ public class MecanumDrive {
         double xPower = Math.cos(angle);
         double yPower = Math.sin(angle);
 
-        double fLPwr = yPower + xPower;
-        double bLPwr = yPower - xPower;
-        double fRPwr = yPower + xPower;
-        double bRPwr = yPower - xPower;
-        // **this part is wrong, must add the current auto powers first
-        // figure out how to do the subtraction while taking into account the division
-        // maybe return difference
+        double fLPwr = (yPower + xPower) * autoSpeed;
+        double bLPwr = (yPower - xPower) * autoSpeed;
+        double fRPwr = (yPower + xPower) * autoSpeed;
+        double bRPwr = (yPower - xPower) * autoSpeed;
 
-        // Put powers in the range of -1 to 1 only if they aren't already (not
-        // checking would cause us to always drive at full speed)
+        if(!end) {
+            autoFL += fLPwr;
+            autoFR += fRPwr;
+            autoBL += bLPwr;
+            autoBR += bRPwr;
+        }
+        else{ // undo power changes to end the command
+            autoFL -= fLPwr;
+            autoFR -= fRPwr;
+            autoBL -= bLPwr;
+            autoBR -= bRPwr;
+        }
+        autoDrive();
+    }
 
+    public void setRotation(double angle, double speed, boolean end){
+        if(angle < 0) speed *= -1;
+
+        if(!end){
+            autoFL += speed;
+            autoFR -= speed;
+            autoBL += speed;
+            autoBR -= speed;
+        }
+        else { // undo power changes to end the command
+            autoFL -= speed;
+            autoFR += speed;
+            autoBL -= speed;
+            autoBR += speed;
+        }
+        autoDrive();
+    }
+
+    public void autoDrive(){
+        double fLPwr = autoFL; // cap the powers at 1 after making all of the changes based on direction, speed, and rotation
+        double fRPwr = autoFR;
+        double bLPwr = autoBL;
+        double bRPwr = autoBR;
         if (Math.abs(fLPwr) > MAX_DRIVE_PWR || Math.abs(bLPwr) > MAX_DRIVE_PWR ||
                 Math.abs(fRPwr) > MAX_DRIVE_PWR || Math.abs(bRPwr) > MAX_DRIVE_PWR) {
             // Find the largest power
@@ -105,27 +137,7 @@ public class MecanumDrive {
             fRPwr /= max;
             bRPwr /= max;
         }
-
-        if(!end) {
-            autoFL += fLPwr * autoSpeed;
-            autoFR += fRPwr * autoSpeed;
-            autoBL += bLPwr * autoSpeed;
-            autoBR += bRPwr * autoSpeed;
-        }
-        else{ // undo power changes to end the command
-            autoFL -= fLPwr * autoSpeed;
-            autoFR -= fRPwr * autoSpeed;
-            autoBL -= bLPwr * autoSpeed;
-            autoBR -= bRPwr * autoSpeed;
-        }
-    }
-
-    public void setRotation(double speed, boolean end){
-
-    }
-
-    public void autoDrive(){
-        driveWithMotorPowers(autoFL, autoFR, autoBL, autoBR);
+        driveWithMotorPowers(fLPwr, fRPwr, bLPwr, bRPwr);
     }
 
     private double adjPwr(Double n, boolean isSlow) {
