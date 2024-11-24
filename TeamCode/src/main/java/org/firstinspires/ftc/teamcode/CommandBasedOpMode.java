@@ -8,6 +8,7 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
@@ -98,11 +99,20 @@ public class CommandBasedOpMode extends CommandOpMode {
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        pivot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         leftLift = hardwareMap.get(DcMotorEx.class, "Left Lift");
         rightLift = hardwareMap.get(DcMotorEx.class, "Right Lift");
 
         leftLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        leftLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        leftLift.setDirection(DcMotorEx.Direction.REVERSE);
+        rightLift.setDirection(DcMotorSimple.Direction.FORWARD);
 
         armSubsystem = new ArmSubsystem(arm);
         armExtendCommand = new ArmExtendCommand(armSubsystem);
@@ -155,9 +165,11 @@ public class CommandBasedOpMode extends CommandOpMode {
         telemetryCommand = new TelemetryCommand(telemetryScheduler,
                 new Pair[]{
                         new Pair<String, DoubleSupplier>("Arm position", () -> arm.getCurrentPosition()),
+                        new Pair<String, DoubleSupplier>("Arm target position", () -> arm.getTargetPosition()),
                         new Pair<String, DoubleSupplier>("Pivot position", () -> pivot.getCurrentPosition()),
                         new Pair<String, DoubleSupplier>("Left Lift position", () -> leftLift.getCurrentPosition()),
-                        new Pair<String, DoubleSupplier>("Right lift position", () -> rightLift.getCurrentPosition())
+                        new Pair<String, DoubleSupplier>("Right lift position", () -> rightLift.getCurrentPosition()),
+                        new Pair<String, DoubleSupplier>("Average encoder distance", () -> driveSubsystem.getAverageEncoderDistance())
                 },
 
                 new Pair[]{

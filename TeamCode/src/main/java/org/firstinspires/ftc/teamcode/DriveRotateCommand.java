@@ -2,22 +2,28 @@ package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 public class DriveRotateCommand extends CommandBase {
 
     private final DriveSubsystem driveSubsystem;
     private final double angle, speed;
     private double startAngle;
+    private Telemetry telemetry;
 
-    public DriveRotateCommand(DriveSubsystem driveSubsystem, double angle, double speed){
+    public DriveRotateCommand(DriveSubsystem driveSubsystem, double angle, double speed, Telemetry telemetry){
         this.driveSubsystem = driveSubsystem;
         this.angle = angle;
         this.speed = speed;
+        this.telemetry = telemetry;
     }
 
     @Override
     public void initialize(){
         startAngle = driveSubsystem.getAngle();
         driveSubsystem.setRotation(angle, speed, true);
+        telemetry.addLine("started drive rotate command " + angle + " " + speed);
+        telemetry.update();
     }
 
 //    @Override
@@ -27,6 +33,8 @@ public class DriveRotateCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted){
+        telemetry.addLine("finished drive rotate command " + angle + " " + speed);
+        telemetry.update();
         driveSubsystem.setRotation(angle, speed, true);
     }
 

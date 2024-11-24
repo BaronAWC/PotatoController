@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.util.Pair;
+
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.Motor.Encoder;
@@ -12,17 +14,19 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 public class DriveSubsystem extends SubsystemBase {
     // see DriveSubsystem in examples
     private final MecanumDrive drive;
-    private final Encoder FLEncoder, FREncoder, BLEncoder, BREncoder;
+    private final DcMotorEx FrontL, FrontR, BackL, BackR;
+    private double FLStartPos, FRStartPos, BLStartPos, BRStartPos;
+    //private final Encoder FLEncoder, FREncoder, BLEncoder, BREncoder;
 
     private BHI260IMU imu;
 
     public DriveSubsystem(DcMotorEx FrontL, DcMotorEx FrontR, DcMotorEx BackL, DcMotorEx BackR, BHI260IMU imu){
         drive = new MecanumDrive(FrontL, FrontR, BackL, BackR, imu);
         this.imu = imu;
-        FLEncoder = ((Motor)FrontL).encoder;
-        FREncoder = ((Motor)FrontR).encoder;
-        BLEncoder = ((Motor)BackL).encoder;
-        BREncoder = ((Motor)BackR).encoder;
+        this.FrontL = FrontL;
+        this.FrontR = FrontR;
+        this.BackL = BackL;
+        this.BackR = BackR;
     }
 
     public void drive(double x, double y, double rx, boolean isSlow){
@@ -30,15 +34,15 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void resetEncoders(){
-        FLEncoder.reset();
-        FREncoder.reset();
-        BLEncoder.reset();
-        BREncoder.reset();
+        FLStartPos = FrontL.getCurrentPosition();
+        FRStartPos = FrontR.getCurrentPosition();
+        BLStartPos = BackL.getCurrentPosition();
+        BRStartPos = BackR.getCurrentPosition();
     }
 
     public double getAverageEncoderDistance(){ // probably need to change this based on what the encoder is reporting
-        return (FLEncoder.getDistance() + FREncoder.getDistance() + BLEncoder.getDistance() +
-                BREncoder.getDistance()) / 4.0;
+        return ((FrontL.getCurrentPosition() - FLStartPos) + (FrontR.getCurrentPosition() - FRStartPos) + (BackL.getCurrentPosition() - BLStartPos) +
+                (BackR.getCurrentPosition() - BRStartPos)) / 4.0;
     }
 
     public double getAngle(){
@@ -59,5 +63,9 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void setRotation(double angle, double speed, boolean end){
         drive.setRotation(angle, speed, end);
+    }
+
+    public Pair<String, String>[] getInfo(){
+        return drive.getInfo();
     }
 }

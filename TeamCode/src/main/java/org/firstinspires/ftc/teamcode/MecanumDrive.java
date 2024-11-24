@@ -25,7 +25,7 @@ public class MecanumDrive {
     static final double SLOW_MODE_POWER = 0.4;
     final double powerFactor = 1;
 
-    private double autoFL, autoFR, autoBL, autoBR, autoSpeed;
+    private double autoFL = 0, autoFR = 0, autoBL = 0, autoBR = 0, autoSpeed = 0;
 
     public MecanumDrive(DcMotorEx FrontL, DcMotorEx FrontR, DcMotorEx BackL, DcMotorEx BackR, BHI260IMU imu){
         this.FrontL = FrontL;
@@ -185,5 +185,14 @@ public class MecanumDrive {
         autoBL = 0;
         autoBR = 0;
         autoSpeed = 0;
+    }
+
+    public Pair<String, String>[] getInfo(){
+        return new Pair[]{
+                new Pair<String, String>("Front Left", autoFL + ""),
+                new Pair<String, String>("Front Right", autoFR + ""),
+                new Pair<String, String>("Back Left", autoBL + ""),
+                new Pair<String, String>("Back Right", autoBR + ""),
+        };
     }
 }

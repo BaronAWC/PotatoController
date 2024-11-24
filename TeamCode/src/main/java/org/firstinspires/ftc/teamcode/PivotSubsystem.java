@@ -27,8 +27,14 @@ public class PivotSubsystem extends SubsystemBase {
     }
 
     public void runToPosition(int position){
-        pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         pivot.setTargetPosition(position);
+        if(position > pivot.getCurrentPosition()){
+            pivot.setPower(1);
+        }
+        else{
+            pivot.setPower(-1);
+        }
+        pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public boolean isFinished(){

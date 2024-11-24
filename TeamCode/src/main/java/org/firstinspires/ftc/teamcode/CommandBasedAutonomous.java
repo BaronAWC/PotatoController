@@ -36,9 +36,6 @@ public class CommandBasedAutonomous extends CommandOpMode {
 
     private LiftSubsystem liftSubsystem;
 
-    private TelemetryScheduler telemetryScheduler;
-    private TelemetryCommand telemetryCommand;
-
     @Override
     public void initialize(){
 
@@ -90,34 +87,13 @@ public class CommandBasedAutonomous extends CommandOpMode {
         liftSubsystem = new LiftSubsystem(leftLift, rightLift);
 
         driveSubsystem = new DriveSubsystem(FrontL, FrontR, BackL, BackR, imu);
-
-        telemetryScheduler = new TelemetryScheduler(telemetry);
-        telemetryCommand = new TelemetryCommand(telemetryScheduler,
-                new Pair[]{
-                        new Pair<String, DoubleSupplier>("Arm position", () -> arm.getCurrentPosition()),
-                        new Pair<String, DoubleSupplier>("Pivot position", () -> pivot.getCurrentPosition()),
-                        new Pair<String, DoubleSupplier>("Left Lift position", () -> leftLift.getCurrentPosition()),
-                        new Pair<String, DoubleSupplier>("Right lift position", () -> rightLift.getCurrentPosition()),
-                        new Pair<String, DoubleSupplier>("Average encoder distance", () -> driveSubsystem.getAverageEncoderDistance())
-                },
-
-                new Pair[]{
-                        new Pair<String, BooleanSupplier>("test", () -> FrontL.isMotorEnabled())
-                },
-
-                new Pair[]{
-                        new Pair<String, String>("test", "test")
-                }
-        );
-        register(telemetryScheduler);
-        telemetryScheduler.setDefaultCommand(telemetryCommand);
-
+        //telemetry.setAutoClear(false);
     }
 
     @Override
     public void run(){
-        schedule(new DriveDistanceCommand(driveSubsystem, 10, 0, 0.5));
-        schedule(new DriveStopCommand(driveSubsystem));
-        (new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 5, 30, 0.5), new DriveRotateCommand(driveSubsystem, 60, 0.3))).schedule();
+        schedule(new DriveDistanceCommand(driveSubsystem, 10, 0, 0.5, telemetry));
+        //schedule(new DriveStopCommand(driveSubsystem));
+        //(new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 5, 30, 0.5, telemetry), new DriveRotateCommand(driveSubsystem, 60, 0.3, telemetry))).schedule();
     }
 }

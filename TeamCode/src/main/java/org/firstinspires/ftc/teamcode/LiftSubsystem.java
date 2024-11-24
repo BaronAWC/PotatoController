@@ -19,12 +19,12 @@ public class LiftSubsystem extends SubsystemBase {
     }
 
     public void extend(){
-        leftLift.setPower(-0.5);
+        leftLift.setPower(-1);
         rightLift.setPower(-1);
     }
 
     public void retract(){
-        leftLift.setPower(0.5);
+        leftLift.setPower(1);
         rightLift.setPower(1);
     }
 
