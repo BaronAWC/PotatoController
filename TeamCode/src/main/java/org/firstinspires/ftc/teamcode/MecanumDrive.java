@@ -25,7 +25,7 @@ public class MecanumDrive {
     static final double SLOW_MODE_POWER = 0.4;
     final double powerFactor = 1;
 
-    private double autoFL = 0, autoFR = 0, autoBL = 0, autoBR = 0, autoSpeed = 0;
+    private double autoFL = 0, autoFR = 0, autoBL = 0, autoBR = 0;
 
     public MecanumDrive(DcMotorEx FrontL, DcMotorEx FrontR, DcMotorEx BackL, DcMotorEx BackR, BHI260IMU imu){
         this.FrontL = FrontL;
@@ -76,13 +76,13 @@ public class MecanumDrive {
     }
 
     public void setDrive(double angle, double speed, boolean end){
-        double xPower = Math.cos(angle);
+        double xPower = Math.cos(angle) * X_AXIS_ADJ;
         double yPower = Math.sin(angle);
 
-        double fLPwr = (yPower + xPower) * autoSpeed;
-        double bLPwr = (yPower - xPower) * autoSpeed;
-        double fRPwr = (yPower + xPower) * autoSpeed;
-        double bRPwr = (yPower - xPower) * autoSpeed;
+        double fLPwr = (yPower + xPower) * speed;
+        double bLPwr = (yPower - xPower) * speed;
+        double fRPwr = (yPower + xPower) * speed;
+        double bRPwr = (yPower - xPower) * speed;
 
         if(!end) {
             autoFL += fLPwr;
@@ -184,7 +184,6 @@ public class MecanumDrive {
         autoFR = 0;
         autoBL = 0;
         autoBR = 0;
-        autoSpeed = 0;
     }
 
     public Pair<String, String>[] getInfo(){
