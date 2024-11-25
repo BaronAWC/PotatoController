@@ -11,8 +11,6 @@ public class ArmSubsystem extends SubsystemBase {
         this.arm = arm;
     }
     public void extend(){
-        //arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //arm.setPower(-1);
         arm.setTargetPosition(-10750);
         arm.setPower(-1);
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -20,8 +18,6 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void retract(){
-        //arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //arm.setPower(1);
         arm.setTargetPosition(0);
         arm.setPower(1);
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -32,12 +28,16 @@ public class ArmSubsystem extends SubsystemBase {
         arm.setTargetPosition(arm.getCurrentPosition());
         arm.setPower(0);
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //arm.setPower(0);
     }
 
     public void runToPosition(int position){
         arm.setTargetPosition(position);
+        if(position > arm.getCurrentPosition()){
+            arm.setPower(1);
+        }
+        else{
+            arm.setPower(-1);
+        }
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
     }
