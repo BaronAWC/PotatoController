@@ -6,15 +6,17 @@ public class ArmRunToPositionCommand extends CommandBase {
 
     private final ArmSubsystem armSubsystem;
     private final int position;
+    private final double power;
 
-    public ArmRunToPositionCommand(ArmSubsystem armSubsystem, int position){
+    public ArmRunToPositionCommand(ArmSubsystem armSubsystem, int position, double power){
         this.armSubsystem = armSubsystem;
         this.position = position;
+        this.power = power;
     }
 
     @Override
     public void initialize(){
-        armSubsystem.runToPosition(position);
+        armSubsystem.runToPosition(position, power);
     }
 
     @Override

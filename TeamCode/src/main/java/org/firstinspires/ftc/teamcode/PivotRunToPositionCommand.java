@@ -6,15 +6,17 @@ public class PivotRunToPositionCommand extends CommandBase {
 
     private final PivotSubsystem pivotSubsystem;
     private final int position;
+    private final double power;
 
-    public PivotRunToPositionCommand(PivotSubsystem pivotSubsystem, int position){
+    public PivotRunToPositionCommand(PivotSubsystem pivotSubsystem, int position, double power){
         this.pivotSubsystem = pivotSubsystem;
         this.position = position;
+        this.power = power;
     }
 
     @Override
     public void initialize(){
-        pivotSubsystem.runToPosition(position);
+        pivotSubsystem.runToPosition(position, power);
     }
 
     @Override

@@ -2,14 +2,20 @@ package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 
+import java.util.function.BooleanSupplier;
+
 public class LiftExtendCommand extends CommandBase {
 
     private LiftSubsystem liftSubsystem;
-    public LiftExtendCommand(LiftSubsystem liftSubsystem) { this.liftSubsystem = liftSubsystem; }
+    private final BooleanSupplier overrideLimits;
+    public LiftExtendCommand(LiftSubsystem liftSubsystem, BooleanSupplier overrideLimits) {
+        this.liftSubsystem = liftSubsystem;
+        this.overrideLimits = overrideLimits;
+    }
 
     @Override
     public void initialize(){
-        liftSubsystem.extend();
+        liftSubsystem.extend(overrideLimits.getAsBoolean());
     }
 
     @Override

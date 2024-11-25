@@ -115,13 +115,13 @@ public class CommandBasedOpMode extends CommandOpMode {
         rightLift.setDirection(DcMotorSimple.Direction.FORWARD);
 
         armSubsystem = new ArmSubsystem(arm);
-        armExtendCommand = new ArmExtendCommand(armSubsystem);
-        armRetractCommand = new ArmRetractCommand(armSubsystem);
+        armExtendCommand = new ArmExtendCommand(armSubsystem, () -> operator.isDown(GamepadKeys.Button.LEFT_BUMPER), () -> operator.isDown(GamepadKeys.Button.RIGHT_BUMPER));
+        armRetractCommand = new ArmRetractCommand(armSubsystem, () -> operator.isDown(GamepadKeys.Button.LEFT_BUMPER), () -> operator.isDown(GamepadKeys.Button.RIGHT_BUMPER));
         armStopCommand = new ArmStopCommand(armSubsystem);
 
         pivotSubsystem = new PivotSubsystem(pivot);
-        pivotRaiseCommand = new PivotRaiseCommand(pivotSubsystem);
-        pivotLowerCommand = new PivotLowerCommand(pivotSubsystem);
+        pivotRaiseCommand = new PivotRaiseCommand(pivotSubsystem, () -> operator.isDown(GamepadKeys.Button.RIGHT_BUMPER));
+        pivotLowerCommand = new PivotLowerCommand(pivotSubsystem, () -> operator.isDown(GamepadKeys.Button.RIGHT_BUMPER));
         pivotStopCommand = new PivotStopCommand(pivotSubsystem);
 
         intakeSubsystem = new IntakeSubsystem(intake);
@@ -130,8 +130,8 @@ public class CommandBasedOpMode extends CommandOpMode {
         intakeStopCommand = new IntakeStopCommand(intakeSubsystem);
 
         liftSubsystem = new LiftSubsystem(leftLift, rightLift);
-        liftExtendCommand = new LiftExtendCommand(liftSubsystem);
-        liftRetractCommand = new LiftRetractCommand(liftSubsystem);
+        liftExtendCommand = new LiftExtendCommand(liftSubsystem, () -> driver.isDown(GamepadKeys.Button.LEFT_BUMPER));
+        liftRetractCommand = new LiftRetractCommand(liftSubsystem, () -> driver.isDown(GamepadKeys.Button.LEFT_BUMPER));
         liftStopCommand = new LiftStopCommand(liftSubsystem);
 
         extendButton = (new GamepadButton(operator, GamepadKeys.Button.DPAD_RIGHT)).whenPressed(armExtendCommand);

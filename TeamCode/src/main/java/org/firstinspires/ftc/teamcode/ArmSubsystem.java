@@ -10,17 +10,30 @@ public class ArmSubsystem extends SubsystemBase {
     public ArmSubsystem(DcMotorEx arm){
         this.arm = arm;
     }
-    public void extend(){
-        arm.setTargetPosition(-10750);
-        arm.setPower(-1);
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
+    public void extend(boolean overrideLimits, boolean slowMode){
+        double power = slowMode ? 0.5 : 1;
+        if(!overrideLimits) {
+            arm.setTargetPosition(-10750);
+            arm.setPower(-power);
+            arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+        else{
+            arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            arm.setPower(-power);
+        }
     }
 
-    public void retract(){
-        arm.setTargetPosition(0);
-        arm.setPower(1);
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    public void retract(boolean overrideLimits, boolean slowMode){
+        double power = slowMode ? 0.5 : 1;
+        if(!overrideLimits) {
+            arm.setTargetPosition(0);
+            arm.setPower(power);
+            arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+        else{
+            arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            arm.setPower(power);
+        }
 
     }
 
@@ -30,13 +43,13 @@ public class ArmSubsystem extends SubsystemBase {
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-    public void runToPosition(int position){
+    public void runToPosition(int position, double power){
         arm.setTargetPosition(position);
         if(position > arm.getCurrentPosition()){
-            arm.setPower(1);
+            arm.setPower(power);
         }
         else{
-            arm.setPower(-1);
+            arm.setPower(-power);
         }
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 

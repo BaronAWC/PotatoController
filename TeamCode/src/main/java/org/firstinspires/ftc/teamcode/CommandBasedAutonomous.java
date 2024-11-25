@@ -94,7 +94,7 @@ public class CommandBasedAutonomous extends CommandOpMode {
                 new IntakeForwardCommand(intakeSubsystem).withTimeout(1000),
                 new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 5, 30, 0.5, telemetry),
                         new DriveRotateCommand(driveSubsystem, 60, 0.3, telemetry)),
-                new ArmRunToPositionCommand(armSubsystem, -3000)
+                new ArmRunToPositionCommand(armSubsystem, -3000, 1)
         ).schedule();
 
 //        new SequentialCommandGroup(

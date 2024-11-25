@@ -1,14 +1,22 @@
 - Driver:
-  - Left joystick = movement/strafing
-  - Right joystick = turning (only based on x position)
-  - Right Bumper = slow mode
+  - Movement:
+    - Left joystick = movement/strafing
+    - Right joystick = turning (only based on x position)
+    - Right Bumper = slow mode
+  - Lifts:
+    - Y = raise lifts
+    - A = lower lifts
+    - Left Bumper = override software limits
 - Operator:
   - Pivot:
     - Dpad Up = raise arm (pivot toward the back of the robot)
     - Dpad Down = lower arm (pivot toward the front of the robot)
+    - Right Bumper = slow mode
   - Arm:
     - Dpad Right = extend arm
     - Dpad Left = retract arm
+    - Right Bumper = slow mode
+    - Left Bumper = override software limits
   - Intake:
     - B = Spin forward (intake)
     - X = Spin backward (outtake)
