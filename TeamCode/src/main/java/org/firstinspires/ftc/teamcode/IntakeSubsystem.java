@@ -15,8 +15,9 @@ public class IntakeSubsystem {
     public void backward(){
         intake.setPower(-1);
     }
-
     public void stop(){
         intake.setPower(0);
     }
+
+    public void run(double power) { intake.setPower(power); }
 }
