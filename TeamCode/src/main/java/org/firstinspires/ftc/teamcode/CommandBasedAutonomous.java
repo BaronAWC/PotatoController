@@ -4,6 +4,7 @@ import android.util.Pair;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.button.Button;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
@@ -87,13 +88,14 @@ public class CommandBasedAutonomous extends CommandOpMode {
         liftSubsystem = new LiftSubsystem(leftLift, rightLift);
 
         driveSubsystem = new DriveSubsystem(FrontL, FrontR, BackL, BackR, imu);
-        //telemetry.setAutoClear(false);
-    }
 
-    @Override
-    public void run(){
-        schedule(new DriveDistanceCommand(driveSubsystem, 10, 0, 0.5, telemetry));
-        //schedule(new DriveStopCommand(driveSubsystem));
-        //(new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 5, 30, 0.5, telemetry), new DriveRotateCommand(driveSubsystem, 60, 0.3, telemetry))).schedule();
+        // schedule all commands in this method
+        new SequentialCommandGroup(
+                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 5, 30, 0.5, telemetry), new DriveRotateCommand(driveSubsystem, 60, 0.3, telemetry))
+        ).schedule();
+
+//        new SequentialCommandGroup(
+//                new ArmRunToPositionCommand(armSubsystem, -3000)
+//        ).schedule();
     }
 }
