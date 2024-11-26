@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class LiftSubsystem extends SubsystemBase {
-    private DcMotorEx leftLift;
-    private DcMotorEx rightLift;
+    private final DcMotorEx leftLift;
+    private final DcMotorEx rightLift;
 
     public enum Control{
         Left,

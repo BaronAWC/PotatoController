@@ -25,5 +25,6 @@ public class IntakeRunCommand extends CommandBase {
         intakeSubsystem.stop();
     }
 
+    // is finished always will return false; uses timer to interrupt and end command
 
 }

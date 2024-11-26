@@ -6,7 +6,7 @@ import java.util.function.BooleanSupplier;
 
 public class ArmExtendCommand extends CommandBase {
 
-    private ArmSubsystem armSubsystem;
+    private final ArmSubsystem armSubsystem;
     private final BooleanSupplier overrideLimits, slowMode;
     public ArmExtendCommand(ArmSubsystem armSubsystem, BooleanSupplier overrideLimits, BooleanSupplier slowMode){
         this.armSubsystem = armSubsystem;

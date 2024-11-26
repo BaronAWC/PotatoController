@@ -6,7 +6,7 @@ import java.util.function.BooleanSupplier;
 
 public class ArmRetractCommand extends CommandBase {
 
-    private ArmSubsystem armSubsystem;
+    private final ArmSubsystem armSubsystem;
     private final BooleanSupplier overrideLimits, slowMode;
     public ArmRetractCommand(ArmSubsystem armSubsystem, BooleanSupplier overrideLimits, BooleanSupplier slowMode){
         this.armSubsystem = armSubsystem;

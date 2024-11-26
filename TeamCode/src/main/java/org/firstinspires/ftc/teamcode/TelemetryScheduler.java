@@ -6,7 +6,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class TelemetryScheduler extends SubsystemBase {
 
-    private Telemetry telemetry;
+    private final Telemetry telemetry;
     public TelemetryScheduler(Telemetry telemetry){
         this.telemetry = telemetry;
     }

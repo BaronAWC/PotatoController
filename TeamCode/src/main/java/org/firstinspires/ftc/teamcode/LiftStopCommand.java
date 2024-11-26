@@ -4,7 +4,7 @@ import com.arcrobotics.ftclib.command.CommandBase;
 
 public class LiftStopCommand extends CommandBase {
 
-    private LiftSubsystem liftSubsystem;
+    private final LiftSubsystem liftSubsystem;
     public LiftStopCommand(LiftSubsystem liftSubsystem) { this.liftSubsystem = liftSubsystem; }
 
     @Override

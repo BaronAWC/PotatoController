@@ -5,8 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class PivotSubsystem extends SubsystemBase {
-    private DcMotorEx pivot;
-
+    private final DcMotorEx pivot;
 
     public PivotSubsystem(DcMotorEx pivot){
         this.pivot = pivot;

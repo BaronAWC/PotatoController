@@ -11,7 +11,7 @@ public class DriveDistanceCommand extends CommandBase {
 
     private final DriveSubsystem driveSubsystem;
     private final double distance, angle, speed;
-    private Telemetry telemetry;
+    private final Telemetry telemetry;
     public DriveDistanceCommand(DriveSubsystem driveSubsystem, double distance, double angle, double speed, Telemetry telemetry){
         this.driveSubsystem = driveSubsystem;
         this.distance = distance;

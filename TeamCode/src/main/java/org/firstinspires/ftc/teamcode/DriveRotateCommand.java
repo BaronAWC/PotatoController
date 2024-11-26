@@ -9,7 +9,7 @@ public class DriveRotateCommand extends CommandBase {
     private final DriveSubsystem driveSubsystem;
     private final double angle, speed;
     private double startAngle;
-    private Telemetry telemetry;
+    private final Telemetry telemetry;
 
     public DriveRotateCommand(DriveSubsystem driveSubsystem, double angle, double speed, Telemetry telemetry){
         this.driveSubsystem = driveSubsystem;

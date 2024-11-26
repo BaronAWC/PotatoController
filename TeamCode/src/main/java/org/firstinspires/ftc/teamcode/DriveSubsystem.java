@@ -18,7 +18,7 @@ public class DriveSubsystem extends SubsystemBase {
     private double FLStartPos, FRStartPos, BLStartPos, BRStartPos;
     //private final Encoder FLEncoder, FREncoder, BLEncoder, BREncoder;
 
-    private BHI260IMU imu;
+    private final BHI260IMU imu;
 
     public DriveSubsystem(DcMotorEx FrontL, DcMotorEx FrontR, DcMotorEx BackL, DcMotorEx BackR, BHI260IMU imu){
         drive = new MecanumDrive(FrontL, FrontR, BackL, BackR, imu);

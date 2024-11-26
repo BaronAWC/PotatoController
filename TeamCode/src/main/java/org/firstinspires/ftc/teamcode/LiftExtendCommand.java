@@ -6,7 +6,7 @@ import java.util.function.BooleanSupplier;
 
 public class LiftExtendCommand extends CommandBase {
 
-    private LiftSubsystem liftSubsystem;
+    private final LiftSubsystem liftSubsystem;
     private final BooleanSupplier overrideLimits;
     public LiftExtendCommand(LiftSubsystem liftSubsystem, BooleanSupplier overrideLimits) {
         this.liftSubsystem = liftSubsystem;

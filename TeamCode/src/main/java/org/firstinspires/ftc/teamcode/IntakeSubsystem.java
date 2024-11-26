@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.CRServo;
 
 public class IntakeSubsystem {
-    private CRServo intake;
+    private final CRServo intake;
 
     public IntakeSubsystem(CRServo intake){
         this.intake = intake;

@@ -20,6 +20,9 @@ public class ArmRunToPositionCommand extends CommandBase {
     }
 
     @Override
+    public void end(boolean interrupted){ armSubsystem.stop(); }
+
+    @Override
     public boolean isFinished(){
         return armSubsystem.isFinished();
     }

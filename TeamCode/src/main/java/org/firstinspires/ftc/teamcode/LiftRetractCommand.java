@@ -6,7 +6,7 @@ import java.util.function.BooleanSupplier;
 
 public class LiftRetractCommand extends CommandBase {
 
-    private LiftSubsystem liftSubsystem;
+    private final LiftSubsystem liftSubsystem;
     private final BooleanSupplier overrideLimits;
     public LiftRetractCommand(LiftSubsystem liftSubsystem, BooleanSupplier overrideLimits) {
         this.liftSubsystem = liftSubsystem;

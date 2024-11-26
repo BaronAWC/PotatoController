@@ -6,7 +6,7 @@ import java.util.function.BooleanSupplier;
 
 public class PivotRaiseCommand extends CommandBase {
 
-    private PivotSubsystem pivotSubsystem;
+    private final PivotSubsystem pivotSubsystem;
     private final BooleanSupplier slowMode;
     public PivotRaiseCommand(PivotSubsystem pivotSubsystem, BooleanSupplier slowMode){
         this.pivotSubsystem = pivotSubsystem;

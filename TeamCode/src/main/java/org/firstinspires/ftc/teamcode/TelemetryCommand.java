@@ -12,10 +12,10 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 public class TelemetryCommand extends CommandBase {
-    private TelemetryScheduler telemetryScheduler;
-    private Pair<String, DoubleSupplier>[] doubleInfo;
-    private Pair<String, BooleanSupplier>[] booleanInfo;
-    private Pair<String, String>[] stringInfo;
+    private final TelemetryScheduler telemetryScheduler;
+    private final Pair<String, DoubleSupplier>[] doubleInfo;
+    private final Pair<String, BooleanSupplier>[] booleanInfo;
+    private final Pair<String, String>[] stringInfo;
     private int count = 0;
     public TelemetryCommand(TelemetryScheduler telemetryScheduler, Pair<String, DoubleSupplier>[] doubleInfo,
                             Pair<String, BooleanSupplier>[] booleanInfo, Pair<String, String>[] stringInfo){

@@ -6,8 +6,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class DriveStopCommand extends CommandBase {
 
-    private DriveSubsystem driveSubsystem;
-    private Telemetry telemetry;
+    private final DriveSubsystem driveSubsystem;
+    private final Telemetry telemetry;
 
     public DriveStopCommand(DriveSubsystem driveSubsystem, Telemetry telemetry){
         this.driveSubsystem = driveSubsystem;

@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class ArmSubsystem extends SubsystemBase {
-    private DcMotorEx arm;
+    private final DcMotorEx arm;
 
     public ArmSubsystem(DcMotorEx arm){
         this.arm = arm;

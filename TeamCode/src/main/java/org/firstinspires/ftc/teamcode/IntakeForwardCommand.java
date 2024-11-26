@@ -4,7 +4,7 @@ import com.arcrobotics.ftclib.command.CommandBase;
 
 public class IntakeForwardCommand extends CommandBase {
 
-    private IntakeSubsystem intakeSubsystem;
+    private final IntakeSubsystem intakeSubsystem;
     public IntakeForwardCommand(IntakeSubsystem intakeSubsystem){
         this.intakeSubsystem = intakeSubsystem;
     }

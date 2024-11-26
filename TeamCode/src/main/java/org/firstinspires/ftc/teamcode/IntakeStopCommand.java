@@ -4,7 +4,7 @@ import com.arcrobotics.ftclib.command.CommandBase;
 
 public class IntakeStopCommand extends CommandBase {
 
-    private IntakeSubsystem intakeSubsystem;
+    private final IntakeSubsystem intakeSubsystem;
     public IntakeStopCommand(IntakeSubsystem intakeSubsystem){
         this.intakeSubsystem = intakeSubsystem;
     }

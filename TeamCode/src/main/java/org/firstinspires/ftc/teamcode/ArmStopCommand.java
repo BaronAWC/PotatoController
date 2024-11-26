@@ -4,7 +4,7 @@ import com.arcrobotics.ftclib.command.CommandBase;
 
 public class ArmStopCommand extends CommandBase {
 
-    private ArmSubsystem armSubsystem;
+    private final ArmSubsystem armSubsystem;
     public ArmStopCommand(ArmSubsystem armSubsystem){
         this.armSubsystem = armSubsystem;
     }
