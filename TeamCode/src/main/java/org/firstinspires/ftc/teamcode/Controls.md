@@ -7,6 +7,11 @@
     - Y = raise lifts
     - A = lower lifts
     - Left Bumper = override software limits
+  - Single Motor Control:
+    - Dpad Up = run front left motor
+    - Dpad Right = run front right motor
+    - Dpad Down = run back right motor
+    - Dpad Left = run back left motor
 - Operator:
   - Pivot:
     - Dpad Up = raise arm (pivot toward the back of the robot)

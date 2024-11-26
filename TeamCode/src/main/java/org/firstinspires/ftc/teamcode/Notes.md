@@ -5,3 +5,9 @@ Left highest: 127
 Right lowest: 1546
 Right highest: -1880
 3426
+
+TODO:
+- test new op mode (with simplified code)
+- test individual motors to ensure that they are wired correctly
+- test lifts (and their limits)
+- test autonomous
