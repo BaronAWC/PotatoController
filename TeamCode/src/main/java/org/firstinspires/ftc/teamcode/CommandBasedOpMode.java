@@ -33,28 +33,22 @@ public class CommandBasedOpMode extends CommandOpMode {
     private BHI260IMU imu;
     private DriveSubsystem driveSubsystem;
     private DriveCommand driveCommand;
-    private RunDriveMotorCommand runFL, runFR, runBL, runBR;
-    private StopDriveMotorCommand stopFL, stopFR, stopBL, stopBR;
 
     private ArmSubsystem armSubsystem;
     private ArmExtendCommand armExtendCommand;
     private ArmRetractCommand armRetractCommand;
-    private ArmStopCommand armStopCommand;
 
     private PivotSubsystem pivotSubsystem;
     private PivotRaiseCommand pivotRaiseCommand;
     private PivotLowerCommand pivotLowerCommand;
-    private PivotStopCommand pivotStopCommand;
 
     private IntakeSubsystem intakeSubsystem;
     private IntakeForwardCommand intakeForwardCommand;
     private IntakeBackwardCommand intakeBackwardCommand;
-    private IntakeStopCommand intakeStopCommand;
 
     private LiftSubsystem liftSubsystem;
     private LiftExtendCommand liftExtendCommand;
     private LiftRetractCommand liftRetractCommand;
-    private LiftStopCommand liftStopCommand;
 
     private TelemetryScheduler telemetryScheduler;
     private TelemetryCommand telemetryCommand;
@@ -118,57 +112,41 @@ public class CommandBasedOpMode extends CommandOpMode {
         armSubsystem = new ArmSubsystem(arm);
         armExtendCommand = new ArmExtendCommand(armSubsystem, () -> operator.isDown(GamepadKeys.Button.LEFT_BUMPER), () -> operator.isDown(GamepadKeys.Button.RIGHT_BUMPER));
         armRetractCommand = new ArmRetractCommand(armSubsystem, () -> operator.isDown(GamepadKeys.Button.LEFT_BUMPER), () -> operator.isDown(GamepadKeys.Button.RIGHT_BUMPER));
-        armStopCommand = new ArmStopCommand(armSubsystem);
 
         pivotSubsystem = new PivotSubsystem(pivot);
         pivotRaiseCommand = new PivotRaiseCommand(pivotSubsystem, () -> operator.isDown(GamepadKeys.Button.RIGHT_BUMPER));
         pivotLowerCommand = new PivotLowerCommand(pivotSubsystem, () -> operator.isDown(GamepadKeys.Button.RIGHT_BUMPER));
-        pivotStopCommand = new PivotStopCommand(pivotSubsystem);
 
         intakeSubsystem = new IntakeSubsystem(intake);
         intakeForwardCommand = new IntakeForwardCommand(intakeSubsystem);
         intakeBackwardCommand = new IntakeBackwardCommand(intakeSubsystem);
-        intakeStopCommand = new IntakeStopCommand(intakeSubsystem);
 
         liftSubsystem = new LiftSubsystem(leftLift, rightLift);
         liftExtendCommand = new LiftExtendCommand(liftSubsystem, () -> driver.isDown(GamepadKeys.Button.LEFT_BUMPER));
         liftRetractCommand = new LiftRetractCommand(liftSubsystem, () -> driver.isDown(GamepadKeys.Button.LEFT_BUMPER));
-        liftStopCommand = new LiftStopCommand(liftSubsystem);
 
         // link commands to buttons
 
         //arm
-        (new GamepadButton(operator, GamepadKeys.Button.DPAD_RIGHT)).whenPressed(armExtendCommand).whenReleased(armStopCommand);
-        (new GamepadButton(operator, GamepadKeys.Button.DPAD_LEFT)).whenPressed(armRetractCommand).whenReleased(armStopCommand);
+        (new GamepadButton(operator, GamepadKeys.Button.DPAD_RIGHT)).whileHeld(armExtendCommand);
+        (new GamepadButton(operator, GamepadKeys.Button.DPAD_LEFT)).whileHeld(armRetractCommand);
 
         // pivot
-        (new GamepadButton(operator, GamepadKeys.Button.DPAD_UP)).whenPressed(pivotRaiseCommand).whenReleased(pivotStopCommand);
-        (new GamepadButton(operator, GamepadKeys.Button.DPAD_DOWN)).whenPressed(pivotLowerCommand).whenReleased(pivotStopCommand);
+        (new GamepadButton(operator, GamepadKeys.Button.DPAD_UP)).whileHeld(pivotRaiseCommand);
+        (new GamepadButton(operator, GamepadKeys.Button.DPAD_DOWN)).whileHeld(pivotLowerCommand);
 
         // intake
-        (new GamepadButton(operator, GamepadKeys.Button.B)).whenPressed(intakeForwardCommand).whenReleased(intakeStopCommand);
-        (new GamepadButton(operator, GamepadKeys.Button.X)).whenPressed(intakeBackwardCommand).whenReleased(intakeStopCommand);
+        (new GamepadButton(operator, GamepadKeys.Button.B)).whileHeld(intakeForwardCommand);
+        (new GamepadButton(operator, GamepadKeys.Button.X)).whileHeld(intakeBackwardCommand);
 
         // lifts
-        (new GamepadButton(driver, GamepadKeys.Button.Y)).whenPressed(liftExtendCommand).whenReleased(liftStopCommand);
-        (new GamepadButton(driver, GamepadKeys.Button.A)).whenPressed(liftRetractCommand).whenReleased(liftStopCommand);
+        (new GamepadButton(driver, GamepadKeys.Button.Y)).whileHeld(liftExtendCommand);
+        (new GamepadButton(driver, GamepadKeys.Button.A)).whileHeld(liftRetractCommand);
 
         //driving
         driveSubsystem = new DriveSubsystem(FrontL, FrontR, BackL, BackR, imu);
 
         // running individual motors
-        runFL = new RunDriveMotorCommand(FrontL);
-        runFR = new RunDriveMotorCommand(FrontR);
-        runBL = new RunDriveMotorCommand(BackL);
-        runBR = new RunDriveMotorCommand(BackR);
-        stopFL = new StopDriveMotorCommand(FrontL);
-        stopFR = new StopDriveMotorCommand(FrontR);
-        stopBL = new StopDriveMotorCommand(BackL);
-        stopBR = new StopDriveMotorCommand(BackR);
-        (new GamepadButton(driver, GamepadKeys.Button.DPAD_UP)).whenPressed(runFL).whenReleased(stopFL);
-        (new GamepadButton(driver, GamepadKeys.Button.DPAD_RIGHT)).whenPressed(runFR).whenReleased(stopFR);
-        (new GamepadButton(driver, GamepadKeys.Button.DPAD_LEFT)).whenPressed(runBL).whenReleased(stopBL);
-        (new GamepadButton(driver, GamepadKeys.Button.DPAD_DOWN)).whenPressed(runBR).whenReleased(stopBR);
 
         // mecanum driving
         driveCommand = new DriveCommand(driveSubsystem, () -> driver.getLeftX(), () -> driver.getLeftY(),
@@ -186,7 +164,11 @@ public class CommandBasedOpMode extends CommandOpMode {
                         new Pair<String, DoubleSupplier>("Pivot position", () -> pivot.getCurrentPosition()),
                         new Pair<String, DoubleSupplier>("Left Lift position", () -> leftLift.getCurrentPosition()),
                         new Pair<String, DoubleSupplier>("Right lift position", () -> rightLift.getCurrentPosition()),
-                        new Pair<String, DoubleSupplier>("Average encoder distance", () -> driveSubsystem.getAverageEncoderDistance())
+                        new Pair<String, DoubleSupplier>("Average encoder distance", () -> driveSubsystem.getAverageEncoderDistance()),
+                        new Pair<String, DoubleSupplier>("Front Left power", () -> FrontL.getPower()),
+                        new Pair<String, DoubleSupplier>("Front Right power", () -> FrontR.getPower()),
+                        new Pair<String, DoubleSupplier>("Back Left power", () -> BackL.getPower()),
+                        new Pair<String, DoubleSupplier>("Back Right power", () -> BackR.getPower())
                 },
 
                 new Pair[]{

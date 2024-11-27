@@ -10,12 +10,12 @@ public class IntakeBackwardCommand extends CommandBase {
     }
 
     @Override
-    public void initialize(){
+    public void execute(){
         intakeSubsystem.backward();
     }
 
     @Override
-    public boolean isFinished(){
-        return true;
+    public void end(boolean interrupted){
+        intakeSubsystem.stop();
     }
 }

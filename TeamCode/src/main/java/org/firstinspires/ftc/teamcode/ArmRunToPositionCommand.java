@@ -2,14 +2,18 @@ package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 public class ArmRunToPositionCommand extends CommandBase {
 
     private final ArmSubsystem armSubsystem;
+    private final Telemetry telemetry;
     private final int position;
     private final double power;
 
-    public ArmRunToPositionCommand(ArmSubsystem armSubsystem, int position, double power){
+    public ArmRunToPositionCommand(ArmSubsystem armSubsystem, Telemetry telemetry, int position, double power){
         this.armSubsystem = armSubsystem;
+        this.telemetry = telemetry;
         this.position = position;
         this.power = power;
     }
@@ -20,10 +24,16 @@ public class ArmRunToPositionCommand extends CommandBase {
     }
 
     @Override
+    public void execute(){
+        telemetry.addData("Arm position", armSubsystem.getPosition());
+        telemetry.update();
+    }
+
+    @Override
     public void end(boolean interrupted){ armSubsystem.stop(); }
 
     @Override
     public boolean isFinished(){
-        return armSubsystem.isFinished();
+        return (armSubsystem.isFinished() && Math.abs(armSubsystem.getPosition() - position) <= 50);
     }
 }

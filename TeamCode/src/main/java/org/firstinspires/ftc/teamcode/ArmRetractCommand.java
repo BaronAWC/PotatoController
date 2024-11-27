@@ -15,12 +15,12 @@ public class ArmRetractCommand extends CommandBase {
     }
 
     @Override
-    public void initialize(){
+    public void execute(){
         armSubsystem.retract(overrideLimits.getAsBoolean(), slowMode.getAsBoolean());
     }
 
     @Override
-    public boolean isFinished(){
-        return true;
+    public void end(boolean interrutped){
+        armSubsystem.stop();
     }
 }

@@ -14,12 +14,12 @@ public class LiftExtendCommand extends CommandBase {
     }
 
     @Override
-    public void initialize(){
+    public void execute(){
         liftSubsystem.extend(overrideLimits.getAsBoolean());
     }
 
     @Override
-    public boolean isFinished(){
-        return true;
+    public void end(boolean interrupted){
+        liftSubsystem.stop();
     }
 }

@@ -21,15 +21,18 @@ public class DriveRotateCommand extends CommandBase {
     @Override
     public void initialize(){
         startAngle = driveSubsystem.getAngle();
-        driveSubsystem.setRotation(angle, speed, true);
+        driveSubsystem.setRotation(angle, speed, false);
         telemetry.addLine("started drive rotate command " + angle + " " + speed);
         telemetry.update();
     }
 
-//    @Override
-//    public void execute(){
-//        driveSubsystem.autoDrive();
-//    }
+    @Override
+    public void execute(){
+        telemetry.addData("start angle", startAngle);
+        telemetry.addData("current angle", driveSubsystem.getAngle());
+        telemetry.addData("difference", (startAngle - angle - driveSubsystem.getAngle()));
+        telemetry.update();
+    }
 
     @Override
     public void end(boolean interrupted){
@@ -41,7 +44,7 @@ public class DriveRotateCommand extends CommandBase {
     @Override
     public boolean isFinished(){
         double currentAngle = driveSubsystem.getAngle();
-        return ((startAngle + angle - currentAngle) <= 3) || (angle > 0 && currentAngle > (startAngle + angle)) || (angle < 0 && currentAngle < (startAngle - angle));
+        return (Math.abs(startAngle - angle - currentAngle) <= 1) || (angle > 0 && currentAngle < (startAngle - angle)) || (angle < 0 && currentAngle > (startAngle - angle));
         // finished if it is off by 3 degrees or if it overshot
     }
 }

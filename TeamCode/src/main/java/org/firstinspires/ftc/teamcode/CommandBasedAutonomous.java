@@ -90,11 +90,15 @@ public class CommandBasedAutonomous extends CommandOpMode {
         driveSubsystem = new DriveSubsystem(FrontL, FrontR, BackL, BackR, imu);
 
         // schedule all commands in this method
+        waitForStart();
         new SequentialCommandGroup(
-                new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.In).withTimeout(1000),
-                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 5, 30, 0.5, telemetry),
-                        new DriveRotateCommand(driveSubsystem, 60, 0.3, telemetry)),
-                new ArmRunToPositionCommand(armSubsystem, -3000, 1)
+                //new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.In).withTimeout(2000),
+                //new DriveDistanceCommand(driveSubsystem, 50, 30, -0.1, telemetry)
+                new DriveRotateCommand(driveSubsystem, -90, 0.1, telemetry)
+                //new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 5, 30, 0.3, telemetry)
+                //        new DriveRotateCommand(driveSubsystem, 60, 0.3, telemetry))
+                //new ArmRunToPositionCommand(armSubsystem, telemetry,-3000, 1),
+                //new PivotRunToPositionCommand(pivotSubsystem, -3600, 0.5)
         ).schedule();
 
 //        new SequentialCommandGroup(

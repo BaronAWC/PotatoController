@@ -14,12 +14,12 @@ public class PivotLowerCommand extends CommandBase {
     }
 
     @Override
-    public void initialize(){
+    public void execute(){
         pivotSubsystem.lower(slowMode.getAsBoolean());
     }
 
     @Override
-    public boolean isFinished(){
-        return true;
+    public void end(boolean interrupted){
+        pivotSubsystem.stop();
     }
 }

@@ -52,11 +52,14 @@ public class ArmSubsystem extends SubsystemBase {
             arm.setPower(-power);
         }
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
     }
 
     public boolean isFinished(){
         return !arm.isBusy();
+    }
+
+    public int getPosition(){
+        return arm.getCurrentPosition();
     }
 
 

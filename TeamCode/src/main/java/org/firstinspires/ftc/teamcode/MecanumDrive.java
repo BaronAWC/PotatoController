@@ -48,8 +48,8 @@ public class MecanumDrive {
         double xPower = x * powerFactor;
         double yPower = y * powerFactor;
 
-        double fLPwr = yPower + xPower + rx;
-        double bLPwr = yPower - xPower + rx;
+        double fLPwr = yPower - xPower + rx;
+        double bLPwr = yPower + xPower + rx;
         double fRPwr = yPower + xPower - rx;
         double bRPwr = yPower - xPower - rx;
 
@@ -76,11 +76,12 @@ public class MecanumDrive {
     }
 
     public void setDrive(double angle, double speed, boolean end){
+        angle += Math.PI / 2; // 0-degrees is forward
         double xPower = Math.cos(angle) * X_AXIS_ADJ;
         double yPower = Math.sin(angle);
 
-        double fLPwr = (yPower + xPower) * speed;
-        double bLPwr = (yPower - xPower) * speed;
+        double fLPwr = (yPower - xPower) * speed;
+        double bLPwr = (yPower + xPower) * speed;
         double fRPwr = (yPower + xPower) * speed;
         double bRPwr = (yPower - xPower) * speed;
 

@@ -9,6 +9,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class DriveDistanceCommand extends CommandBase {
 
+    public static final double TICKS_PER_REV = 537.7;
+    public static final double WHEEL_CIRCUMFERENCE = 9.6 * Math.PI; // in cm
+
     private final DriveSubsystem driveSubsystem;
     private final double distance, angle, speed;
     private final Telemetry telemetry;
@@ -51,7 +54,8 @@ public class DriveDistanceCommand extends CommandBase {
 
     @Override
     public boolean isFinished(){
-        return Math.abs(driveSubsystem.getAverageEncoderDistance()) >= distance; // drive until average of the encoders reaches the distance
+        // distance measurements done in cm
+        return Math.abs((driveSubsystem.getAverageEncoderDistance() / TICKS_PER_REV) * WHEEL_CIRCUMFERENCE) >= distance; // drive until average of the encoders reaches the distance
     }
 
 }

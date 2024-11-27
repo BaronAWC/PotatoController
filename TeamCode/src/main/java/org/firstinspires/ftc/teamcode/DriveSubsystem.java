@@ -66,6 +66,13 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public Pair<String, String>[] getInfo(){
-        return drive.getInfo();
+        //return drive.getInfo();
+        return new Pair[]{
+                new Pair<String, String>("Front Left Encoder Distance", (FrontL.getCurrentPosition() - FLStartPos) + ""),
+                new Pair<String, String>("Front Right Encoder Distance", (FrontR.getCurrentPosition() - FRStartPos) + ""),
+                new Pair<String, String>("Back Left Encoder Distance", (BackL.getCurrentPosition() - BLStartPos) + ""),
+                new Pair<String, String>("Back Right Encoder Distance", (BackR.getCurrentPosition() - BRStartPos) + "")
+        };
+
     }
 }

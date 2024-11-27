@@ -6,9 +6,9 @@ Right lowest: 1546
 Right highest: -1880
 3426
 
+~100 cm
+1722.5 - 8.75 = 1713.75
+
+1 cm -> 17
 TODO:
-- test new op mode (with simplified code)
-- test individual motors to ensure that they are wired correctly
-- test intake/outtake (make sure the directions are correct)
-- test lifts (and their limits)
 - test autonomous
