@@ -14,11 +14,12 @@ public class DriveDistanceCommand extends CommandBase {
 
     private final DriveSubsystem driveSubsystem;
     private final double distance, angle, speed;
+    private double FL_and_BR_TargetChange, FR_and_BL_TargetChange;
     private final Telemetry telemetry;
     public DriveDistanceCommand(DriveSubsystem driveSubsystem, double distance, double angle, double speed, Telemetry telemetry){
         this.driveSubsystem = driveSubsystem;
         this.distance = distance;
-        this.angle = Math.toRadians(angle); // angle to drive at
+        this.angle = Math.toRadians(angle); // angle to drive at (between 90 and -90), flip sign of speed to go opposite direction
         this.speed = speed;
         this.telemetry = telemetry;
     }
@@ -27,17 +28,19 @@ public class DriveDistanceCommand extends CommandBase {
     public void initialize(){
         driveSubsystem.resetEncoders();
         driveSubsystem.setDrive(angle, speed, false);
+        double FL_and_BR_Theta = (angle <= 45 && angle >= -90) ? Math.abs(angle + 45) : (135 - angle);
+        FL_and_BR_TargetChange = distance * Math.cos(Math.toRadians(FL_and_BR_Theta)) * TICKS_PER_REV / WHEEL_CIRCUMFERENCE;
+
+        double FR_and_BL_Theta = (angle <= 90 && angle >= -45) ? Math.abs(angle - 45) : (135 - Math.abs(angle));
+        FR_and_BL_TargetChange = distance * Math.cos(Math.toRadians(FR_and_BL_Theta)) * TICKS_PER_REV / WHEEL_CIRCUMFERENCE;
+
         telemetry.addLine("started drive distance command " + distance + " " + angle + " " + speed);
         telemetry.update();
     }
-
-//    @Override
-//    public void execute(){
-//        driveSubsystem.autoDrive();
-//    }
     @Override
     public void execute(){
-        telemetry.addData("average encoder distance", driveSubsystem.getAverageEncoderDistance());
+        telemetry.addData("Front left and Back right target change", FL_and_BR_TargetChange);
+        telemetry.addData("Front right and Back left target change", FR_and_BL_TargetChange);
         for(Pair<String, String> pair : driveSubsystem.getInfo()){
             telemetry.addData(pair.first, pair.second);
         }
@@ -55,7 +58,12 @@ public class DriveDistanceCommand extends CommandBase {
     @Override
     public boolean isFinished(){
         // distance measurements done in cm
-        return Math.abs((driveSubsystem.getAverageEncoderDistance() / TICKS_PER_REV) * WHEEL_CIRCUMFERENCE) >= distance; // drive until average of the encoders reaches the distance
+        // stop once the difference between change and target change is very small or if they all overshot
+        return (Math.abs(driveSubsystem.getFLChange() - FL_and_BR_TargetChange) <= 10 && Math.abs(driveSubsystem.getFRChange() - FR_and_BL_TargetChange) <= 10 &&
+                Math.abs(driveSubsystem.getBRChange() - FL_and_BR_TargetChange) <= 10 && Math.abs(driveSubsystem.getBLChange() - FR_and_BL_TargetChange) <= 10) ||
+                ((driveSubsystem.getFLChange() >= FL_and_BR_TargetChange) && (driveSubsystem.getFRChange() >= FR_and_BL_TargetChange) &&
+                (driveSubsystem.getBRChange() >= FL_and_BR_TargetChange) && (driveSubsystem.getBLChange() >= FR_and_BL_TargetChange));
+        //return Math.abs((driveSubsystem.getAverageEncoderDistance() / TICKS_PER_REV) * WHEEL_CIRCUMFERENCE) >= distance; // drive until average of the encoders reaches the distance
     }
 
 }

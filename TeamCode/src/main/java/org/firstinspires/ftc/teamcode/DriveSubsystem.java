@@ -15,7 +15,8 @@ public class DriveSubsystem extends SubsystemBase {
     // see DriveSubsystem in examples
     private final MecanumDrive drive;
     private final DcMotorEx FrontL, FrontR, BackL, BackR;
-    private double FLStartPos, FRStartPos, BLStartPos, BRStartPos;
+    private int FLStartPos, FRStartPos, BLStartPos, BRStartPos;
+    private int FLTargetPos, FRTargetPos, BLTargetPos, BRTargetPos;
     //private final Encoder FLEncoder, FREncoder, BLEncoder, BREncoder;
 
     private final BHI260IMU imu;
@@ -45,6 +46,22 @@ public class DriveSubsystem extends SubsystemBase {
                 (BackR.getCurrentPosition() - BRStartPos)) / 4.0;
     }
 
+    public int getFLChange(){
+        return Math.abs(FrontL.getCurrentPosition() - FLStartPos);
+    }
+
+    public int getFRChange(){
+        return Math.abs(FrontR.getCurrentPosition() - FRStartPos);
+    }
+
+    public int getBLChange(){
+        return Math.abs(BackL.getCurrentPosition() - BLStartPos);
+    }
+
+    public int getBRChange(){
+        return Math.abs(BackR.getCurrentPosition() - BRStartPos);
+    }
+
     public double getAngle(){
         return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
     }
@@ -52,10 +69,6 @@ public class DriveSubsystem extends SubsystemBase {
     public void stop(){
         drive.stop();
     }
-
-//    public void autoDrive(){
-//        drive.autoDrive();
-//    }
 
     public void setDrive(double angle, double speed, boolean end){
         drive.setDrive(angle, speed, end);
@@ -68,10 +81,10 @@ public class DriveSubsystem extends SubsystemBase {
     public Pair<String, String>[] getInfo(){
         //return drive.getInfo();
         return new Pair[]{
-                new Pair<String, String>("Front Left Encoder Distance", (FrontL.getCurrentPosition() - FLStartPos) + ""),
-                new Pair<String, String>("Front Right Encoder Distance", (FrontR.getCurrentPosition() - FRStartPos) + ""),
-                new Pair<String, String>("Back Left Encoder Distance", (BackL.getCurrentPosition() - BLStartPos) + ""),
-                new Pair<String, String>("Back Right Encoder Distance", (BackR.getCurrentPosition() - BRStartPos) + "")
+                new Pair<String, String>("Front Left Change", getFLChange() + ""),
+                new Pair<String, String>("Front Right Change", getFRChange() + ""),
+                new Pair<String, String>("Back Left Change", getBLChange() + ""),
+                new Pair<String, String>("Back Right Change", getBRChange() + "")
         };
 
     }
