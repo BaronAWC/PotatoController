@@ -20,9 +20,9 @@ public class MecanumDrive {
     final DcMotorEx BackR;
     final BHI260IMU imu;
     static final int ADJ_FACTOR = 50;
-    static final double MAX_DRIVE_PWR = 0.80;
+    static final double MAX_DRIVE_PWR = 0.5;
     static final double X_AXIS_ADJ = 1.15; // x axis is a bit slower than y axis on strafer wheels
-    static final double SLOW_MODE_POWER = 0.4;
+    static final double SLOW_MODE_POWER = 0.5;
     final double powerFactor = 1;
 
     private double autoFL = 0, autoFR = 0, autoBL = 0, autoBR = 0;
@@ -43,21 +43,21 @@ public class MecanumDrive {
         // lower joystick sensitivity
         y = adjPwr(y, isSlow);
         x = adjPwr(x, isSlow) * X_AXIS_ADJ;
-        rx = adjPwr(rx * MAX_DRIVE_PWR, isSlow);
+        rx = adjPwr(rx * MAX_DRIVE_PWR*1.7, isSlow);
 
         double xPower = x * powerFactor;
         double yPower = y * powerFactor;
 
-        double fLPwr = yPower - xPower + rx;
-        double bLPwr = yPower + xPower + rx;
-        double fRPwr = yPower + xPower - rx;
-        double bRPwr = yPower - xPower - rx;
+        double fLPwr = yPower + xPower + rx;
+        double bLPwr = yPower - xPower + rx;
+        double fRPwr = yPower - xPower - rx;
+        double bRPwr = yPower + xPower - rx;
 
         // Put powers in the range of -1 to 1 only if they aren't already (not
         // checking would cause us to always drive at full speed)
 
-        if (Math.abs(fLPwr) > MAX_DRIVE_PWR || Math.abs(bLPwr) > MAX_DRIVE_PWR ||
-                Math.abs(fRPwr) > MAX_DRIVE_PWR || Math.abs(bRPwr) > MAX_DRIVE_PWR) {
+        if (Math.abs(fLPwr) > 1 || Math.abs(bLPwr) > 1 ||
+                Math.abs(fRPwr) > 1 || Math.abs(bRPwr) > 1) {
             // Find the largest power
             double max;
             max = Math.max(Math.abs(fLPwr), Math.abs(bLPwr));
@@ -67,7 +67,7 @@ public class MecanumDrive {
             // Divide everything by max (it's positive so we don't need to worry
             // about signs), scale everything to the max
             fLPwr /= max;
-            bRPwr /= max;
+            bLPwr /= max;
             fRPwr /= max;
             bRPwr /= max;
         }
@@ -77,13 +77,13 @@ public class MecanumDrive {
 
     public void setDrive(double angle, double speed, boolean end){
         angle += Math.PI / 2; // 0-degrees is forward
-        double xPower = Math.cos(angle) * X_AXIS_ADJ;
+        double xPower = Math.cos(angle);
         double yPower = Math.sin(angle);
 
-        double fLPwr = (yPower - xPower) * speed;
-        double bLPwr = (yPower + xPower) * speed;
-        double fRPwr = (yPower + xPower) * speed;
-        double bRPwr = (yPower - xPower) * speed;
+        double fLPwr = (yPower + xPower) * speed;
+        double bLPwr = (yPower - xPower) * speed;
+        double fRPwr = (yPower - xPower) * speed;
+        double bRPwr = (yPower + xPower) * speed;
 
         if(!end) {
             autoFL += fLPwr;
@@ -123,8 +123,8 @@ public class MecanumDrive {
         double fRPwr = autoFR;
         double bLPwr = autoBL;
         double bRPwr = autoBR;
-        if (Math.abs(fLPwr) > MAX_DRIVE_PWR || Math.abs(bLPwr) > MAX_DRIVE_PWR ||
-                Math.abs(fRPwr) > MAX_DRIVE_PWR || Math.abs(bRPwr) > MAX_DRIVE_PWR) {
+        if (Math.abs(fLPwr) > 1 || Math.abs(bLPwr) > 1 ||
+                Math.abs(fRPwr) > 1 || Math.abs(bRPwr) > 1) {
             // Find the largest power
             double max;
             max = Math.max(Math.abs(fLPwr), Math.abs(bLPwr));
@@ -134,7 +134,7 @@ public class MecanumDrive {
             // Divide everything by max (it's positive so we don't need to worry
             // about signs), scale everything to the max
             fLPwr /= max;
-            bRPwr /= max;
+            bLPwr /= max;
             fRPwr /= max;
             bRPwr /= max;
         }
@@ -147,7 +147,8 @@ public class MecanumDrive {
             return n * SLOW_MODE_POWER;
         } else {
             int nSign = n.compareTo((double) 0);
-            return Math.pow(Math.abs(n), 1.5) * nSign;
+            return n;
+            //return Math.pow(Math.abs(n), 1.5) * nSign;
         }
     }
 
@@ -176,6 +177,13 @@ public class MecanumDrive {
         BackR.setPower(BackRSpeed * MAX_DRIVE_PWR);
     }
 
+    public void autoDriveWithMotorPowers(double FrontLSpeed, double FrontRSpeed, double BackLSpeed, double BackRSpeed){
+        // add any necessary multipliers here
+        FrontL.setPower(FrontLSpeed);
+        FrontR.setPower(FrontRSpeed);
+        BackL.setPower(BackLSpeed);
+        BackR.setPower(BackRSpeed);
+    }
     public void stop(){
         FrontL.setPower(0);
         FrontR.setPower(0);

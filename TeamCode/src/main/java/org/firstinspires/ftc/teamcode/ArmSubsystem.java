@@ -6,14 +6,16 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class ArmSubsystem extends SubsystemBase {
     private final DcMotorEx arm;
+    private int startPos;
 
     public ArmSubsystem(DcMotorEx arm){
         this.arm = arm;
+        startPos = arm.getCurrentPosition();
     }
     public void extend(boolean overrideLimits, boolean slowMode){
         double power = slowMode ? 0.5 : 1;
         if(!overrideLimits) {
-            arm.setTargetPosition(-10750);
+            arm.setTargetPosition(-10750 + startPos);
             arm.setPower(-power);
             arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
@@ -26,7 +28,7 @@ public class ArmSubsystem extends SubsystemBase {
     public void retract(boolean overrideLimits, boolean slowMode){
         double power = slowMode ? 0.5 : 1;
         if(!overrideLimits) {
-            arm.setTargetPosition(0);
+            arm.setTargetPosition(startPos);
             arm.setPower(power);
             arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
@@ -44,7 +46,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void runToPosition(int position, double power){
-        arm.setTargetPosition(position);
+        arm.setTargetPosition(position + startPos);
         if(position > arm.getCurrentPosition()){
             arm.setPower(power);
         }
@@ -61,6 +63,10 @@ public class ArmSubsystem extends SubsystemBase {
     public int getPosition(){
         return arm.getCurrentPosition();
     }
+
+    public int getStartPos() { return startPos; }
+
+    public void resetStartPosition() { startPos = arm.getCurrentPosition(); }
 
 
 }

@@ -11,4 +11,16 @@ Right highest: -1880
 
 1 cm -> 17
 TODO:
+- add software limits for pivot (make it run to position)
+- add way to start pivot at specific point each time
+- be able to tell what degree of rotation pivot is at based on position
+- fix encoder distance for auto driving (currently always reports 0 for driving sideways; maybe look at individual motors?)
 - test autonomous
+
+Autonomous versions:
+- Score
+  - Park in observatory
+  - Park in hang area
+- Only park
+  - Park in observatory
+  - Park in hang area

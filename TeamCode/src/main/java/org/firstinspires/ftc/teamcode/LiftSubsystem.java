@@ -8,6 +8,9 @@ public class LiftSubsystem extends SubsystemBase {
     private final DcMotorEx leftLift;
     private final DcMotorEx rightLift;
 
+    private int leftStartPos;
+    private int rightStartPos;
+
     public enum Control{
         Left,
         Right,
@@ -17,15 +20,18 @@ public class LiftSubsystem extends SubsystemBase {
     public LiftSubsystem(DcMotorEx leftLift, DcMotorEx rightLift){
         this.leftLift = leftLift;
         this.rightLift = rightLift;
+
+        leftStartPos = leftLift.getCurrentPosition();
+        rightStartPos = rightLift.getCurrentPosition();
     }
 
     public void extend(boolean overrideLimits){
         if(!overrideLimits) {
-            leftLift.setTargetPosition(-3350);
+            leftLift.setTargetPosition(-3350 + leftStartPos);
             leftLift.setPower(-1);
             leftLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            rightLift.setTargetPosition(-3350);
+            rightLift.setTargetPosition(-3350 + rightStartPos);
             rightLift.setPower(-1);
             rightLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
@@ -41,11 +47,11 @@ public class LiftSubsystem extends SubsystemBase {
 
     public void retract(boolean overrideLimits){
         if(!overrideLimits) {
-            leftLift.setTargetPosition(0);
+            leftLift.setTargetPosition(leftStartPos);
             leftLift.setPower(1);
             leftLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            rightLift.setTargetPosition(0);
+            rightLift.setTargetPosition(rightStartPos);
             rightLift.setPower(1);
             rightLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
@@ -66,6 +72,19 @@ public class LiftSubsystem extends SubsystemBase {
         rightLift.setTargetPosition(rightLift.getCurrentPosition());
         rightLift.setPower(0);
         rightLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public void resetStartPositions(){
+        leftStartPos = leftLift.getCurrentPosition();
+        rightStartPos = rightLift.getCurrentPosition();
+    }
+
+    public int getLeftStartPos(){
+        return leftStartPos;
+    }
+
+    public int getRightStartPos(){
+        return rightStartPos;
     }
 
 }

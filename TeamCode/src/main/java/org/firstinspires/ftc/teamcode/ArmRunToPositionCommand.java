@@ -34,6 +34,6 @@ public class ArmRunToPositionCommand extends CommandBase {
 
     @Override
     public boolean isFinished(){
-        return (armSubsystem.isFinished() && Math.abs(armSubsystem.getPosition() - position) <= 50);
+        return (armSubsystem.isFinished() && Math.abs(armSubsystem.getPosition() - (position + armSubsystem.getStartPos())) <= 50);
     }
 }

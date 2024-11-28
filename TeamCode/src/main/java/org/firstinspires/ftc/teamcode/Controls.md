@@ -7,6 +7,7 @@
     - Y = raise lifts
     - A = lower lifts
     - Left Bumper = override software limits
+    - Back = reset zero position
   - Single Motor Control:
     - Dpad Up = run front left motor
     - Dpad Right = run front right motor
@@ -17,11 +18,13 @@
     - Dpad Up = raise arm (pivot toward the back of the robot)
     - Dpad Down = lower arm (pivot toward the front of the robot)
     - Right Bumper = slow mode
+    - Back = reset zero position
   - Arm:
     - Dpad Right = extend arm
     - Dpad Left = retract arm
     - Right Bumper = slow mode
     - Left Bumper = override software limits
+    - Back = reset zero position
   - Intake:
     - B = Spin forward (intake)
     - X = Spin backward (outtake)

@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import android.util.Pair;
 
 import com.arcrobotics.ftclib.command.button.GamepadButton;
+import com.arcrobotics.ftclib.command.button.Trigger;
+import com.arcrobotics.ftclib.gamepad.TriggerReader;
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -49,6 +51,8 @@ public class CommandBasedOpMode extends CommandOpMode {
     private LiftSubsystem liftSubsystem;
     private LiftExtendCommand liftExtendCommand;
     private LiftRetractCommand liftRetractCommand;
+
+    private ResetStartPositionCommand driverResetPosCommand, operatorResetPosCommand;
 
     private TelemetryScheduler telemetryScheduler;
     private TelemetryCommand telemetryCommand;
@@ -125,6 +129,10 @@ public class CommandBasedOpMode extends CommandOpMode {
         liftExtendCommand = new LiftExtendCommand(liftSubsystem, () -> driver.isDown(GamepadKeys.Button.LEFT_BUMPER));
         liftRetractCommand = new LiftRetractCommand(liftSubsystem, () -> driver.isDown(GamepadKeys.Button.LEFT_BUMPER));
 
+        driverResetPosCommand = new ResetStartPositionCommand(armSubsystem, pivotSubsystem, liftSubsystem,
+                ResetStartPositionCommand.Type.Driver);
+        operatorResetPosCommand = new ResetStartPositionCommand(armSubsystem, pivotSubsystem, liftSubsystem,
+                ResetStartPositionCommand.Type.Operator);
         // link commands to buttons
 
         //arm
@@ -142,6 +150,10 @@ public class CommandBasedOpMode extends CommandOpMode {
         // lifts
         (new GamepadButton(driver, GamepadKeys.Button.Y)).whileHeld(liftExtendCommand);
         (new GamepadButton(driver, GamepadKeys.Button.A)).whileHeld(liftRetractCommand);
+
+        // reset command (can be done by both)
+        (new GamepadButton(driver, GamepadKeys.Button.BACK)).whenPressed(driverResetPosCommand);
+        (new GamepadButton(operator, GamepadKeys.Button.BACK)).whenPressed(operatorResetPosCommand);
 
         //driving
         driveSubsystem = new DriveSubsystem(FrontL, FrontR, BackL, BackR, imu);
@@ -161,14 +173,21 @@ public class CommandBasedOpMode extends CommandOpMode {
                 new Pair[]{
                         new Pair<String, DoubleSupplier>("Arm position", () -> arm.getCurrentPosition()),
                         new Pair<String, DoubleSupplier>("Arm target position", () -> arm.getTargetPosition()),
+                        new Pair<String, DoubleSupplier>("Arm start position", () -> armSubsystem.getStartPos()),
                         new Pair<String, DoubleSupplier>("Pivot position", () -> pivot.getCurrentPosition()),
+                        new Pair<String, DoubleSupplier>("Pivot start position", () -> pivotSubsystem.getStartPos()),
                         new Pair<String, DoubleSupplier>("Left Lift position", () -> leftLift.getCurrentPosition()),
                         new Pair<String, DoubleSupplier>("Right lift position", () -> rightLift.getCurrentPosition()),
+                        new Pair<String, DoubleSupplier>("Left lift start position", () -> liftSubsystem.getLeftStartPos()),
+                        new Pair<String, DoubleSupplier>("Right lift start position", () -> liftSubsystem.getRightStartPos()),
                         new Pair<String, DoubleSupplier>("Average encoder distance", () -> driveSubsystem.getAverageEncoderDistance()),
                         new Pair<String, DoubleSupplier>("Front Left power", () -> FrontL.getPower()),
                         new Pair<String, DoubleSupplier>("Front Right power", () -> FrontR.getPower()),
                         new Pair<String, DoubleSupplier>("Back Left power", () -> BackL.getPower()),
-                        new Pair<String, DoubleSupplier>("Back Right power", () -> BackR.getPower())
+                        new Pair<String, DoubleSupplier>("Back Right power", () -> BackR.getPower()),
+                        new Pair<String, DoubleSupplier>("Joystick X", () -> driver.getLeftX()),
+                        new Pair<String, DoubleSupplier>("Joystick Y", () -> driver.getLeftY()),
+                        new Pair<String, DoubleSupplier>("Joystick rotation", () -> driver.getRightX())
                 },
 
                 new Pair[]{

@@ -6,9 +6,11 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class PivotSubsystem extends SubsystemBase {
     private final DcMotorEx pivot;
+    private int startPos;
 
     public PivotSubsystem(DcMotorEx pivot){
         this.pivot = pivot;
+        startPos = pivot.getCurrentPosition();
     }
     public void raise(boolean slowMode){
         double power = slowMode ? 0.5 : 1;
@@ -42,5 +44,12 @@ public class PivotSubsystem extends SubsystemBase {
         return !pivot.isBusy();
     }
 
+    public void resetStartPosition(){
+        startPos = pivot.getCurrentPosition();
+    }
+
+    public int getStartPos(){
+        return startPos;
+    }
 
 }
