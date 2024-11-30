@@ -57,6 +57,7 @@ public class CommandBasedOpMode extends CommandOpMode {
     private TelemetryScheduler telemetryScheduler;
     private TelemetryCommand telemetryCommand;
 
+
     @Override
     public void initialize(){
 
@@ -121,6 +122,9 @@ public class CommandBasedOpMode extends CommandOpMode {
         pivotRaiseCommand = new PivotRaiseCommand(pivotSubsystem, () -> operator.isDown(GamepadKeys.Button.LEFT_BUMPER), () -> operator.isDown(GamepadKeys.Button.RIGHT_BUMPER));
         pivotLowerCommand = new PivotLowerCommand(pivotSubsystem, () -> operator.isDown(GamepadKeys.Button.LEFT_BUMPER), () -> operator.isDown(GamepadKeys.Button.RIGHT_BUMPER));
 
+        armSubsystem.setPivotSubsystem(pivotSubsystem);
+        pivotSubsystem.setArmSubsystem(armSubsystem);
+
         intakeSubsystem = new IntakeSubsystem(intake);
         intakeForwardCommand = new IntakeForwardCommand(intakeSubsystem);
         intakeBackwardCommand = new IntakeBackwardCommand(intakeSubsystem);
@@ -184,14 +188,10 @@ public class CommandBasedOpMode extends CommandOpMode {
                         new Pair<String, DoubleSupplier>("Right lift position", () -> rightLift.getCurrentPosition()),
                         new Pair<String, DoubleSupplier>("Left lift start position", () -> liftSubsystem.getLeftStartPos()),
                         new Pair<String, DoubleSupplier>("Right lift start position", () -> liftSubsystem.getRightStartPos()),
-                        new Pair<String, DoubleSupplier>("Average encoder distance", () -> driveSubsystem.getAverageEncoderDistance()),
-                        new Pair<String, DoubleSupplier>("Front Left power", () -> FrontL.getPower()),
-                        new Pair<String, DoubleSupplier>("Front Right power", () -> FrontR.getPower()),
-                        new Pair<String, DoubleSupplier>("Back Left power", () -> BackL.getPower()),
-                        new Pair<String, DoubleSupplier>("Back Right power", () -> BackR.getPower()),
-                        new Pair<String, DoubleSupplier>("Joystick X", () -> driver.getLeftX()),
-                        new Pair<String, DoubleSupplier>("Joystick Y", () -> driver.getLeftY()),
-                        new Pair<String, DoubleSupplier>("Joystick rotation", () -> driver.getRightX())
+                        new Pair<String, DoubleSupplier>("Front left change", () -> driveSubsystem.getFLChange()),
+                        new Pair<String, DoubleSupplier>("Front right change", () -> driveSubsystem.getFRChange()),
+                        new Pair<String, DoubleSupplier>("Back left change", () -> driveSubsystem.getBLChange()),
+                        new Pair<String, DoubleSupplier>("Back right change", () -> driveSubsystem.getBRChange())
                 },
 
                 new Pair[]{
@@ -204,7 +204,7 @@ public class CommandBasedOpMode extends CommandOpMode {
         );
         register(telemetryScheduler);
         telemetryScheduler.setDefaultCommand(telemetryCommand);
-
+        driveSubsystem.resetEncoders();
     }
 
 }

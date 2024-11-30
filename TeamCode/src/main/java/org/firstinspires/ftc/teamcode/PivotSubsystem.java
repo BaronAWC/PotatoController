@@ -7,11 +7,17 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 public class PivotSubsystem extends SubsystemBase {
     private final DcMotorEx pivot;
     private int startPos;
+    private ArmSubsystem armSubsystem;
 
     public PivotSubsystem(DcMotorEx pivot){
         this.pivot = pivot;
         startPos = pivot.getCurrentPosition();
     }
+
+    public void setArmSubsystem(ArmSubsystem armSubsystem){
+        this.armSubsystem = armSubsystem;
+    }
+
     public void raise(boolean overrideLimits, boolean slowMode){
         double power = slowMode ? 0.5 : 1;
         if(!overrideLimits){
@@ -22,6 +28,9 @@ public class PivotSubsystem extends SubsystemBase {
         else {
             pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             pivot.setPower(power);
+        }
+        if(pivot.getCurrentPosition() < startPos && armSubsystem.getPosition() < armSubsystem.getStartPos() - 8500){
+            armSubsystem.runToPosition(-8500, 0.75);
         }
     }
 
@@ -35,6 +44,9 @@ public class PivotSubsystem extends SubsystemBase {
         else {
             pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             pivot.setPower(-power);
+        }
+        if(pivot.getCurrentPosition() < startPos && armSubsystem.getPosition() < armSubsystem.getStartPos() - 8500){
+            armSubsystem.runToPosition(-8500, 0.75);
         }
     }
 
@@ -65,5 +77,7 @@ public class PivotSubsystem extends SubsystemBase {
     public int getStartPos(){
         return startPos;
     }
+
+    public int getCurrentPos() { return pivot.getCurrentPosition(); }
 
 }
