@@ -5,17 +5,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class LiftSubsystem extends SubsystemBase {
+
+    public static final int EXTEND_POS = -3700;
     private final DcMotorEx leftLift;
     private final DcMotorEx rightLift;
 
     private int leftStartPos;
     private int rightStartPos;
-
-    public enum Control{
-        Left,
-        Right,
-        Both
-    };
 
     public LiftSubsystem(DcMotorEx leftLift, DcMotorEx rightLift){
         this.leftLift = leftLift;
@@ -28,7 +24,7 @@ public class LiftSubsystem extends SubsystemBase {
     public void extend(boolean overrideLimits, boolean leftDown, boolean rightDown){
         if(!overrideLimits) {
             if(leftDown && !rightDown){
-                leftLift.setTargetPosition(-3700 + leftStartPos);
+                leftLift.setTargetPosition(EXTEND_POS + leftStartPos);
                 leftLift.setPower(-1);
                 leftLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -36,7 +32,7 @@ public class LiftSubsystem extends SubsystemBase {
                 rightLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
             else if(rightDown && !leftDown){
-                rightLift.setTargetPosition(-3700 + rightStartPos);
+                rightLift.setTargetPosition(EXTEND_POS + rightStartPos);
                 rightLift.setPower(-1);
                 rightLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -44,11 +40,11 @@ public class LiftSubsystem extends SubsystemBase {
                 leftLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
            else{
-                leftLift.setTargetPosition(-3700 + leftStartPos);
+                leftLift.setTargetPosition(EXTEND_POS + leftStartPos);
                 leftLift.setPower(-1);
                 leftLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                rightLift.setTargetPosition(-3700 + rightStartPos);
+                rightLift.setTargetPosition(EXTEND_POS + rightStartPos);
                 rightLift.setPower(-1);
                 rightLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }

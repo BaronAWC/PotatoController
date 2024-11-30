@@ -11,10 +11,7 @@ Right highest: -1880
 
 1 cm -> 17
 TODO:
-- add software limits for pivot so that it doesnt go past 42 in. in horizontal pivot position
 - make constants
-- be able to tell what degree of rotation pivot is at based on position
-- fix encoder distance for auto driving (currently always reports 0 for driving sideways; maybe look at individual motors?)
 - test autonomous
 
 Autonomous versions:

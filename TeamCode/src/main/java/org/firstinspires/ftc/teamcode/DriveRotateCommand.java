@@ -38,7 +38,6 @@ public class DriveRotateCommand extends CommandBase {
     public void end(boolean interrupted){
         telemetry.addLine("finished drive rotate command " + angle + " " + speed);
         telemetry.update();
-        //driveSubsystem.setRotation(angle, speed, true);
         driveSubsystem.stop();
     }
 

@@ -19,7 +19,6 @@ public class MecanumDrive {
     final DcMotorEx BackL;
     final DcMotorEx BackR;
     final BHI260IMU imu;
-    static final int ADJ_FACTOR = 50;
     static final double MAX_DRIVE_PWR = 0.5;
     static final double X_AXIS_ADJ = 1.15; // x axis is a bit slower than y axis on strafer wheels
     static final double SLOW_MODE_POWER = 0.5;
@@ -161,11 +160,9 @@ public class MecanumDrive {
 
         // "Math.PI / 2" is for the offset between the driver orientation and the robot
         // orientation at the start of tele-op
-        double targetAngle = jsAngle;// - botAngle;// - (Math.PI / 2);
+        double targetAngle = jsAngle;// - botAngle;// - (Math.PI / 2); - removed field centric driving for now
         double botX = jsMagnitude * Math.cos(targetAngle);
         double botY = jsMagnitude * Math.sin(targetAngle);
-        //telemetry.addLine("angles: " + (jsAngle * 180 / Math.PI) + " " + (botAngle * 180 / Math.PI));
-        //telemetry.addLine("target: " + (targetAngle * 180 / Math.PI) + " " + botX + " " + botY);
         return new Pair<>(botX, botY);
     }
 

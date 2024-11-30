@@ -109,9 +109,5 @@ public class CommandBasedAutonomous extends CommandOpMode {
                 //new ArmRunToPositionCommand(armSubsystem, telemetry,-3000, 1),
                 //new PivotRunToPositionCommand(pivotSubsystem, -3600, 0.5)
         ).schedule();
-
-//        new SequentialCommandGroup(
-//                new ArmRunToPositionCommand(armSubsystem, -3000)
-//        ).schedule();
     }
 }

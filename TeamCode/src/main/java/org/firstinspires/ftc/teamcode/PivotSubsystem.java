@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class PivotSubsystem extends SubsystemBase {
+
+    public static final int HIGHEST_POS = 2950, LOWEST_POS = -3950;
     private final DcMotorEx pivot;
     private int startPos;
     private ArmSubsystem armSubsystem;
@@ -21,7 +23,7 @@ public class PivotSubsystem extends SubsystemBase {
     public void raise(boolean overrideLimits, boolean slowMode){
         double power = slowMode ? 0.5 : 1;
         if(!overrideLimits){
-            pivot.setTargetPosition(startPos + 2950);
+            pivot.setTargetPosition(startPos + HIGHEST_POS);
             pivot.setPower(power);
             pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
@@ -29,15 +31,15 @@ public class PivotSubsystem extends SubsystemBase {
             pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             pivot.setPower(power);
         }
-        if(pivot.getCurrentPosition() < startPos && armSubsystem.getPosition() < armSubsystem.getStartPos() - 8500){
-            armSubsystem.runToPosition(-8500, 0.75);
+        if(pivot.getCurrentPosition() < startPos && armSubsystem.getPosition() < armSubsystem.getStartPos() + ArmSubsystem.LIMITED_EXTEND){
+            armSubsystem.runToPosition(ArmSubsystem.LIMITED_EXTEND, 0.75);
         }
     }
 
     public void lower(boolean overrideLimits, boolean slowMode){
         double power = slowMode ? 0.5 : 1;
         if(!overrideLimits){
-            pivot.setTargetPosition(startPos - 3950);
+            pivot.setTargetPosition(startPos + LOWEST_POS);
             pivot.setPower(-power);
             pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
@@ -45,8 +47,8 @@ public class PivotSubsystem extends SubsystemBase {
             pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             pivot.setPower(-power);
         }
-        if(pivot.getCurrentPosition() < startPos && armSubsystem.getPosition() < armSubsystem.getStartPos() - 8500){
-            armSubsystem.runToPosition(-8500, 0.75);
+        if(pivot.getCurrentPosition() < startPos && armSubsystem.getPosition() < armSubsystem.getStartPos() + ArmSubsystem.LIMITED_EXTEND){
+            armSubsystem.runToPosition(ArmSubsystem.LIMITED_EXTEND, 0.75);
         }
     }
 

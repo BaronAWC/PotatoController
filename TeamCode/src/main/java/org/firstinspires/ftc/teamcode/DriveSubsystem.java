@@ -16,8 +16,6 @@ public class DriveSubsystem extends SubsystemBase {
     private final MecanumDrive drive;
     private final DcMotorEx FrontL, FrontR, BackL, BackR;
     private int FLStartPos, FRStartPos, BLStartPos, BRStartPos;
-    private int FLTargetPos, FRTargetPos, BLTargetPos, BRTargetPos;
-    //private final Encoder FLEncoder, FREncoder, BLEncoder, BREncoder;
 
     private final BHI260IMU imu;
 
@@ -39,11 +37,6 @@ public class DriveSubsystem extends SubsystemBase {
         FRStartPos = FrontR.getCurrentPosition();
         BLStartPos = BackL.getCurrentPosition();
         BRStartPos = BackR.getCurrentPosition();
-    }
-
-    public double getAverageEncoderDistance(){ // probably need to change this based on what the encoder is reporting
-        return ((FrontL.getCurrentPosition() - FLStartPos) + (FrontR.getCurrentPosition() - FRStartPos) + (BackL.getCurrentPosition() - BLStartPos) +
-                (BackR.getCurrentPosition() - BRStartPos)) / 4.0;
     }
 
     public int getFLChange(){
