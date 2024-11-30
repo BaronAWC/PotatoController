@@ -8,6 +8,8 @@
     - A = lower lifts
     - Left Bumper = override software limits
     - Back = reset zero position
+    - Left Trigger = raise left lift specifically
+    - Right Trigger = raise right lift specifically
   - Single Motor Control:
     - Dpad Up = run front left motor
     - Dpad Right = run front right motor

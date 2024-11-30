@@ -7,15 +7,16 @@ import java.util.function.BooleanSupplier;
 public class PivotLowerCommand extends CommandBase {
 
     private final PivotSubsystem pivotSubsystem;
-    private final BooleanSupplier slowMode;
-    public PivotLowerCommand(PivotSubsystem pivotSubsystem, BooleanSupplier slowMode){
+    private final BooleanSupplier overrideLimits, slowMode;
+    public PivotLowerCommand(PivotSubsystem pivotSubsystem, BooleanSupplier overrideLimits, BooleanSupplier slowMode){
         this.pivotSubsystem = pivotSubsystem;
+        this.overrideLimits = overrideLimits;
         this.slowMode = slowMode;
     }
 
     @Override
     public void execute(){
-        pivotSubsystem.lower(slowMode.getAsBoolean());
+        pivotSubsystem.lower(overrideLimits.getAsBoolean(), slowMode.getAsBoolean());
     }
 
     @Override

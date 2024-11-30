@@ -24,3 +24,9 @@ Autonomous versions:
 - Only park
   - Park in observatory
   - Park in hang area
+
+
+Start: -4464      0 
+Horizontal: -6550
+Lowest: -8395     -3950
+Drop-off: -1500   2950

@@ -12,16 +12,30 @@ public class PivotSubsystem extends SubsystemBase {
         this.pivot = pivot;
         startPos = pivot.getCurrentPosition();
     }
-    public void raise(boolean slowMode){
+    public void raise(boolean overrideLimits, boolean slowMode){
         double power = slowMode ? 0.5 : 1;
-        pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        pivot.setPower(power);
+        if(!overrideLimits){
+            pivot.setTargetPosition(startPos + 2950);
+            pivot.setPower(power);
+            pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+        else {
+            pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            pivot.setPower(power);
+        }
     }
 
-    public void lower(boolean slowMode){
+    public void lower(boolean overrideLimits, boolean slowMode){
         double power = slowMode ? 0.5 : 1;
-        pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        pivot.setPower(-power);
+        if(!overrideLimits){
+            pivot.setTargetPosition(startPos - 3950);
+            pivot.setPower(-power);
+            pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+        else {
+            pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            pivot.setPower(-power);
+        }
     }
 
     public void stop(){

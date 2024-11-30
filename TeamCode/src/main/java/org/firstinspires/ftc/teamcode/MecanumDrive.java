@@ -161,7 +161,7 @@ public class MecanumDrive {
 
         // "Math.PI / 2" is for the offset between the driver orientation and the robot
         // orientation at the start of tele-op
-        double targetAngle = jsAngle;// - botAngle - (Math.PI / 2);
+        double targetAngle = jsAngle;// - botAngle;// - (Math.PI / 2);
         double botX = jsMagnitude * Math.cos(targetAngle);
         double botY = jsMagnitude * Math.sin(targetAngle);
         //telemetry.addLine("angles: " + (jsAngle * 180 / Math.PI) + " " + (botAngle * 180 / Math.PI));

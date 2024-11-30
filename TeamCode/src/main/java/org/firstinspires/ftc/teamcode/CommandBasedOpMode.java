@@ -118,16 +118,20 @@ public class CommandBasedOpMode extends CommandOpMode {
         armRetractCommand = new ArmRetractCommand(armSubsystem, () -> operator.isDown(GamepadKeys.Button.LEFT_BUMPER), () -> operator.isDown(GamepadKeys.Button.RIGHT_BUMPER));
 
         pivotSubsystem = new PivotSubsystem(pivot);
-        pivotRaiseCommand = new PivotRaiseCommand(pivotSubsystem, () -> operator.isDown(GamepadKeys.Button.RIGHT_BUMPER));
-        pivotLowerCommand = new PivotLowerCommand(pivotSubsystem, () -> operator.isDown(GamepadKeys.Button.RIGHT_BUMPER));
+        pivotRaiseCommand = new PivotRaiseCommand(pivotSubsystem, () -> operator.isDown(GamepadKeys.Button.LEFT_BUMPER), () -> operator.isDown(GamepadKeys.Button.RIGHT_BUMPER));
+        pivotLowerCommand = new PivotLowerCommand(pivotSubsystem, () -> operator.isDown(GamepadKeys.Button.LEFT_BUMPER), () -> operator.isDown(GamepadKeys.Button.RIGHT_BUMPER));
 
         intakeSubsystem = new IntakeSubsystem(intake);
         intakeForwardCommand = new IntakeForwardCommand(intakeSubsystem);
         intakeBackwardCommand = new IntakeBackwardCommand(intakeSubsystem);
 
         liftSubsystem = new LiftSubsystem(leftLift, rightLift);
-        liftExtendCommand = new LiftExtendCommand(liftSubsystem, () -> driver.isDown(GamepadKeys.Button.LEFT_BUMPER));
-        liftRetractCommand = new LiftRetractCommand(liftSubsystem, () -> driver.isDown(GamepadKeys.Button.LEFT_BUMPER));
+        liftExtendCommand = new LiftExtendCommand(liftSubsystem, () -> driver.isDown(GamepadKeys.Button.LEFT_BUMPER),
+                () -> (new TriggerReader(driver, GamepadKeys.Trigger.LEFT_TRIGGER).isDown()),
+                () -> (new TriggerReader(driver, GamepadKeys.Trigger.RIGHT_TRIGGER).isDown()));
+        liftRetractCommand = new LiftRetractCommand(liftSubsystem, () -> driver.isDown(GamepadKeys.Button.LEFT_BUMPER),
+                () -> (new TriggerReader(driver, GamepadKeys.Trigger.LEFT_TRIGGER).isDown()),
+                () -> (new TriggerReader(driver, GamepadKeys.Trigger.RIGHT_TRIGGER).isDown()));
 
         driverResetPosCommand = new ResetStartPositionCommand(armSubsystem, pivotSubsystem, liftSubsystem,
                 ResetStartPositionCommand.Type.Driver);

@@ -25,43 +25,116 @@ public class LiftSubsystem extends SubsystemBase {
         rightStartPos = rightLift.getCurrentPosition();
     }
 
-    public void extend(boolean overrideLimits){
+    public void extend(boolean overrideLimits, boolean leftDown, boolean rightDown){
         if(!overrideLimits) {
-            leftLift.setTargetPosition(-3350 + leftStartPos);
-            leftLift.setPower(-1);
-            leftLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            if(leftDown && !rightDown){
+                leftLift.setTargetPosition(-3350 + leftStartPos);
+                leftLift.setPower(-1);
+                leftLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            rightLift.setTargetPosition(-3350 + rightStartPos);
-            rightLift.setPower(-1);
-            rightLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightLift.setTargetPosition(rightLift.getCurrentPosition());
+                rightLift.setPower(0);
+                rightLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+            else if(rightDown && !leftDown){
+                rightLift.setTargetPosition(-3350 + rightStartPos);
+                rightLift.setPower(-1);
+                rightLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                leftLift.setTargetPosition(leftLift.getCurrentPosition());
+                leftLift.setPower(0);
+                leftLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+           else{
+                leftLift.setTargetPosition(-3350 + leftStartPos);
+                leftLift.setPower(-1);
+                leftLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                rightLift.setTargetPosition(-3350 + rightStartPos);
+                rightLift.setPower(-1);
+                rightLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
         }
         else{
-            leftLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            leftLift.setPower(-1);
+            if(leftDown && !rightDown){
+                leftLift.setPower(-1);
+                leftLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            rightLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightLift.setPower(-1);
+                rightLift.setPower(0);
+                rightLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
+            else if(rightDown && !leftDown){
+                rightLift.setPower(-1);
+                rightLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+                leftLift.setPower(0);
+                leftLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
+            else{
+                leftLift.setPower(-1);
+                leftLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+                rightLift.setPower(-1);
+                rightLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
         }
 
     }
 
-    public void retract(boolean overrideLimits){
+    public void retract(boolean overrideLimits, boolean leftDown, boolean rightDown){
         if(!overrideLimits) {
-            leftLift.setTargetPosition(leftStartPos);
-            leftLift.setPower(1);
-            leftLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            if(leftDown && !rightDown){
+                leftLift.setTargetPosition(leftStartPos);
+                leftLift.setPower(1);
+                leftLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            rightLift.setTargetPosition(rightStartPos);
-            rightLift.setPower(1);
-            rightLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightLift.setTargetPosition(rightLift.getCurrentPosition());
+                rightLift.setPower(0);
+                rightLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+            else if(rightDown && !leftDown){
+                rightLift.setTargetPosition(rightStartPos);
+                rightLift.setPower(1);
+                rightLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                leftLift.setTargetPosition(leftLift.getCurrentPosition());
+                leftLift.setPower(0);
+                leftLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+            else{
+                leftLift.setTargetPosition(leftStartPos);
+                leftLift.setPower(1);
+                leftLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                rightLift.setTargetPosition(rightStartPos);
+                rightLift.setPower(1);
+                rightLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
         }
         else{
-            leftLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            leftLift.setPower(1);
+            if(leftDown && !rightDown){
+                leftLift.setPower(1);
+                leftLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            rightLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightLift.setPower(1);
+                rightLift.setPower(0);
+                rightLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
+            else if(rightDown && !leftDown){
+                rightLift.setPower(1);
+                rightLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+                leftLift.setPower(0);
+                leftLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
+            else{
+                leftLift.setPower(1);
+                leftLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+                rightLift.setPower(1);
+                rightLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
         }
+
     }
 
     public void stop(){
