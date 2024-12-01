@@ -20,7 +20,7 @@ public class PivotRunToPositionCommand extends CommandBase {
     }
 
     @Override
-    public void end(boolean interrupted) {pivotSubsystem.stop(); }
+    public void end(boolean interrupted) { pivotSubsystem.stop(); }
 
     @Override
     public boolean isFinished(){

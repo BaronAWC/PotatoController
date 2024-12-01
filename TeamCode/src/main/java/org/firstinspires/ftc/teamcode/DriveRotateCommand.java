@@ -44,7 +44,7 @@ public class DriveRotateCommand extends CommandBase {
     @Override
     public boolean isFinished(){
         double currentAngle = driveSubsystem.getAngle();
-        return (Math.abs(startAngle - angle - currentAngle) <= 1) || (angle > 0 && currentAngle < (startAngle - angle)) || (angle < 0 && currentAngle > (startAngle - angle));
+        return (Math.abs(startAngle - angle - currentAngle) <= 2) || (angle > 0 && currentAngle < (startAngle - angle)) || (angle < 0 && currentAngle > (startAngle - angle));
         // finished if it is off by 3 degrees or if it overshot
     }
 }

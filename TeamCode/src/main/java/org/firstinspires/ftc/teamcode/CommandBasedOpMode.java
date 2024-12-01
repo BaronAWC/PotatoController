@@ -51,6 +51,7 @@ public class CommandBasedOpMode extends CommandOpMode {
     private LiftSubsystem liftSubsystem;
     private LiftExtendCommand liftExtendCommand;
     private LiftRetractCommand liftRetractCommand;
+    private LiftHoldCommand liftHoldCommand;
 
     private ResetStartPositionCommand driverResetPosCommand, operatorResetPosCommand;
 
@@ -136,6 +137,7 @@ public class CommandBasedOpMode extends CommandOpMode {
         liftRetractCommand = new LiftRetractCommand(liftSubsystem, () -> driver.isDown(GamepadKeys.Button.LEFT_BUMPER),
                 () -> (new TriggerReader(driver, GamepadKeys.Trigger.LEFT_TRIGGER).isDown()),
                 () -> (new TriggerReader(driver, GamepadKeys.Trigger.RIGHT_TRIGGER).isDown()));
+        liftHoldCommand = new LiftHoldCommand(liftSubsystem);
 
         driverResetPosCommand = new ResetStartPositionCommand(armSubsystem, pivotSubsystem, liftSubsystem,
                 ResetStartPositionCommand.Type.Driver);
@@ -158,10 +160,13 @@ public class CommandBasedOpMode extends CommandOpMode {
         // lifts
         (new GamepadButton(driver, GamepadKeys.Button.Y)).whileHeld(liftExtendCommand);
         (new GamepadButton(driver, GamepadKeys.Button.A)).whileHeld(liftRetractCommand);
+        (new GamepadButton(driver, GamepadKeys.Button.DPAD_DOWN)).whileHeld(liftHoldCommand);
 
         // reset command (can be done by both)
         (new GamepadButton(driver, GamepadKeys.Button.BACK)).whenPressed(driverResetPosCommand);
         (new GamepadButton(operator, GamepadKeys.Button.BACK)).whenPressed(operatorResetPosCommand);
+
+
 
         //driving
         driveSubsystem = new DriveSubsystem(FrontL, FrontR, BackL, BackR, imu);

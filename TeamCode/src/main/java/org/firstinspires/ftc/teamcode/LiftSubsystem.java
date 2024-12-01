@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class LiftSubsystem extends SubsystemBase {
 
-    public static final int EXTEND_POS = -3700;
+    public static final int EXTEND_POS = -3700, HOLD_POS = -800, AUTO_POS = -980;
     private final DcMotorEx leftLift;
     private final DcMotorEx rightLift;
 
@@ -129,6 +129,28 @@ public class LiftSubsystem extends SubsystemBase {
 
     }
 
+    public void hold(){
+        leftLift.setTargetPosition(leftStartPos + HOLD_POS);
+        leftLift.setPower((leftLift.getCurrentPosition() < leftStartPos + HOLD_POS) ? 1 : -1);
+        leftLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+        rightLift.setTargetPosition(rightStartPos + HOLD_POS);
+        rightLift.setPower((rightLift.getCurrentPosition() < rightStartPos + HOLD_POS) ? 1 : -1);
+        rightLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public void autoPosition(){
+        leftLift.setTargetPosition(leftStartPos + AUTO_POS);
+        leftLift.setPower((leftLift.getCurrentPosition() < leftStartPos + AUTO_POS) ? 1 : -1);
+        leftLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+        rightLift.setTargetPosition(rightStartPos + AUTO_POS);
+        rightLift.setPower((rightLift.getCurrentPosition() < rightStartPos + AUTO_POS) ? 1 : -1);
+        rightLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
     public void stop(){
         leftLift.setPower(0);
         leftLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -148,6 +170,18 @@ public class LiftSubsystem extends SubsystemBase {
 
     public int getRightStartPos(){
         return rightStartPos;
+    }
+
+    public int getLeftPos() { return leftLift.getCurrentPosition(); }
+    public int getRightPos() { return rightLift.getCurrentPosition(); }
+
+    public void autoOffset(){
+        leftStartPos -= AUTO_POS;
+        rightStartPos -= AUTO_POS;
+    }
+
+    public boolean isFinished(){
+        return !leftLift.isBusy() && !rightLift.isBusy();
     }
 
 }

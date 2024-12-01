@@ -52,9 +52,8 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void stop(){
-        arm.setTargetPosition(arm.getCurrentPosition());
         arm.setPower(0);
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void runToPosition(int position, double power){

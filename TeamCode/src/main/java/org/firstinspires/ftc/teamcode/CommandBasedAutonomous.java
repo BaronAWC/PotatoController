@@ -1,24 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.util.Pair;
-
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.arcrobotics.ftclib.command.button.Button;
-import com.arcrobotics.ftclib.command.button.GamepadButton;
-import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
-
-import java.util.function.BooleanSupplier;
-import java.util.function.DoubleSupplier;
 
 @Autonomous(name="CommandBase Autonomous")
 public class CommandBasedAutonomous extends CommandOpMode {
@@ -73,11 +65,20 @@ public class CommandBasedAutonomous extends CommandOpMode {
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        pivot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         leftLift = hardwareMap.get(DcMotorEx.class, "Left Lift");
         rightLift = hardwareMap.get(DcMotorEx.class, "Right Lift");
 
         leftLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        leftLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        leftLift.setDirection(DcMotorEx.Direction.REVERSE);
+        rightLift.setDirection(DcMotorSimple.Direction.FORWARD);
 
         armSubsystem = new ArmSubsystem(arm);
 
@@ -92,22 +93,42 @@ public class CommandBasedAutonomous extends CommandOpMode {
         // schedule all commands in this method
         waitForStart();
         new SequentialCommandGroup(
-                //new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.In).withTimeout(2000),
-                //new DriveDistanceCommand(driveSubsystem, 50, 30, -0.1, telemetry)
-                //new DriveRotateCommand(driveSubsystem, -90, 0.1, telemetry)
-                //new DriveDistanceCommand(driveSubsystem, 50, 0, 0.3, telemetry),
-                //new DriveDistanceCommand(driveSubsystem, 50, 90, 0.3, telemetry),
-                //new DriveDistanceCommand(driveSubsystem, 50, -90, 0.3, telemetry)
-                new DriveDistanceCommand(driveSubsystem, 50, 0, 0.4, telemetry),
-                new DriveDistanceCommand(driveSubsystem, 50, 0, -0.4, telemetry),
-                new DriveDistanceCommand(driveSubsystem, 40, 90, 0.4, telemetry),
-                new DriveDistanceCommand(driveSubsystem, 40, -90, 0.4, telemetry),
-                new DriveDistanceCommand(driveSubsystem, 30, 45, 0.3, telemetry)
-                //new DriveRotateCommand(driveSubsystem, 90, 0.5, telemetry)
-                //new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 5, 30, 0.3, telemetry)
-                //        new DriveRotateCommand(driveSubsystem, 60, 0.3, telemetry))
-                //new ArmRunToPositionCommand(armSubsystem, telemetry,-3000, 1),
-                //new PivotRunToPositionCommand(pivotSubsystem, -3600, 0.5)
+                // starting on close side
+                /*
+                - second closest tile
+                - facing bucket
+                - left wheels against wall
+                - back of the robot above inner groove of the tile
+                 */
+                //drop off piece
+                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 60, -45, 0.4, telemetry),
+                        new ArmRunToPositionCommand(armSubsystem, telemetry, -4000, 0.8),
+                        new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 0.5)),
+                new ParallelCommandGroup(new DriveRotateCommand(driveSubsystem, -45, 0.25, telemetry),
+                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.LIMITED_EXTEND, 0.8)),
+                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 27, 0, 0.3, telemetry),
+                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.FULL_EXTEND, 0.8)),
+                new ParallelCommandGroup(new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS - 800, 0.5),
+                        new DriveDistanceCommand(driveSubsystem, 5, -90, 0.4, telemetry)),
+                new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.Out).withTimeout(2000),
+
+                // park by submersible
+                new ParallelCommandGroup(new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS - 200, 0.5),
+                        new DriveDistanceCommand(driveSubsystem, 14, 90, 0.3, telemetry)),
+                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 54, 0, -0.4, telemetry),
+                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.LIMITED_EXTEND, 1)),
+                new ParallelCommandGroup(new DriveRotateCommand(driveSubsystem, -45, 0.25, telemetry),
+                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.LIMITED_EXTEND / 2, 0.75)),
+                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 125, 0, -0.6, telemetry),
+                    new ArmRunToPositionCommand(armSubsystem, telemetry, 0, 0.75)),
+                new ParallelCommandGroup(new DriveRotateCommand(driveSubsystem, 90, 0.25, telemetry),
+                    new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS / 2, 0.5)),
+                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 40, 0, -0.6, telemetry),
+                        new PivotRunToPositionCommand(pivotSubsystem, 0, 0.5)),
+                        new DriveStopCommand(driveSubsystem, telemetry),
+                new LiftRunToAutoPositionCommand(liftSubsystem)
+
+                // park in observatory
         ).schedule();
     }
 }

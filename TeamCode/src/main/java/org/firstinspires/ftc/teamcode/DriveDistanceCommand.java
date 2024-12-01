@@ -11,7 +11,7 @@ public class DriveDistanceCommand extends CommandBase {
 
     public static final double TICKS_PER_REV = 537.7;
     public static final double WHEEL_CIRCUMFERENCE = 9.6 * Math.PI; // in cm
-    public static final double MULTIPLIER = 1.5;
+    public static final double MULTIPLIER = 1.414;
 
     private final DriveSubsystem driveSubsystem;
     private final double distance, angle, speed;

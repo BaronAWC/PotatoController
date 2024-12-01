@@ -58,8 +58,8 @@ public class PivotSubsystem extends SubsystemBase {
     }
 
     public void runToPosition(int position, double power){
-        pivot.setTargetPosition(position);
-        if(position > pivot.getCurrentPosition()){
+        pivot.setTargetPosition(startPos + position);
+        if(startPos + position > pivot.getCurrentPosition()){
             pivot.setPower(power);
         }
         else{
