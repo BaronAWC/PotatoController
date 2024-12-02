@@ -10,7 +10,7 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 
 
 @TeleOp(name="TestOpMode", group="Linear OpMode")
-
+@Disabled
 public class TestOpMode extends LinearOpMode {
 
     // Declare OpMode members.

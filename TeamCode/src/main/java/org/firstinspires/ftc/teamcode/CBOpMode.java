@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import android.util.Pair;
 
 import com.arcrobotics.ftclib.command.button.GamepadButton;
-import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.TriggerReader;
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -16,7 +15,6 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.command.button.Button;
 import com.qualcomm.robotcore.hardware.CRServo;
 
 import java.util.function.BooleanSupplier;
@@ -25,7 +23,7 @@ import java.util.function.DoubleSupplier;
 
 @TeleOp(name="CommandBase OpMode")
 
-public class CommandBasedOpMode extends CommandOpMode {
+public class CBOpMode extends CommandOpMode {
 
     private GamepadEx driver, operator;
     private DcMotorEx FrontL, FrontR, BackL, BackR;
