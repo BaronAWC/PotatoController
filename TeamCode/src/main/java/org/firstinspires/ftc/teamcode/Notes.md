@@ -11,16 +11,14 @@ Right highest: -1880
 
 1 cm -> 17
 TODO:
-- make constants
 - test autonomous
 
 Autonomous versions:
 - Score
-  - Park in observatory
-  - Park in hang area
+  - Park in observatory (far)
+  - Park in hang area (close)
 - Only park
-  - Park in observatory
-  - Park in hang area
+  - Park in observatory (far)
 
 
 Start: -4464      0 

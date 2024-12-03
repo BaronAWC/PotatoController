@@ -10,16 +10,15 @@
     - Back = reset zero position
     - Left Trigger = raise left lift specifically
     - Right Trigger = raise right lift specifically
-  - Single Motor Control:
-    - Dpad Up = run front left motor
-    - Dpad Right = run front right motor
-    - Dpad Down = run back right motor
-    - Dpad Left = run back left motor
+    - Dpad down = hold lifts at climb position
+    - Dpad up = reset start position of lifts for when the lifts are raised during autonomous
+      - for when the robot is parked next to submersible and lifts are raised to touch the bar
 - Operator:
   - Pivot:
     - Dpad Up = raise arm (pivot toward the back of the robot)
     - Dpad Down = lower arm (pivot toward the front of the robot)
     - Right Bumper = slow mode
+    - Left Bumper = override software limits
     - Back = reset zero position
   - Arm:
     - Dpad Right = extend arm

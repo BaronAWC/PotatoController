@@ -50,6 +50,7 @@ public class CBOpMode extends CommandOpMode {
     private LiftExtendCommand liftExtendCommand;
     private LiftRetractCommand liftRetractCommand;
     private LiftHoldCommand liftHoldCommand;
+    private ChangeLiftStartPositionCommand liftAutoPosCommand;
 
     private ResetStartPositionCommand driverResetPosCommand, operatorResetPosCommand;
 
@@ -136,6 +137,7 @@ public class CBOpMode extends CommandOpMode {
                 () -> (new TriggerReader(driver, GamepadKeys.Trigger.LEFT_TRIGGER).isDown()),
                 () -> (new TriggerReader(driver, GamepadKeys.Trigger.RIGHT_TRIGGER).isDown()));
         liftHoldCommand = new LiftHoldCommand(liftSubsystem);
+        liftAutoPosCommand = new ChangeLiftStartPositionCommand(liftSubsystem);
 
         driverResetPosCommand = new ResetStartPositionCommand(armSubsystem, pivotSubsystem, liftSubsystem,
                 ResetStartPositionCommand.Type.Driver);
@@ -159,6 +161,7 @@ public class CBOpMode extends CommandOpMode {
         (new GamepadButton(driver, GamepadKeys.Button.Y)).whileHeld(liftExtendCommand);
         (new GamepadButton(driver, GamepadKeys.Button.A)).whileHeld(liftRetractCommand);
         (new GamepadButton(driver, GamepadKeys.Button.DPAD_DOWN)).whileHeld(liftHoldCommand);
+        (new GamepadButton(driver, GamepadKeys.Button.DPAD_UP)).whenPressed(liftAutoPosCommand);
 
         // reset command (can be done by both)
         (new GamepadButton(driver, GamepadKeys.Button.BACK)).whenPressed(driverResetPosCommand);

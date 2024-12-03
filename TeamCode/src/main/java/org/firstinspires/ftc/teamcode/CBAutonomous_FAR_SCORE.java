@@ -6,7 +6,6 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -14,7 +13,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 
 @Autonomous(name="CommandBase Autonomous")
-public class CBAutonomous_CLOSE extends CommandOpMode {
+public class CBAutonomous_FAR_SCORE extends CommandOpMode {
 
     private DcMotorEx FrontL, FrontR, BackL, BackR;
     private DcMotorEx arm, pivot;
@@ -94,13 +93,16 @@ public class CBAutonomous_CLOSE extends CommandOpMode {
         // schedule all commands in this method
         waitForStart();
         new SequentialCommandGroup(
-                // starting on close side
+                // starting on far side
                 /*
-                - second closest tile
+                - third or fourth closest tile
                 - facing bucket
                 - left wheels against wall
                 - back of the robot above inner groove of the tile
                  */
+                //drive up to be at starting position for close (maybe need to wait first)
+                //new WaitCommand(0), //might need wait
+                new DriveDistanceCommand(driveSubsystem, 100, 0, 0.6, telemetry),
                 //drop off piece
                 new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 60, -45, 0.4, telemetry),
                         new ArmRunToPositionCommand(armSubsystem, telemetry, -4000, 0.8),
@@ -113,21 +115,12 @@ public class CBAutonomous_CLOSE extends CommandOpMode {
                         new DriveDistanceCommand(driveSubsystem, 5, -90, 0.4, telemetry)),
                 new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.Out).withTimeout(2000),
 
-                // park by submersible
+                // park in observatory
                 new ParallelCommandGroup(new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS - 200, 0.5),
-                        new DriveDistanceCommand(driveSubsystem, 14, 90, 0.3, telemetry)),
-                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 54, 0, -0.4, telemetry),
-                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.LIMITED_EXTEND, 1)),
-                new ParallelCommandGroup(new DriveRotateCommand(driveSubsystem, -45, 0.25, telemetry),
-                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.LIMITED_EXTEND / 2, 0.75)),
-                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 125, 0, -0.6, telemetry),
-                    new ArmRunToPositionCommand(armSubsystem, telemetry, 0, 0.75)),
-                new ParallelCommandGroup(new DriveRotateCommand(driveSubsystem, 90, 0.25, telemetry),
-                    new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS / 2, 0.5)),
-                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 40, 0, -0.6, telemetry),
-                        new PivotRunToPositionCommand(pivotSubsystem, 0, 0.5)),
-                        new DriveStopCommand(driveSubsystem, telemetry),
-                new LiftRunToAutoPositionCommand(liftSubsystem)
+                        new DriveRotateCommand(driveSubsystem, 45, 0.25, telemetry)),
+                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 10000, 0, -0.75, telemetry),
+                        new ArmRunToPositionCommand(armSubsystem, telemetry, 0, 0.5),
+                        new PivotRunToPositionCommand(pivotSubsystem, 0, 0.5))
         ).schedule();
     }
 }
