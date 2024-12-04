@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 
-@Autonomous(name="CommandBase Autonomous")
+@Autonomous(name="CB Autonomous FAR PARK")
 public class CBAutonomous_FAR_PARK extends CommandOpMode {
 
     private DcMotorEx FrontL, FrontR, BackL, BackR;
@@ -95,14 +95,14 @@ public class CBAutonomous_FAR_PARK extends CommandOpMode {
         new SequentialCommandGroup(
                 // starting on far side
                 /*
-                - third or fourth closest tile
+                - third closest tile to observatory
                 - facing observatory
                 - right wheels against wall
-                - front of the robot above inner groove of the tile
+                - front of the robot above inner groove of the tile (closer to observatory)
                  */
                 //new WaitCommand(0), //might need wait
-                new DriveDistanceCommand(driveSubsystem, 10, 90, 0.4, telemetry), // drive away from the wall
-                new DriveDistanceCommand(driveSubsystem, 100, 0, 0.6, telemetry) // drive straight to the observatory
+                new DriveDistanceCommand(driveSubsystem, 8, 90, 0.4, telemetry), // drive away from the wall
+                new DriveDistanceCommand(driveSubsystem, 75, 0, 0.6, telemetry) // drive straight to the observatory
         ).schedule();
     }
 }
