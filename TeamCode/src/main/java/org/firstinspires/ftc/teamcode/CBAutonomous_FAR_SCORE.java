@@ -100,7 +100,7 @@ public class CBAutonomous_FAR_SCORE extends CommandOpMode {
                 - left wheels against wall
                 - front of the robot above inner groove of the tile (closer to bucket)
                  */
-                //drive up to be at starting position for close (maybe need to wait first) have ~7 extra seconds
+                //drive up to be at starting position for close (maybe need to wait first) have ~6 extra seconds
                 //new WaitCommand(0), //might need wait
                 new DriveDistanceCommand(driveSubsystem, 55, -45, 0.4, telemetry),
 
@@ -117,7 +117,7 @@ public class CBAutonomous_FAR_SCORE extends CommandOpMode {
 
                 // park in observatory
                 new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 0.5),
-                new DriveRotateCommand(driveSubsystem, 0, 0.25, telemetry),
+                new DriveRotateCommand(driveSubsystem, -1, 0.20, telemetry),
                 new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 275, 0, -0.75, telemetry),
                         new ArmRunToPositionCommand(armSubsystem, telemetry, 0, 0.75),
                         new PivotRunToPositionCommand(pivotSubsystem, 0, 0.75))

@@ -26,6 +26,7 @@
     - Right Bumper = slow mode
     - Left Bumper = override software limits
     - Back = reset zero position
+    - Y = automatically extend arm to highest position (can be cancelled by other commands)
   - Intake:
     - B = Spin forward (intake)
     - X = Spin backward (outtake)

@@ -37,6 +37,7 @@ public class CBOpMode extends CommandOpMode {
     private ArmSubsystem armSubsystem;
     private ArmExtendCommand armExtendCommand;
     private ArmRetractCommand armRetractCommand;
+    private ArmFullExtendCommand armFullExtendCommand;
 
     private PivotSubsystem pivotSubsystem;
     private PivotRaiseCommand pivotRaiseCommand;
@@ -117,6 +118,7 @@ public class CBOpMode extends CommandOpMode {
         armSubsystem = new ArmSubsystem(arm);
         armExtendCommand = new ArmExtendCommand(armSubsystem, () -> operator.isDown(GamepadKeys.Button.LEFT_BUMPER), () -> operator.isDown(GamepadKeys.Button.RIGHT_BUMPER));
         armRetractCommand = new ArmRetractCommand(armSubsystem, () -> operator.isDown(GamepadKeys.Button.LEFT_BUMPER), () -> operator.isDown(GamepadKeys.Button.RIGHT_BUMPER));
+        armFullExtendCommand = new ArmFullExtendCommand(armSubsystem, () -> operator.isDown(GamepadKeys.Button.RIGHT_BUMPER));
 
         pivotSubsystem = new PivotSubsystem(pivot);
         pivotRaiseCommand = new PivotRaiseCommand(pivotSubsystem, () -> operator.isDown(GamepadKeys.Button.LEFT_BUMPER), () -> operator.isDown(GamepadKeys.Button.RIGHT_BUMPER));
@@ -148,6 +150,7 @@ public class CBOpMode extends CommandOpMode {
         //arm
         (new GamepadButton(operator, GamepadKeys.Button.DPAD_RIGHT)).whileHeld(armExtendCommand);
         (new GamepadButton(operator, GamepadKeys.Button.DPAD_LEFT)).whileHeld(armRetractCommand);
+        (new GamepadButton(operator, GamepadKeys.Button.Y)).whenPressed(armFullExtendCommand, true);
 
         // pivot
         (new GamepadButton(operator, GamepadKeys.Button.DPAD_UP)).whileHeld(pivotRaiseCommand);

@@ -20,7 +20,7 @@ public class ArmRetractCommand extends CommandBase {
     }
 
     @Override
-    public void end(boolean interrutped){
+    public void end(boolean interrupted){
         armSubsystem.stop();
     }
 }

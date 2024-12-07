@@ -10,7 +10,7 @@ public class ChangeLiftStartPositionCommand extends CommandBase {
 
     @Override
     public void initialize(){
-        liftSubsystem.autoPosition();
+        liftSubsystem.autoOffset();
     }
 
     @Override

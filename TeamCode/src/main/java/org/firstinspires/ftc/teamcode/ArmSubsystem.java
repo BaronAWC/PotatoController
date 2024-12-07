@@ -67,6 +67,13 @@ public class ArmSubsystem extends SubsystemBase {
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
+    public void fullExtend(boolean slowMode){
+        double power = slowMode ? 0.5 : 1;
+        arm.setTargetPosition(FULL_EXTEND + startPos);
+        arm.setPower(-power);
+        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
     public boolean isFinished(){
         return !arm.isBusy();
     }
