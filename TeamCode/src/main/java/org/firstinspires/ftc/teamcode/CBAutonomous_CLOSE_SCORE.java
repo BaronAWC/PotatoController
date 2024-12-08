@@ -119,7 +119,7 @@ public class CBAutonomous_CLOSE_SCORE extends CommandOpMode {
                         new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.LIMITED_EXTEND, 1)),
                 new ParallelCommandGroup(new DriveRotateCommand(driveSubsystem, 90, 0.25, telemetry),
                         new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.LIMITED_EXTEND / 2, 0.75)),
-                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 125, 0, -0.6, telemetry),
+                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 100, 0, -0.6, telemetry), // driving down
                     new ArmRunToPositionCommand(armSubsystem, telemetry, 0, 0.75)),
                 new ParallelCommandGroup(new DriveRotateCommand(driveSubsystem, 0, 0.25, telemetry),
                     new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS / 2, 0.5)),
