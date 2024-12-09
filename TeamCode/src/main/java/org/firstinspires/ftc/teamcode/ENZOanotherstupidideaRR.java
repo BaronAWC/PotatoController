@@ -1,3 +1,5 @@
+org.firstinspires.ftc.teamcode
+
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
@@ -130,11 +132,11 @@ public class EnzoanotherstupidideaRR extends CommandOpMode {
         CommandScheduler.getInstance().schedule(
                 new ParallelCommandGroup(
                         new ArmRunToPositionCommand(armSubsystem, telemetry, -4000, 0.8),
-                        new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 0.5),
+                        new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 0.5)
                 )
         );
 
-)
+
 
 
 
