@@ -12,10 +12,29 @@ public class MeepMeepTesting {
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(60, 15, Math.toRadians(180), Math.toRadians(180), 15)
+                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .build();
+        Pose2d initialPose = new Pose2d(11.8, 61.7, Math.toRadians(90));
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(11.8, 61.7, Math.toRadians(90)))
+                .lineToYSplineHeading(33, Math.toRadians(0))
+                .waitSeconds(2)
+                .setTangent(Math.toRadians(90))
+                .lineToY(48)
+                .setTangent(Math.toRadians(0))
+                .lineToX(32)
+                .strafeTo(new Vector2d(44.5, 30))
+                .turn(Math.toRadians(180))
+                .lineToX(47.5)
+                .waitSeconds(3)
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-11, -63, Math.toRadians(180)))
+
+
+
+
+
+
+
+
                 .strafeTo(new Vector2d(-15, -59))  // -11-4=-15 for left, -63+4=-59 for up
                 .splineToSplineHeading(new Pose2d(-57, -61, Math.toRadians(220)), Math.toRadians(220))
                 //atbucket
