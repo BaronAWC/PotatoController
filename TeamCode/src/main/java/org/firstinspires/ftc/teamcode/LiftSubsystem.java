@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class LiftSubsystem extends SubsystemBase {
 
-    public static final int EXTEND_POS = -3700, HOLD_POS = -800, AUTO_POS = -980;
+    public static final int EXTEND_POS = -3700, HOLD_POS = -800, AUTO_POS = -1000;
     private final DcMotorEx leftLift;
     private final DcMotorEx rightLift;
 

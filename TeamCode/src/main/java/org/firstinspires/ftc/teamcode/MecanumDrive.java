@@ -19,7 +19,7 @@ public class MecanumDrive {
     final DcMotorEx BackL;
     final DcMotorEx BackR;
     final BHI260IMU imu;
-    static final double MAX_DRIVE_PWR = 0.5;
+    static final double MAX_DRIVE_PWR = 0.6, AUTO_DRIVE_PWR = 0.5;
     static final double X_AXIS_ADJ = 1.15; // x axis is a bit slower than y axis on strafer wheels
     static final double SLOW_MODE_POWER = 0.5;
     final double powerFactor = 1;
@@ -137,7 +137,7 @@ public class MecanumDrive {
             fRPwr /= max;
             bRPwr /= max;
         }
-        driveWithMotorPowers(fLPwr, fRPwr, bLPwr, bRPwr);
+        autoDriveWithMotorPowers(fLPwr, fRPwr, bLPwr, bRPwr);
     }
 
     private double adjPwr(Double n, boolean isSlow) {
@@ -176,10 +176,10 @@ public class MecanumDrive {
 
     public void autoDriveWithMotorPowers(double FrontLSpeed, double FrontRSpeed, double BackLSpeed, double BackRSpeed){
         // add any necessary multipliers here
-        FrontL.setPower(FrontLSpeed);
-        FrontR.setPower(FrontRSpeed);
-        BackL.setPower(BackLSpeed);
-        BackR.setPower(BackRSpeed);
+        FrontL.setPower(FrontLSpeed * AUTO_DRIVE_PWR);
+        FrontR.setPower(FrontRSpeed * AUTO_DRIVE_PWR);
+        BackL.setPower(BackLSpeed * AUTO_DRIVE_PWR);
+        BackR.setPower(BackRSpeed * AUTO_DRIVE_PWR);
     }
     public void stop(){
         FrontL.setPower(0);

@@ -12,8 +12,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 
-@Autonomous(name="CB Autonomous CLOSE SCORE")
-public class CBAutonomous_CLOSE_SCORE extends CommandOpMode {
+@Autonomous(name="Test Auto")
+public class TestAutonomous extends CommandOpMode {
 
     private DcMotorEx FrontL, FrontR, BackL, BackR;
     private DcMotorEx arm, pivot;
@@ -93,40 +93,7 @@ public class CBAutonomous_CLOSE_SCORE extends CommandOpMode {
         // schedule all commands in this method
         waitForStart();
         new SequentialCommandGroup(
-                // starting on close side
-                /*
-                - second closest tile to bucket
-                - facing bucket
-                - left wheels against wall
-                - back of the robot above inner groove of the tile
-                 */
-                //drop off piece
-                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 55, -45, 0.4, telemetry),
-                        new ArmRunToPositionCommand(armSubsystem, telemetry, -4000, 0.8),
-                        new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 0.5)),
-                new ParallelCommandGroup(new DriveRotateCommand(driveSubsystem, 45, 0.25, telemetry),
-                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.LIMITED_EXTEND, 0.8)),
-                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 27, 0, 0.3, telemetry),
-                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.FULL_EXTEND, 0.8)),
-                new ParallelCommandGroup(new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS - 800, 0.5),
-                        new DriveDistanceCommand(driveSubsystem, 3, -90, 0.4, telemetry)),
-                new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.Out).withTimeout(2000),
 
-                // park by submersible
-                new ParallelCommandGroup(new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS - 200, 0.5),
-                        new DriveDistanceCommand(driveSubsystem, 14, 90, 0.3, telemetry)),
-                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 54, 0, -0.4, telemetry),
-                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.LIMITED_EXTEND, 1)),
-                new ParallelCommandGroup(new DriveRotateCommand(driveSubsystem, 90, 0.25, telemetry),
-                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.LIMITED_EXTEND / 2, 0.75)),
-                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 100, 0, -0.6, telemetry), // driving down
-                    new ArmRunToPositionCommand(armSubsystem, telemetry, 0, 0.75)),
-                new ParallelCommandGroup(new DriveRotateCommand(driveSubsystem, 0, 0.25, telemetry),
-                    new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS / 2, 0.5)),
-                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 40, 0, -0.6, telemetry),
-                        new PivotRunToPositionCommand(pivotSubsystem, 0, 0.5)),
-                        new DriveStopCommand(driveSubsystem, telemetry),
-                new LiftRunToAutoPositionCommand(liftSubsystem)
         ).schedule();
     }
 }
