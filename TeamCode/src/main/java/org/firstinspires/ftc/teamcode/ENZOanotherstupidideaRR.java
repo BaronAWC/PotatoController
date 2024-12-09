@@ -25,7 +25,6 @@ import org.firstinspires.ftc.teamcode.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.LiftSubsystem;
-import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.PivotRunToPositionCommand;
 import org.firstinspires.ftc.teamcode.PivotSubsystem;
 
@@ -109,7 +108,7 @@ public class EnzoanotherstupidideaRR extends CommandOpMode {
 
         liftSubsystem = new LiftSubsystem(leftLift, rightLift);
 
-        MecanumDrive = new MecanumDrive(FrontL, FrontR, BackL, BackR, imu);
+        driveSubsystem = new DriveSubsystem(FrontL, FrontR, BackL, BackR, imu);
 
         // schedule all commands in this method
         waitForStart();
@@ -118,17 +117,35 @@ public class EnzoanotherstupidideaRR extends CommandOpMode {
         ).schedule();
 
 
+        // Define starting pose
+        Pose2d startPose = new Pose2d(-11, -63, Math.toRadians(180));
 
 
 
-// find initial position (180deg = facing left)
+
+// Set the starting pose for the RoadRunner localizer
+        drive.setPoseEstimate(startPose);
+
         Pose2d beginPose = new Pose2d(-11.00, -63, Math.toRadians(180.00));
-        Pose2d bucket = new Pose2d(-56, -56, Math.toRadians(225));
-
         TrajectoryActionBuilder trajectory = drive.actionBuilder(beginPose)
-                .strafeTo(new Vector2d(-7.00, -58))
-                .splineTo(new Vector2d(-56, -56), Math.toRadians(225));
-        Pose2d bucketEnd = new Pose2d(-56, -56, Math.toRadians(225));
+                .strafeTo(new Vector2d(-15, -59)) // Move left and up
+                .splineToSplineHeading(new Pose2d(-57, -61, Math.toRadians(220)), Math.toRadians(220))
+                .setReversed(true)
+                .splineToSplineHeading(new Pose2d(-36.45, -25.45, Math.toRadians(180.00)), Math.toRadians(90))
+                .setReversed(false)
+                .strafeToSplineHeading(new Pose2d(-62, -56, Math.toRadians(240)))
+                .setReversed(true)
+                .strafeToSplineHeading(new Pose2d(-36.45, -25.45, Math.toRadians(180.00)))
+                .setReversed(false)
+                .strafeToSplineHeading(new Pose2d(-62, -56, Math.toRadians(240)))
+                .setReversed(true)
+                .splineToSplineHeading(new Pose2d(-36.45, -25.45, Math.toRadians(180.00)), Math.toRadians(90))
+                .setReversed(false)
+                .strafeToSplineHeading(new Pose2d(-62, -56, Math.toRadians(240)))
+                .strafeToLinearHeading(new Pose2d(-22, 7, Math.toRadians(180.00)))
+                .build();
+
+
         CommandScheduler.getInstance().schedule(
                 new ParallelCommandGroup(
                         new ArmRunToPositionCommand(armSubsystem, telemetry, -4000, 0.8),
