@@ -21,6 +21,7 @@ public class MeepMeepTesting {
                 
 
                 .strafeTo(new Vector2d(-15, -59))  // -11-4=-15 for left, -63+4=-59 for up
+                        .strafeToLinearHeading()
                 .splineToSplineHeading(new Pose2d(-57, -61, Math.toRadians(220)), Math.toRadians(220))
                 //atbucket
                 .waitSeconds(5)

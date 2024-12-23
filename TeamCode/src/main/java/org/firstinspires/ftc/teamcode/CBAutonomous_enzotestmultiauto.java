@@ -116,7 +116,7 @@ public class CBAutonomous_enzotestmultiauto extends CommandOpMode {
                 //arm positions for easy adjustment
                 private static final int FIRSTYELLOWSAMPLEEXTEND = -800
                 private static final int SECONDYELLOWSAMPLEEXTEND = -3000
-                private static final int THIRDYELLOWSAMPLEEXTEND = -4500
+
 
                 //arm up a bit
                 new ParallelCommandGroup(new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS - 600, 0.5),
