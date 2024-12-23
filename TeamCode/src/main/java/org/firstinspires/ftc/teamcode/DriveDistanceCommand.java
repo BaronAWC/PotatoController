@@ -67,7 +67,9 @@ public class DriveDistanceCommand extends CommandBase {
 //        return (Math.abs(driveSubsystem.getFLChange() - FL_and_BR_TargetChange) <= 5 && Math.abs(driveSubsystem.getFRChange() - FR_and_BL_TargetChange) <= 5 &&
 //                Math.abs(driveSubsystem.getBRChange() - FL_and_BR_TargetChange) <= 5 && Math.abs(driveSubsystem.getBLChange() - FR_and_BL_TargetChange) <= 5) ||
         return        ((driveSubsystem.getFLChange() >= FL_and_BR_TargetChange) && (driveSubsystem.getFRChange() >= FR_and_BL_TargetChange) &&
-                (driveSubsystem.getBRChange() >= FL_and_BR_TargetChange) && (driveSubsystem.getBLChange() >= FR_and_BL_TargetChange));
+                (driveSubsystem.getBRChange() >= FL_and_BR_TargetChange) && (driveSubsystem.getBLChange() >= FR_and_BL_TargetChange)) ||
+                (Math.abs((driveSubsystem.getFLChange() + driveSubsystem.getBRChange()) / 2 - FL_and_BR_TargetChange) <= 5 &&
+                        Math.abs((driveSubsystem.getFRChange() + driveSubsystem.getBLChange()) / 2 - FR_and_BL_TargetChange) <= 5);
     }
 
 }

@@ -16,7 +16,8 @@ import com.qualcomm.robotcore.hardware.IMU;
 
 
 @Autonomous(name="CB Autonomous multiclosescore")
-public class CBAutonomous_multiclosescore {
+public class CBAutonomous_multiclosescore extends CommandOpMode{
+    private static final int FIRSTYELLOWSAMPLEEXTEND = -800;
     private DcMotorEx FrontL, FrontR, BackL, BackR;
     private DcMotorEx arm, pivot;
     private DcMotorEx leftLift, rightLift;
@@ -103,39 +104,42 @@ public class CBAutonomous_multiclosescore {
                 - back of the robot above inner groove of the tile
                  */
                 //drop off piece
-                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 55, -45, 0.6, telemetry),
-                        new ArmRunToPositionCommand(armSubsystem, telemetry, -4000, 0.8),
-                        new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 0.6)),
-                new ParallelCommandGroup(new DriveRotateCommand(driveSubsystem, 45, 0.35, telemetry),
-                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.LIMITED_EXTEND, 0.8)),
-                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 27, 0, 0.4, telemetry),
-                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.FULL_EXTEND, 0.8)),
-                new ParallelCommandGroup(new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS - 800, 0.5),
-                        new DriveDistanceCommand(driveSubsystem, 3, -90, 0.5, telemetry)),
-                new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.Out).withTimeout(2000),
+                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 55, -45, 0.6, telemetry)),
+                        //new ArmRunToPositionCommand(armSubsystem, telemetry, -4000, 0.8),
+                        //new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 0.6)),
+                new ParallelCommandGroup(new DriveRotateCommand(driveSubsystem, 45, 0.35, telemetry)),
+                        //new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.LIMITED_EXTEND, 0.8)),
+                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 27, 0, 0.4, telemetry)),
+                        //new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.FULL_EXTEND, 0.8)),
+//                new ParallelCommandGroup(//new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS - 800, 0.5),
+//                        new DriveDistanceCommand(driveSubsystem, 3, -90, 0.5, telemetry)),
+                //new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.Out).withTimeout(2000),
 
                 //idk what im doing (enzo)
                 //arm positions for easy adjustment
-                private static final int FIRSTYELLOWSAMPLEEXTEND = -800
+
                 //arm up a bit
-                new ParallelCommandGroup(new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS - 600, 0.5),
+                //new ParallelCommandGroup(//new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS - 600, 0.5),
                 //while moving backwards, rotate 45 degrees to the right so parallel with sample, retract arm, lower pivot
-                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, -54, 0, 0.4, telemetry),
-                        new ParallelCommandGroup(new DriveRotateCommand(driveSubsystem, 45, 0.25, telemetry),
-                        new ArmRunToPositionCommand(armSubsystem, telemetry, FIRSTYELLOWSAMPLEEXTEND, 1)),
-                        new PivotRunToPositionCommand(pivotSubsystem, pivotSubsystem.LOWEST_POS + 400, 0.5),
+                new DriveDistanceCommand(driveSubsystem, 60, 0, -0.4, telemetry),
+                new DriveRotateCommand(driveSubsystem, 0, 0.25, telemetry),
+                        //new ArmRunToPositionCommand(armSubsystem, telemetry, FIRSTYELLOWSAMPLEEXTEND, 1),
+                        //new PivotRunToPositionCommand(pivotSubsystem, pivotSubsystem.LOWEST_POS + 400, 0.5)),
                 //pick up piece
-                new ParallelCommandGroup((new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.LOWEST_POS + 200, 0.5)))
-                        new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.In).withTimeout(1000),
+                //new ParallelCommandGroup(new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.LOWEST_POS + 200, 0.5),
+                //        new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.In).withTimeout(1000)),
                 //go back to basket (rotate the robot: while doing that, pivot extends to max, arm goes to max
-                new ParallelCommandGroup(new DriveRotateCommand(driveSubsystem, -45, 0.25, telemetry),
-                        new PivotRunToPositionCommand(pivotSubsystem, pivotSubsystem.HIGHEST_POS, 0.5),
-                        new ArmRunToPositionCommand(armSubsystem, telemetry, -4000, 1),
-                        new DriveDistanceCommand(driveSubsystem, 54, 0, 0.4, telemetry),
-                new ParallelCommandGroup(
-                        new ParallelCommandGroup(new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS - 800, 0.5),
-                             new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.Out).withTimeout(1000),
-                             new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS - 600, 0.5),
+                //new ParallelCommandGroup(
+                new DriveDistanceCommand(driveSubsystem,20,-90, 0.4, telemetry),
+                        new DriveRotateCommand(driveSubsystem, 45, 1, telemetry),
+                        //new PivotRunToPositionCommand(pivotSubsystem, pivotSubsystem.HIGHEST_POS, 0.5),
+                        //new ArmRunToPositionCommand(armSubsystem, telemetry, -4000, 1),
+
+                        new DriveDistanceCommand(driveSubsystem, 57, 0, 0.4, telemetry)
+//                new ParallelCommandGroup(
+//                        new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS - 800, 0.5),
+//                             new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.Out).withTimeout(1000),
+//                             new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS - 600, 0.5))
 
 
         ).schedule();
