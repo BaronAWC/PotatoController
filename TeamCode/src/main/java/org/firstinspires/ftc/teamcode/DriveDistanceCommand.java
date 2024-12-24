@@ -14,7 +14,7 @@ public class DriveDistanceCommand extends CommandBase {
     public static final double MULTIPLIER = 1.414;
 
     private final DriveSubsystem driveSubsystem;
-    private final double distance, angle, speed;
+    private final double distance, angle, speed, startAngle;
     private double FL_and_BR_TargetChange, FR_and_BL_TargetChange, FL_and_BR_Theta, FR_and_BL_Theta;
     private final Telemetry telemetry;
     public DriveDistanceCommand(DriveSubsystem driveSubsystem, double distance, double angle, double speed, Telemetry telemetry){
@@ -23,12 +23,13 @@ public class DriveDistanceCommand extends CommandBase {
         this.angle = angle; // angle to drive at (between 90 and -90), flip sign of speed to go opposite direction
         this.speed = speed;
         this.telemetry = telemetry;
+        startAngle = driveSubsystem.getAngle();
     }
 
     @Override
     public void initialize(){
         driveSubsystem.resetEncoders();
-        driveSubsystem.setDrive(Math.toRadians(angle), speed, false);
+        // driveSubsystem.setDrive(Math.toRadians(angle), speed, false);
         FL_and_BR_Theta = (angle <= 45 && angle >= -90) ? Math.abs(angle + 45) : (135 - angle);
         FL_and_BR_TargetChange = distance * Math.cos(Math.toRadians(FL_and_BR_Theta)) * TICKS_PER_REV / WHEEL_CIRCUMFERENCE * MULTIPLIER;
 
@@ -42,6 +43,7 @@ public class DriveDistanceCommand extends CommandBase {
     }
     @Override
     public void execute(){
+        driveSubsystem.setDrive(Math.toRadians(angle - (driveSubsystem.getAngle()) - startAngle), speed, false); // TODO test this
         telemetry.addData("Front left and Back right target change", FL_and_BR_TargetChange);
         telemetry.addData("Front right and Back left target change", FR_and_BL_TargetChange);
         telemetry.addData("Front left and Back right theta", FL_and_BR_Theta);

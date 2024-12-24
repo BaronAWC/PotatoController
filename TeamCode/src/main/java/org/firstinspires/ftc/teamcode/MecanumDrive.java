@@ -24,7 +24,7 @@ public class MecanumDrive {
     static final double SLOW_MODE_POWER = 0.5;
     final double powerFactor = 1;
 
-    private double autoFL = 0, autoFR = 0, autoBL = 0, autoBR = 0;
+    private double autoFL = 0, autoFR = 0, autoBL = 0, autoBR = 0, autoRotation = 0;
 
     public MecanumDrive(DcMotorEx FrontL, DcMotorEx FrontR, DcMotorEx BackL, DcMotorEx BackR, BHI260IMU imu){
         this.FrontL = FrontL;
