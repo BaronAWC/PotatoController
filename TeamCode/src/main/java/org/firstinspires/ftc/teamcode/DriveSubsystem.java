@@ -78,6 +78,10 @@ public class DriveSubsystem extends SubsystemBase {
         drive.setRotation(angle, speed, end);
     }
 
+    public void autoDrive(double angleChange, double driveAngle, double rotateAngle, boolean rotate, double driveSpeed, double rotateSpeed){
+        drive.autoDrive(angleChange, driveAngle, rotateAngle, rotate, driveSpeed, rotateSpeed);
+    }
+
     public Pair<String, String>[] getInfo(){
         //return drive.getInfo();
         return new Pair[]{

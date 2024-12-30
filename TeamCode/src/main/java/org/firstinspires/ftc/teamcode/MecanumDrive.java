@@ -152,6 +152,42 @@ public class MecanumDrive {
         autoDriveWithMotorPowers(fLPwr, fRPwr, bLPwr, bRPwr);
     }
 
+    public void autoDrive(double angleChange, double driveAngle, double rotateAngle, boolean rotate, double driveSpeed, double rotateSpeed){
+        double rx = 0;
+        if(rotate){
+            rx = (rotateAngle < 0) ? rotateSpeed : -rotateSpeed; // negative angle means turning right, so positive for left side
+        }
+        double angle = Math.toRadians(driveAngle - angleChange);
+        double x = driveSpeed * Math.cos(angle);
+        double y = driveSpeed * Math.sin(angle);
+
+        double fLPwr = y + x + rx;
+        double bLPwr = y - x + rx;
+        double fRPwr = y - x - rx;
+        double bRPwr = y + x - rx;
+
+        // Put powers in the range of -1 to 1 only if they aren't already (not
+        // checking would cause us to always drive at full speed)
+
+        if (Math.abs(fLPwr) > 1 || Math.abs(bLPwr) > 1 ||
+                Math.abs(fRPwr) > 1 || Math.abs(bRPwr) > 1) {
+            // Find the largest power
+            double max;
+            max = Math.max(Math.abs(fLPwr), Math.abs(bLPwr));
+            max = Math.max(Math.abs(fRPwr), max);
+            max = Math.max(Math.abs(bRPwr), max);
+
+            // Divide everything by max (it's positive so we don't need to worry
+            // about signs), scale everything to the max
+            fLPwr /= max;
+            bLPwr /= max;
+            fRPwr /= max;
+            bRPwr /= max;
+        }
+
+        autoDriveWithMotorPowers(fLPwr, fRPwr, bLPwr, bRPwr);
+    }
+
     private double adjPwr(Double n, boolean isSlow) {
         // when fine-tuning, just do linear scale so the max power is 25%
         if(isSlow) {
