@@ -29,6 +29,7 @@ public class DriveDistanceCommand extends CommandBase {
     @Override
     public void initialize(){
         driveSubsystem.resetEncoders();
+        driveSubsystem.setStartAngle();
         // driveSubsystem.setDrive(Math.toRadians(angle), speed, false);
         FL_and_BR_Theta = (angle <= 45 && angle >= -90) ? Math.abs(angle + 45) : (135 - angle);
         FL_and_BR_TargetChange = distance * Math.cos(Math.toRadians(FL_and_BR_Theta)) * TICKS_PER_REV / WHEEL_CIRCUMFERENCE * MULTIPLIER;
@@ -45,12 +46,24 @@ public class DriveDistanceCommand extends CommandBase {
     public void execute(){
         driveSubsystem.setDrive(Math.toRadians(angle - (driveSubsystem.getAngle()) - startAngle), speed, false); // TODO test this
         telemetry.addData("Front left and Back right target change", FL_and_BR_TargetChange);
+        telemetry.addData("Front left change", driveSubsystem.getFLChange());
+        telemetry.addData("Back right change", driveSubsystem.getBRChange());
+        telemetry.addData("Front left and Back right average", (driveSubsystem.getFLChange() +
+                driveSubsystem.getBRChange()) / 2);
+        telemetry.addLine("########################################");
         telemetry.addData("Front right and Back left target change", FR_and_BL_TargetChange);
+        telemetry.addData("Front right change", driveSubsystem.getFRChange());
+        telemetry.addData("Back left change", driveSubsystem.getBLChange());
+        telemetry.addData("Front right and Back left average", (driveSubsystem.getFRChange() +
+                driveSubsystem.getBLChange()) / 2);
+        telemetry.addLine("########################################");
+        telemetry.addData("Angle change", driveSubsystem.getAngleChange());
+        telemetry.addLine("########################################");
         telemetry.addData("Front left and Back right theta", FL_and_BR_Theta);
         telemetry.addData("Front right and Back left theta", FR_and_BL_Theta);
-        for(Pair<String, String> pair : driveSubsystem.getInfo()){
-            telemetry.addData(pair.first, pair.second);
-        }
+//        for(Pair<String, String> pair : driveSubsystem.getInfo()){
+//            telemetry.addData(pair.first, pair.second);
+//        }
         telemetry.addLine("#############");
         telemetry.update();
     }
@@ -59,7 +72,8 @@ public class DriveDistanceCommand extends CommandBase {
     public void end(boolean interrupted){
         telemetry.addLine("finished drive distance command " + distance + " " + angle + " " + speed);
         telemetry.update();
-        driveSubsystem.stop();
+        driveSubsystem.setDrive(Math.toRadians(angle - (driveSubsystem.getAngle()) - startAngle), speed, true);
+        //driveSubsystem.stop();
     }
 
     @Override
@@ -68,10 +82,11 @@ public class DriveDistanceCommand extends CommandBase {
         // stop once the difference between change and target change is very small or if they all overshot
 //        return (Math.abs(driveSubsystem.getFLChange() - FL_and_BR_TargetChange) <= 5 && Math.abs(driveSubsystem.getFRChange() - FR_and_BL_TargetChange) <= 5 &&
 //                Math.abs(driveSubsystem.getBRChange() - FL_and_BR_TargetChange) <= 5 && Math.abs(driveSubsystem.getBLChange() - FR_and_BL_TargetChange) <= 5) ||
-        return        ((driveSubsystem.getFLChange() >= FL_and_BR_TargetChange) && (driveSubsystem.getFRChange() >= FR_and_BL_TargetChange) &&
-                (driveSubsystem.getBRChange() >= FL_and_BR_TargetChange) && (driveSubsystem.getBLChange() >= FR_and_BL_TargetChange)) ||
-                (Math.abs((driveSubsystem.getFLChange() + driveSubsystem.getBRChange()) / 2 - FL_and_BR_TargetChange) <= 5 &&
-                        Math.abs((driveSubsystem.getFRChange() + driveSubsystem.getBLChange()) / 2 - FR_and_BL_TargetChange) <= 5);
+        // about 10 ticks per degree
+        return        ((Math.abs(driveSubsystem.getFLChange()) >= FL_and_BR_TargetChange) && (Math.abs(driveSubsystem.getFRChange()) >= FR_and_BL_TargetChange) &&
+                (Math.abs(driveSubsystem.getBRChange()) >= FL_and_BR_TargetChange) && (Math.abs(driveSubsystem.getBLChange()) >= FR_and_BL_TargetChange)) ||
+                (Math.abs((driveSubsystem.getFLChange() + driveSubsystem.getBRChange() / 2)) >=  FL_and_BR_TargetChange &&
+                        Math.abs((driveSubsystem.getFRChange() + driveSubsystem.getBLChange() / 2)) >= FR_and_BL_TargetChange);
     }
 
 }

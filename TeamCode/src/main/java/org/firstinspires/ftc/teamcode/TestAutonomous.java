@@ -94,8 +94,10 @@ public class TestAutonomous extends CommandOpMode {
         waitForStart();
         new SequentialCommandGroup(
             new ParallelCommandGroup(
-                new DriveDistanceCommand(driveSubsystem, 50, -45, 0.4, telemetry),
-                new DriveRotateCommand(driveSubsystem, -90, 0.4, telemetry))
+                new DriveDistanceCommand(driveSubsystem, 30, -45, 0.1, telemetry),
+                new DriveRotateCommand(driveSubsystem, -90, 0.1, telemetry)
+            )
+            //new DriveRotateCommand(driveSubsystem, -90, 0.1, telemetry)
         ).schedule();
     }
 }

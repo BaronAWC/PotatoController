@@ -97,6 +97,18 @@ public class MecanumDrive {
             autoBR -= bRPwr;
         }
         autoDrive();
+        if(!end) {
+            autoFL -= fLPwr;
+            autoFR -= fRPwr;
+            autoBL -= bLPwr;
+            autoBR -= bRPwr;
+        }
+        else{ // undo power changes to end the command
+            autoFL += fLPwr;
+            autoFR += fRPwr;
+            autoBL += bLPwr;
+            autoBR += bRPwr;
+        }
     }
 
     public void setRotation(double angle, double speed, boolean end){

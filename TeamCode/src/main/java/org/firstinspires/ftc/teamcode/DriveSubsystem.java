@@ -16,6 +16,7 @@ public class DriveSubsystem extends SubsystemBase {
     private final MecanumDrive drive;
     private final DcMotorEx FrontL, FrontR, BackL, BackR;
     private int FLStartPos, FRStartPos, BLStartPos, BRStartPos;
+    private double startAngle;
 
     private final BHI260IMU imu;
 
@@ -39,25 +40,31 @@ public class DriveSubsystem extends SubsystemBase {
         BRStartPos = BackR.getCurrentPosition();
     }
 
+    public void setStartAngle(){
+        startAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+    }
+
     public int getFLChange(){
-        return Math.abs(FrontL.getCurrentPosition() - FLStartPos);
+        return FrontL.getCurrentPosition() - FLStartPos;
     }
 
     public int getFRChange(){
-        return Math.abs(FrontR.getCurrentPosition() - FRStartPos);
+        return FrontR.getCurrentPosition() - FRStartPos;
     }
 
     public int getBLChange(){
-        return Math.abs(BackL.getCurrentPosition() - BLStartPos);
+        return BackL.getCurrentPosition() - BLStartPos;
     }
 
     public int getBRChange(){
-        return Math.abs(BackR.getCurrentPosition() - BRStartPos);
+        return BackR.getCurrentPosition() - BRStartPos;
     }
 
     public double getAngle(){
         return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
     }
+
+    public double getAngleChange() { return getAngle() - startAngle; }
 
     public void stop(){
         drive.stop();

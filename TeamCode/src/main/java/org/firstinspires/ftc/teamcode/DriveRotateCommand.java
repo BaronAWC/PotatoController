@@ -19,6 +19,7 @@ public class DriveRotateCommand extends CommandBase {
 
     @Override
     public void initialize(){
+        driveSubsystem.resetEncoders();
         driveSubsystem.setRotation(driveSubsystem.getAngle() - angle, speed, false);
         telemetry.addLine("started drive rotate command " + angle + " " + speed);
         telemetry.update();
@@ -26,16 +27,21 @@ public class DriveRotateCommand extends CommandBase {
 
     @Override
     public void execute(){
-        telemetry.addData("current angle", driveSubsystem.getAngle());
-        telemetry.addData("difference", (angle - driveSubsystem.getAngle()));
-        telemetry.update();
+//        telemetry.addData("current angle", driveSubsystem.getAngle());
+//        telemetry.addData("difference", (angle - driveSubsystem.getAngle()));
+//        telemetry.addData("Front left change", driveSubsystem.getFLChange());
+//        telemetry.addData("Back right change", driveSubsystem.getBRChange());
+//        telemetry.addData("Front right change", driveSubsystem.getFRChange());
+//        telemetry.addData("Back left change", driveSubsystem.getBLChange());
+//        telemetry.update();
     }
 
     @Override
     public void end(boolean interrupted){
         telemetry.addLine("finished drive rotate command " + angle + " " + speed);
         telemetry.update();
-        driveSubsystem.stop();
+        driveSubsystem.setRotation(driveSubsystem.getAngle() - angle, speed, true);
+        //driveSubsystem.stop();
     }
 
     @Override
