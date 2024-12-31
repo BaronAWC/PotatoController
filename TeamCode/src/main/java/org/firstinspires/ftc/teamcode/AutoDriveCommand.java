@@ -24,6 +24,9 @@ public class AutoDriveCommand extends CommandBase {
         this.driveSpeed = driveSpeed;
         this.rotateSpeed = rotateSpeed;
         this.telemetry = telemetry;
+
+        if(distance == 0 || driveSpeed == 0) finishedDriving = true;
+        if(rotateSpeed == 0) finishedRotating = true;
     }
 
     @Override
