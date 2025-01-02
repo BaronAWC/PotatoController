@@ -152,12 +152,12 @@ public class MecanumDrive {
         autoDriveWithMotorPowers(fLPwr, fRPwr, bLPwr, bRPwr);
     }
 
-    public void autoDrive(double angleChange, double driveAngle, double rotateAngle, boolean rotate, double driveSpeed, double rotateSpeed){
+    public void autoDrive(double startAngle, double currentAngle, double driveAngle, double rotateAngle, boolean rotate, double driveSpeed, double rotateSpeed){
         double rx = 0;
         if(rotate){
             rx = (rotateAngle < 0) ? rotateSpeed : -rotateSpeed; // negative angle means turning right, so positive for left side
         }
-        double angle = Math.toRadians(driveAngle - angleChange);
+        double angle = Math.toRadians(driveAngle - currentAngle - startAngle) + Math.PI / 2;
         double x = driveSpeed * Math.cos(angle);
         double y = driveSpeed * Math.sin(angle);
 

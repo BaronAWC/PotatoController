@@ -57,7 +57,7 @@ public class DriveDistanceCommand extends CommandBase {
         telemetry.addData("Front right and Back left average", (driveSubsystem.getFRChange() +
                 driveSubsystem.getBLChange()) / 2);
         telemetry.addLine("########################################");
-        telemetry.addData("Angle change", driveSubsystem.getAngleChange());
+        //telemetry.addData("Angle change", driveSubsystem.getAngleChange());
         telemetry.addLine("########################################");
         telemetry.addData("Front left and Back right theta", FL_and_BR_Theta);
         telemetry.addData("Front right and Back left theta", FR_and_BL_Theta);

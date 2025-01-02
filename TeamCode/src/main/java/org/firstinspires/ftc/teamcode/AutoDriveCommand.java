@@ -8,7 +8,7 @@ public class AutoDriveCommand extends CommandBase {
 
     public static final double TICKS_PER_REV = 537.7;
     public static final double WHEEL_CIRCUMFERENCE = 9.6 * Math.PI; // in cm
-    public static final double MULTIPLIER = 1.414;
+    public static final double MULTIPLIER = 1.414 * 5 / 4;
     private final DriveSubsystem driveSubsystem;
     private final double distance, driveAngle, rotateAngle, driveSpeed, rotateSpeed;
 
@@ -58,7 +58,7 @@ public class AutoDriveCommand extends CommandBase {
                             Math.abs((driveSubsystem.getFRChange() + driveSubsystem.getBLChange() / 2)) >= FR_and_BL_TargetChange);
         }
 
-        driveSubsystem.autoDrive(driveSubsystem.getAngleChange(), driveAngle, rotateAngle, !finishedRotating, (finishedDriving) ? 0 : driveSpeed, rotateSpeed);
+        driveSubsystem.autoDrive(driveSubsystem.getStartAngle(), driveSubsystem.getAngle(), driveAngle, rotateAngle, !finishedRotating, (finishedDriving) ? 0 : driveSpeed, rotateSpeed);
     }
 
     @Override

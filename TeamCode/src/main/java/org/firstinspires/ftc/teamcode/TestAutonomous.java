@@ -98,13 +98,13 @@ public class TestAutonomous extends CommandOpMode {
 //                new DriveRotateCommand(driveSubsystem, -90, 0.1, telemetry)
 //            )
             //new DriveRotateCommand(driveSubsystem, -90, 0.1, telemetry)
-                new AutoDriveCommand(driveSubsystem, 30, 0, 0, 0.5, 0, telemetry),
-                new AutoDriveCommand(driveSubsystem, 30, -90, 0, 0.5, 0, telemetry),
-                new AutoDriveCommand(driveSubsystem, 30, 0, 0, -0.5, 0, telemetry),
-                new AutoDriveCommand(driveSubsystem, 30, 90, 0, 0.5, 0, telemetry),
-                new AutoDriveCommand(driveSubsystem, 0, 0, -90, 0, 0.5, telemetry),
-                new AutoDriveCommand(driveSubsystem, 0, 0, 90, 0, 0.5, telemetry),
-                new AutoDriveCommand(driveSubsystem, 30, -45, -90, 0.1, 0.1, telemetry)
+                //new AutoDriveCommand(driveSubsystem, 50, 0, 0, 0.5, 0, telemetry)
+                //new AutoDriveCommand(driveSubsystem, 30, -90, 0, 0.5, 0, telemetry),
+                //new AutoDriveCommand(driveSubsystem, 30, 0, 0, -0.5, 0, telemetry),
+                //new AutoDriveCommand(driveSubsystem, 30, 90, 0, 0.5, 0, telemetry),
+                //new AutoDriveCommand(driveSubsystem, 0, 0, -90, 0, 0.5, telemetry),
+                //new AutoDriveCommand(driveSubsystem, 0, 0, 90, 0, 0.5, telemetry),
+                new AutoDriveCommand(driveSubsystem, 50, -45, -90, 0.3, 0.3, telemetry)
         ).schedule();
     }
 }

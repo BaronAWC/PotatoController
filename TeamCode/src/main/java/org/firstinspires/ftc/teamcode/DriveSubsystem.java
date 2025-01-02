@@ -64,7 +64,9 @@ public class DriveSubsystem extends SubsystemBase {
         return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
     }
 
-    public double getAngleChange() { return getAngle() - startAngle; }
+    public double getStartAngle() { return startAngle; }
+
+    //public double getAngleChange() { return getAngle() - startAngle; }
 
     public void stop(){
         drive.stop();
@@ -78,8 +80,8 @@ public class DriveSubsystem extends SubsystemBase {
         drive.setRotation(angle, speed, end);
     }
 
-    public void autoDrive(double angleChange, double driveAngle, double rotateAngle, boolean rotate, double driveSpeed, double rotateSpeed){
-        drive.autoDrive(angleChange, driveAngle, rotateAngle, rotate, driveSpeed, rotateSpeed);
+    public void autoDrive(double startAngle, double currentAngle, double driveAngle, double rotateAngle, boolean rotate, double driveSpeed, double rotateSpeed){
+        drive.autoDrive(startAngle, currentAngle, driveAngle, rotateAngle, rotate, driveSpeed, rotateSpeed);
     }
 
     public Pair<String, String>[] getInfo(){
