@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class ArmSubsystem extends SubsystemBase {
-    public static final int FULL_EXTEND = -10750, LIMITED_EXTEND = -8500, CLIMB = -100;
+    public static final int FULL_EXTEND = -8000, LIMITED_EXTEND = -6000, CLIMB = -100;
     private final DcMotorEx arm;
     private int startPos;
     private PivotSubsystem pivotSubsystem;
@@ -43,10 +43,15 @@ public class ArmSubsystem extends SubsystemBase {
             arm.setTargetPosition(startPos);
             arm.setPower(power);
             arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         }
         else{
             arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             arm.setPower(power);
+        }
+        if(arm.getCurrentPosition() >= startPos - 400 &&
+                pivotSubsystem.getCurrentPos() < pivotSubsystem.getStartPos() + PivotSubsystem.LIMIT_POS){
+            pivotSubsystem.runToPosition(PivotSubsystem.LIMIT_POS, 0.75);
         }
 
     }
@@ -58,7 +63,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     public void runToPosition(int position, double power){
         arm.setTargetPosition(position + startPos);
-        if(position > arm.getCurrentPosition()){
+        if(position + startPos > arm.getCurrentPosition()){
             arm.setPower(power);
         }
         else{
@@ -68,7 +73,13 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void holdClimb(){
-
+        arm.setTargetPosition(CLIMB + startPos);
+        if(CLIMB + startPos > arm.getCurrentPosition()){
+            arm.setPower(1);
+        }
+        else{
+            arm.setPower(-1);
+        }
     }
 
     public void fullExtend(boolean slowMode){

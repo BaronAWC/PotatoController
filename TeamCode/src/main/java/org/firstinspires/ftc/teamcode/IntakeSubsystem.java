@@ -3,21 +3,29 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.CRServo;
 
 public class IntakeSubsystem {
-    private final CRServo intake;
+    private final CRServo intakeFront;
+    private final CRServo intakeBack;
 
-    public IntakeSubsystem(CRServo intake){
-        this.intake = intake;
+    public IntakeSubsystem(CRServo intakeFront, CRServo intakeBack){
+        this.intakeFront = intakeFront;
+        this.intakeBack = intakeBack;
     }
     public void forward(){
-        intake.setPower(1);
+        intakeFront.setPower(1);
+        intakeBack.setPower(-1);
     }
 
     public void backward(){
-        intake.setPower(-1);
+        intakeFront.setPower(-1);
+        intakeBack.setPower(1);
     }
     public void stop(){
-        intake.setPower(0);
+        intakeFront.setPower(0);
+        intakeBack.setPower(0);
     }
 
-    public void run(double power) { intake.setPower(power); }
+    public void run(double power) {
+        intakeFront.setPower(power);
+        intakeBack.setPower(power);
+    }
 }

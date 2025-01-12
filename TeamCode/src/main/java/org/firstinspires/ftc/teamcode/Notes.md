@@ -1,31 +1,10 @@
-Arm fully extended: -10750
-Left lowest: 3435 
-Left highest: 127
-3308
-Right lowest: 1546
-Right highest: -1880
-3426
+Pivot
 
-~100 cm
-1722.5 - 8.75 = 1713.75
+Start -7896 -7900  0 
+limit -10460 -10500 -2600
+Bot -12651 -12500 -4600
+Top -3399 -3500 4400
 
-1 cm -> 17
-TODO:
-- test autonomous
-
-Autonomous versions:
-- Score
-  - Park in observatory (far)
-  - Park in hang area (close)
-- Only park
-  - Park in observatory (far)
-
-
-Start: -4464      0 
-Horizontal: -6550
-Lowest: -8395     -3950
-Drop-off: -1500   2950
-
-
-
-
+start 3130 3100
+limit 2661 2700
+top -4846 - 3200 = -8000

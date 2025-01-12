@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.CommandBase;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
+@Disabled
 public class LiftRunToAutoPositionCommand extends CommandBase {
 
     private final LiftSubsystem liftSubsystem;

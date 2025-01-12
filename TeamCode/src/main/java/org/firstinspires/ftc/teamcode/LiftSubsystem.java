@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+@Disabled
 public class LiftSubsystem extends SubsystemBase {
 
     public static final int EXTEND_POS = -3700, HOLD_POS = -800, AUTO_POS = -1000;

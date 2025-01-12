@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.CommandBase;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import java.util.function.BooleanSupplier;
 
+@Disabled
 public class LiftExtendCommand extends CommandBase {
 
     private final LiftSubsystem liftSubsystem;

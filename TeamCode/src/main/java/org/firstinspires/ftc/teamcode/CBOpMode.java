@@ -28,8 +28,7 @@ public class CBOpMode extends CommandOpMode {
     private GamepadEx driver, operator;
     private DcMotorEx FrontL, FrontR, BackL, BackR;
     private DcMotorEx arm, pivot;
-    private DcMotorEx leftLift, rightLift;
-    private CRServo intake;
+    private CRServo intakeFront, intakeBack;
     private BHI260IMU imu;
     private DriveSubsystem driveSubsystem;
     private DriveCommand driveCommand;
@@ -47,13 +46,7 @@ public class CBOpMode extends CommandOpMode {
     private IntakeForwardCommand intakeForwardCommand;
     private IntakeBackwardCommand intakeBackwardCommand;
 
-    private LiftSubsystem liftSubsystem;
-    private LiftExtendCommand liftExtendCommand;
-    private LiftRetractCommand liftRetractCommand;
-    private LiftHoldCommand liftHoldCommand;
-    private ChangeLiftStartPositionCommand liftAutoPosCommand;
-
-    private ResetStartPositionCommand driverResetPosCommand, operatorResetPosCommand;
+    private ResetStartPositionCommand resetPosCommand;
 
     private TelemetryScheduler telemetryScheduler;
     private TelemetryCommand telemetryCommand;
@@ -94,25 +87,14 @@ public class CBOpMode extends CommandOpMode {
 
         arm = hardwareMap.get(DcMotorEx.class, "Arm");
         pivot = hardwareMap.get(DcMotorEx.class, "Pivot");
-        intake = hardwareMap.get(CRServo.class, "spinnything");
+        intakeFront = hardwareMap.get(CRServo.class, "spinnything");
+        intakeBack = hardwareMap.get(CRServo.class, "spinnything2");
 
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         pivot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        leftLift = hardwareMap.get(DcMotorEx.class, "Left Lift");
-        rightLift = hardwareMap.get(DcMotorEx.class, "Right Lift");
-
-        leftLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        leftLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        leftLift.setDirection(DcMotorEx.Direction.REVERSE);
-        rightLift.setDirection(DcMotorSimple.Direction.FORWARD);
 
         // initialize subsystems and commands
         armSubsystem = new ArmSubsystem(arm);
@@ -127,24 +109,11 @@ public class CBOpMode extends CommandOpMode {
         armSubsystem.setPivotSubsystem(pivotSubsystem);
         pivotSubsystem.setArmSubsystem(armSubsystem);
 
-        intakeSubsystem = new IntakeSubsystem(intake);
+        intakeSubsystem = new IntakeSubsystem(intakeFront, intakeBack);
         intakeForwardCommand = new IntakeForwardCommand(intakeSubsystem);
         intakeBackwardCommand = new IntakeBackwardCommand(intakeSubsystem);
 
-        liftSubsystem = new LiftSubsystem(leftLift, rightLift);
-        liftExtendCommand = new LiftExtendCommand(liftSubsystem, () -> driver.isDown(GamepadKeys.Button.LEFT_BUMPER),
-                () -> (new TriggerReader(driver, GamepadKeys.Trigger.LEFT_TRIGGER).isDown()),
-                () -> (new TriggerReader(driver, GamepadKeys.Trigger.RIGHT_TRIGGER).isDown()));
-        liftRetractCommand = new LiftRetractCommand(liftSubsystem, () -> driver.isDown(GamepadKeys.Button.LEFT_BUMPER),
-                () -> (new TriggerReader(driver, GamepadKeys.Trigger.LEFT_TRIGGER).isDown()),
-                () -> (new TriggerReader(driver, GamepadKeys.Trigger.RIGHT_TRIGGER).isDown()));
-        liftHoldCommand = new LiftHoldCommand(liftSubsystem);
-        liftAutoPosCommand = new ChangeLiftStartPositionCommand(liftSubsystem);
-
-        driverResetPosCommand = new ResetStartPositionCommand(armSubsystem, pivotSubsystem, liftSubsystem,
-                ResetStartPositionCommand.Type.Driver);
-        operatorResetPosCommand = new ResetStartPositionCommand(armSubsystem, pivotSubsystem, liftSubsystem,
-                ResetStartPositionCommand.Type.Operator);
+        resetPosCommand = new ResetStartPositionCommand(armSubsystem, pivotSubsystem);
         // link commands to buttons
 
         //arm
@@ -160,15 +129,8 @@ public class CBOpMode extends CommandOpMode {
         (new GamepadButton(operator, GamepadKeys.Button.B)).whileHeld(intakeForwardCommand);
         (new GamepadButton(operator, GamepadKeys.Button.X)).whileHeld(intakeBackwardCommand);
 
-        // lifts
-        (new GamepadButton(driver, GamepadKeys.Button.Y)).whileHeld(liftExtendCommand);
-        (new GamepadButton(driver, GamepadKeys.Button.A)).whileHeld(liftRetractCommand);
-        (new GamepadButton(driver, GamepadKeys.Button.DPAD_DOWN)).whileHeld(liftHoldCommand);
-        (new GamepadButton(driver, GamepadKeys.Button.DPAD_UP)).whenPressed(liftAutoPosCommand);
-
-        // reset command (can be done by both)
-        (new GamepadButton(driver, GamepadKeys.Button.BACK)).whenPressed(driverResetPosCommand);
-        (new GamepadButton(operator, GamepadKeys.Button.BACK)).whenPressed(operatorResetPosCommand);
+        // reset command
+        (new GamepadButton(operator, GamepadKeys.Button.BACK)).whenPressed(resetPosCommand);
 
 
 
@@ -193,14 +155,12 @@ public class CBOpMode extends CommandOpMode {
                         new Pair<String, DoubleSupplier>("Arm start position", () -> armSubsystem.getStartPos()),
                         new Pair<String, DoubleSupplier>("Pivot position", () -> pivot.getCurrentPosition()),
                         new Pair<String, DoubleSupplier>("Pivot start position", () -> pivotSubsystem.getStartPos()),
-                        new Pair<String, DoubleSupplier>("Left Lift position", () -> leftLift.getCurrentPosition()),
-                        new Pair<String, DoubleSupplier>("Right lift position", () -> rightLift.getCurrentPosition()),
-                        new Pair<String, DoubleSupplier>("Left lift start position", () -> liftSubsystem.getLeftStartPos()),
-                        new Pair<String, DoubleSupplier>("Right lift start position", () -> liftSubsystem.getRightStartPos()),
                         new Pair<String, DoubleSupplier>("Front left change", () -> driveSubsystem.getFLChange()),
                         new Pair<String, DoubleSupplier>("Front right change", () -> driveSubsystem.getFRChange()),
                         new Pair<String, DoubleSupplier>("Back left change", () -> driveSubsystem.getBLChange()),
-                        new Pair<String, DoubleSupplier>("Back right change", () -> driveSubsystem.getBRChange())
+                        new Pair<String, DoubleSupplier>("Back right change", () -> driveSubsystem.getBRChange()),
+                        new Pair<String, DoubleSupplier>("Front intake power", () -> intakeFront.getPower()),
+                        new Pair<String, DoubleSupplier>("Back intake power", () -> intakeBack.getPower())
                 },
 
                 new Pair[]{

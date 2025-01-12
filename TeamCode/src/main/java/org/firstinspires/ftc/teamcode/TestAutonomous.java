@@ -18,7 +18,7 @@ public class TestAutonomous extends CommandOpMode {
     private DcMotorEx FrontL, FrontR, BackL, BackR;
     private DcMotorEx arm, pivot;
     private DcMotorEx leftLift, rightLift;
-    private CRServo intake;
+    private CRServo intakeFront, intakeBack;
     private BHI260IMU imu;
     private DriveSubsystem driveSubsystem;
     private ArmSubsystem armSubsystem;
@@ -60,7 +60,8 @@ public class TestAutonomous extends CommandOpMode {
 
         arm = hardwareMap.get(DcMotorEx.class, "Arm");
         pivot = hardwareMap.get(DcMotorEx.class, "Pivot");
-        intake = hardwareMap.get(CRServo.class, "spinnything");
+        intakeFront = hardwareMap.get(CRServo.class, "spinnything");
+        intakeBack = hardwareMap.get(CRServo.class, "spinnything2");
 
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -84,7 +85,7 @@ public class TestAutonomous extends CommandOpMode {
 
         pivotSubsystem = new PivotSubsystem(pivot);
 
-        intakeSubsystem = new IntakeSubsystem(intake);
+        intakeSubsystem = new IntakeSubsystem(intakeFront, intakeBack);
 
         liftSubsystem = new LiftSubsystem(leftLift, rightLift);
 

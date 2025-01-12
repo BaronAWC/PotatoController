@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class PivotSubsystem extends SubsystemBase {
 
-    public static final int HIGHEST_POS = 2950, LOWEST_POS = -3950;
+    public static final int HIGHEST_POS = 4400, LOWEST_POS = -4600, LIMIT_POS = -2200;
     private final DcMotorEx pivot;
     private int startPos;
     private ArmSubsystem armSubsystem;
@@ -31,7 +31,9 @@ public class PivotSubsystem extends SubsystemBase {
             pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             pivot.setPower(power);
         }
-        if(pivot.getCurrentPosition() < startPos && armSubsystem.getPosition() < armSubsystem.getStartPos() + ArmSubsystem.LIMITED_EXTEND){
+        if(pivot.getCurrentPosition() < startPos && armSubsystem.getPosition() <
+                armSubsystem.getStartPos() + ArmSubsystem.LIMITED_EXTEND){
+            // software limit so that it doesn't go past extend limit horizontally
             armSubsystem.runToPosition(ArmSubsystem.LIMITED_EXTEND, 0.75);
         }
     }
@@ -39,7 +41,8 @@ public class PivotSubsystem extends SubsystemBase {
     public void lower(boolean overrideLimits, boolean slowMode){
         double power = slowMode ? 0.5 : 1;
         if(!overrideLimits){
-            pivot.setTargetPosition(startPos + LOWEST_POS);
+            if(armSubsystem.getPosition() < armSubsystem.getStartPos() - 400) pivot.setTargetPosition(startPos + LOWEST_POS);
+            else pivot.setTargetPosition(startPos + LIMIT_POS);
             pivot.setPower(-power);
             pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
@@ -47,7 +50,9 @@ public class PivotSubsystem extends SubsystemBase {
             pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             pivot.setPower(-power);
         }
-        if(pivot.getCurrentPosition() < startPos && armSubsystem.getPosition() < armSubsystem.getStartPos() + ArmSubsystem.LIMITED_EXTEND){
+        if(pivot.getCurrentPosition() < startPos && armSubsystem.getPosition() <
+                armSubsystem.getStartPos() + ArmSubsystem.LIMITED_EXTEND){
+            // software limit so that it doesn't go past extend limit horizontally
             armSubsystem.runToPosition(ArmSubsystem.LIMITED_EXTEND, 0.75);
         }
     }

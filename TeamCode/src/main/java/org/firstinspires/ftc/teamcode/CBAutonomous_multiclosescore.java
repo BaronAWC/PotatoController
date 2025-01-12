@@ -20,8 +20,7 @@ public class CBAutonomous_multiclosescore extends CommandOpMode{
     private static final int FIRSTYELLOWSAMPLEEXTEND = -800;
     private DcMotorEx FrontL, FrontR, BackL, BackR;
     private DcMotorEx arm, pivot;
-    private DcMotorEx leftLift, rightLift;
-    private CRServo intake;
+    private CRServo intakeFront, intakeBack;
     private BHI260IMU imu;
     private DriveSubsystem driveSubsystem;
     private ArmSubsystem armSubsystem;
@@ -30,7 +29,6 @@ public class CBAutonomous_multiclosescore extends CommandOpMode{
 
     private IntakeSubsystem intakeSubsystem;
 
-    private LiftSubsystem liftSubsystem;
 
     @Override
     public void initialize(){
@@ -63,7 +61,8 @@ public class CBAutonomous_multiclosescore extends CommandOpMode{
 
         arm = hardwareMap.get(DcMotorEx.class, "Arm");
         pivot = hardwareMap.get(DcMotorEx.class, "Pivot");
-        intake = hardwareMap.get(CRServo.class, "spinnything");
+        intakeFront = hardwareMap.get(CRServo.class, "spinnything");
+        intakeBack = hardwareMap.get(CRServo.class, "spinnything2");
 
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -71,25 +70,11 @@ public class CBAutonomous_multiclosescore extends CommandOpMode{
         arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         pivot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        leftLift = hardwareMap.get(DcMotorEx.class, "Left Lift");
-        rightLift = hardwareMap.get(DcMotorEx.class, "Right Lift");
-
-        leftLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        leftLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        leftLift.setDirection(DcMotorEx.Direction.REVERSE);
-        rightLift.setDirection(DcMotorSimple.Direction.FORWARD);
-
         armSubsystem = new ArmSubsystem(arm);
 
         pivotSubsystem = new PivotSubsystem(pivot);
 
-        intakeSubsystem = new IntakeSubsystem(intake);
-
-        liftSubsystem = new LiftSubsystem(leftLift, rightLift);
+        intakeSubsystem = new IntakeSubsystem(intakeFront, intakeBack);
 
         driveSubsystem = new DriveSubsystem(FrontL, FrontR, BackL, BackR, imu);
 
