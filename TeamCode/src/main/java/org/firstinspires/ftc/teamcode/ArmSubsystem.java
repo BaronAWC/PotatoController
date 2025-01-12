@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class ArmSubsystem extends SubsystemBase {
-    public static final int FULL_EXTEND = -10750, LIMITED_EXTEND = -8500;
+    public static final int FULL_EXTEND = -10750, LIMITED_EXTEND = -8500, CLIMB = -100;
     private final DcMotorEx arm;
     private int startPos;
     private PivotSubsystem pivotSubsystem;
@@ -65,6 +65,10 @@ public class ArmSubsystem extends SubsystemBase {
             arm.setPower(-power);
         }
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public void holdClimb(){
+
     }
 
     public void fullExtend(boolean slowMode){
