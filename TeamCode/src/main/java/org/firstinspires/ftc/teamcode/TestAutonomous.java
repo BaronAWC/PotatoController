@@ -17,7 +17,6 @@ public class TestAutonomous extends CommandOpMode {
 
     private DcMotorEx FrontL, FrontR, BackL, BackR;
     private DcMotorEx arm, pivot;
-    private DcMotorEx leftLift, rightLift;
     private CRServo intakeFront, intakeBack;
     private BHI260IMU imu;
     private DriveSubsystem driveSubsystem;
@@ -26,8 +25,6 @@ public class TestAutonomous extends CommandOpMode {
     private PivotSubsystem pivotSubsystem;
 
     private IntakeSubsystem intakeSubsystem;
-
-    private LiftSubsystem liftSubsystem;
 
     @Override
     public void initialize(){
@@ -69,25 +66,11 @@ public class TestAutonomous extends CommandOpMode {
         arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         pivot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        leftLift = hardwareMap.get(DcMotorEx.class, "Left Lift");
-        rightLift = hardwareMap.get(DcMotorEx.class, "Right Lift");
-
-        leftLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        leftLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        leftLift.setDirection(DcMotorEx.Direction.REVERSE);
-        rightLift.setDirection(DcMotorSimple.Direction.FORWARD);
-
         armSubsystem = new ArmSubsystem(arm);
 
         pivotSubsystem = new PivotSubsystem(pivot);
 
         intakeSubsystem = new IntakeSubsystem(intakeFront, intakeBack);
-
-        liftSubsystem = new LiftSubsystem(leftLift, rightLift);
 
         driveSubsystem = new DriveSubsystem(FrontL, FrontR, BackL, BackR, imu);
 
@@ -99,13 +82,20 @@ public class TestAutonomous extends CommandOpMode {
 //                new DriveRotateCommand(driveSubsystem, -90, 0.1, telemetry)
 //            )
             //new DriveRotateCommand(driveSubsystem, -90, 0.1, telemetry)
-                //new AutoDriveCommand(driveSubsystem, 50, 0, 0, 0.5, 0, telemetry)
-                //new AutoDriveCommand(driveSubsystem, 30, -90, 0, 0.5, 0, telemetry),
-                //new AutoDriveCommand(driveSubsystem, 30, 0, 0, -0.5, 0, telemetry),
-                //new AutoDriveCommand(driveSubsystem, 30, 90, 0, 0.5, 0, telemetry),
-                //new AutoDriveCommand(driveSubsystem, 0, 0, -90, 0, 0.5, telemetry),
-                //new AutoDriveCommand(driveSubsystem, 0, 0, 90, 0, 0.5, telemetry),
-                new AutoDriveCommand(driveSubsystem, 50, -45, -90, 0.3, 0.3, telemetry)
+//                new AutoDriveCommand(driveSubsystem, 30, 0, 0, 0.5, 0, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 30, -90, 0, 0.5, 0, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 30, 0, 0, -0.5, 0, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 30, 90, 0, 0.5, 0, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 0, 0, -90, 0, 0.5, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 0, 0, 90, 0, 0.5, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 0, 0, -45, 0, 0.5, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 30, 0, 0, 0.5, 0, telemetry)
+                //new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.Out).withTimeout(2000)
+                //new AutoDriveCommand(driveSubsystem, 50, -45, -90, 0.3, 0.3, telemetry)
+
+
+
+                new AutoDriveCommand(driveSubsystem, 33.75, -30, 45, 0.5, 0.5, telemetry)
         ).schedule();
     }
 }

@@ -26,6 +26,6 @@ public class IntakeSubsystem {
 
     public void run(double power) {
         intakeFront.setPower(power);
-        intakeBack.setPower(power);
+        intakeBack.setPower(-power);
     }
 }

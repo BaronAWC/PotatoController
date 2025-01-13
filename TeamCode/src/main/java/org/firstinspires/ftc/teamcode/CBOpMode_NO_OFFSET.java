@@ -3,13 +3,11 @@ package org.firstinspires.ftc.teamcode;
 import android.util.Pair;
 
 import com.arcrobotics.ftclib.command.button.GamepadButton;
-import com.arcrobotics.ftclib.gamepad.TriggerReader;
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
@@ -21,9 +19,9 @@ import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 
-@TeleOp(name="CommandBase OpMode")
+@TeleOp(name="CommandBase OpMode NO OFFSET")
 
-public class CBOpMode extends CommandOpMode {
+public class CBOpMode_NO_OFFSET extends CommandOpMode {
 
     private GamepadEx driver, operator;
     private DcMotorEx FrontL, FrontR, BackL, BackR;
@@ -47,6 +45,8 @@ public class CBOpMode extends CommandOpMode {
     private IntakeBackwardCommand intakeBackwardCommand;
 
     private ResetStartPositionCommand resetPosCommand;
+
+    private AutoOffsetCommand autoOffsetCommand;
 
     private TelemetryScheduler telemetryScheduler;
     private TelemetryCommand telemetryCommand;
@@ -114,6 +114,7 @@ public class CBOpMode extends CommandOpMode {
         intakeBackwardCommand = new IntakeBackwardCommand(intakeSubsystem);
 
         resetPosCommand = new ResetStartPositionCommand(armSubsystem, pivotSubsystem);
+        autoOffsetCommand = new AutoOffsetCommand(pivotSubsystem);
         // link commands to buttons
 
         //arm
@@ -129,9 +130,8 @@ public class CBOpMode extends CommandOpMode {
         (new GamepadButton(operator, GamepadKeys.Button.B)).whileHeld(intakeForwardCommand);
         (new GamepadButton(operator, GamepadKeys.Button.X)).whileHeld(intakeBackwardCommand);
 
-        // reset command
+        // reset start position command
         (new GamepadButton(operator, GamepadKeys.Button.BACK)).whenPressed(resetPosCommand);
-
 
 
         //driving

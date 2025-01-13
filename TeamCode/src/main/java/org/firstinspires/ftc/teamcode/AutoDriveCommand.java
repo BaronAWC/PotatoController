@@ -7,7 +7,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class AutoDriveCommand extends CommandBase {
 
     public static final double TICKS_PER_REV = 537.7;
-    public static final double WHEEL_CIRCUMFERENCE = 9.6 * Math.PI; // in cm
+    public static final double WHEEL_CIRCUMFERENCE = 10.4 * Math.PI; // in cm
     public static final double MULTIPLIER = 1.414 * 5 / 4;
     private final DriveSubsystem driveSubsystem;
     private final double distance, driveAngle, rotateAngle, driveSpeed, rotateSpeed;
@@ -45,6 +45,18 @@ public class AutoDriveCommand extends CommandBase {
 
     @Override
     public void execute(){ // TODO test this command
+        telemetry.addData("FL and BR Target Change", FL_and_BR_TargetChange);
+        telemetry.addData("FL change", driveSubsystem.getFLChange());
+        telemetry.addData("BR change", driveSubsystem.getBRChange());
+        telemetry.addData("Fl and BR avg", (driveSubsystem.getFLChange() + driveSubsystem.getBRChange()) / 2);
+        telemetry.addLine("#####################");
+        telemetry.addData("FR and BL Target Change", FR_and_BL_TargetChange);
+        telemetry.addData("FR change", driveSubsystem.getFRChange());
+        telemetry.addData("BL change", driveSubsystem.getBLChange());
+        telemetry.addData("FR and BL avg", (driveSubsystem.getFRChange() + driveSubsystem.getBLChange()) / 2);
+        telemetry.update();
+
+
         if(!finishedRotating) {
             double currentAngle = driveSubsystem.getAngle();
             finishedRotating =  (Math.abs(rotateAngle - currentAngle) <= 1.5) || (rotateAngle > 0 && currentAngle > (rotateAngle)) ||
