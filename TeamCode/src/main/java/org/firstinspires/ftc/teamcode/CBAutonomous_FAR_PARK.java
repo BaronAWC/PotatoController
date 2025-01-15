@@ -85,8 +85,9 @@ public class CBAutonomous_FAR_PARK extends CommandOpMode {
                 - front of the robot above inner groove of the tile (closer to observatory)
                  */
                 //new WaitCommand(0), //might need wait
-                new DriveDistanceCommand(driveSubsystem, 8, 90, 0.4, telemetry), // drive away from the wall
-                new DriveDistanceCommand(driveSubsystem, 75, 0, 0.6, telemetry) // drive straight to the observatory
+                new AutoDriveCommand(driveSubsystem, 75, 20, 0, -0.5, 0, telemetry)
+//                new DriveDistanceCommand(driveSubsystem, 8, 90, 0.4, telemetry), // drive away from the wall
+//                new DriveDistanceCommand(driveSubsystem, 75, 0, 0.6, telemetry) // drive straight to the observatory
         ).schedule();
     }
 }

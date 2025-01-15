@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.CommandBase;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+@Disabled
 public class DriveRotateCommand extends CommandBase {
 
     private final DriveSubsystem driveSubsystem;

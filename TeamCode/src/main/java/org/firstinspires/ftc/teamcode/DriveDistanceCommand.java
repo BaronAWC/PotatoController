@@ -4,9 +4,11 @@ import android.util.Pair;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+@Disabled
 public class DriveDistanceCommand extends CommandBase {
 
     public static final double TICKS_PER_REV = 537.7;
