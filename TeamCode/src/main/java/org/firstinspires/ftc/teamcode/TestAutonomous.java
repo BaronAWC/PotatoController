@@ -87,15 +87,16 @@ public class TestAutonomous extends CommandOpMode {
 //                new AutoDriveCommand(driveSubsystem, 30, 0, 0, -0.5, 0, telemetry),
 //                new AutoDriveCommand(driveSubsystem, 30, 90, 0, 0.5, 0, telemetry),
 //                new AutoDriveCommand(driveSubsystem, 0, 0, -90, 0, 0.5, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 0, 0, 90, 0, 0.5, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 0, 0, 90, 0, 0.5, telemetry)
+
 //                new AutoDriveCommand(driveSubsystem, 0, 0, -45, 0, 0.5, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 30, 0, 0, 0.5, 0, telemetry)
+                //new AutoDriveCommand(driveSubsystem, 30, 0, 0, 0.5, 0, telemetry)
                 //new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.Out).withTimeout(2000)
                 //new AutoDriveCommand(driveSubsystem, 50, -45, -90, 0.3, 0.3, telemetry)
-
-
-
-                new AutoDriveCommand(driveSubsystem, 33.75, -30, 45, 0.5, 0.5, telemetry)
+                //new AutoDriveCommand(driveSubsystem, 20, 0, 0, 0.25, 0, telemetry)
+//                new AutoDriveCommand(driveSubsystem, 20, 0, -45, 0.15, 0.15, telemetry)
+                new AutoDriveCommand(driveSubsystem, 0, 0, 45, 0, 0.5, telemetry),
+                new AutoDriveCommand(driveSubsystem, 20, 0, 0, -0.5, 0.5, telemetry)
         ).schedule();
     }
 }

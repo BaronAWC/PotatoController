@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
+import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -112,39 +113,41 @@ public class CBAutonomous_CLOSE_SCORE extends CommandOpMode {
 //                        new DriveStopCommand(driveSubsystem, telemetry)
 
                 new ParallelCommandGroup(
-                        new AutoDriveCommand(driveSubsystem, 33.75, -30, 45, 0.65, 0.65, telemetry)
-                        //new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 0.9),
-                        //new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.LIMITED_EXTEND, 0.9)
+                        new AutoDriveCommand(driveSubsystem, 34, -30, 45, 0.5, 0.5, telemetry),
+                        new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 0.9),
+                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.LIMITED_EXTEND, 1)
                 ),
                 new ParallelCommandGroup(
-                        new AutoDriveCommand(driveSubsystem, 3, 0, 0, 0.5, 0, telemetry)
-                        //new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.FULL_EXTEND - 200, 0.9)
+                        new AutoDriveCommand(driveSubsystem, 14, 0, 45, 0.25, 0.25, telemetry),
+                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.FULL_EXTEND, 1)
                 ),
-                //new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS - 1000, 0.5),
+                new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS - 800, 0.5),
                 new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.Out).withTimeout(1500),
-                //new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS- 300, 0.9),
+                new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 0.9),
+                //new AutoDriveCommand(driveSubsystem, 20, 0, 0, -0.5, 0, telemetry),
                 new ParallelCommandGroup(
-                        new AutoDriveCommand(driveSubsystem, 20, 0, 0, -0.65, -0.65, telemetry)
-                        //new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.PICKUP, 0.9),
-                        //new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.LOWEST_POS + 500, 0.9)
+                        new AutoDriveCommand(driveSubsystem, 20, 0, 0, -0.5, 0.5, telemetry),
+                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.PICKUP, 0.9),
+                        new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.LOWEST_POS + 1800, 0.9)
                 ),
                 new ParallelCommandGroup(
-                        new AutoDriveCommand(driveSubsystem, 8, -45, 0, 0.5, 0, telemetry)
-                        //new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.LOWEST_POS + 200, 0.9)
+                        new AutoDriveCommand(driveSubsystem, 5, -90, 0, 0.5, 0.5, telemetry),
+                        new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.LOWEST_POS + 1000, 0.9)
                 ),
-                new ParallelCommandGroup(
-                        //new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.LOWEST_POS + 50, 0.9)
-                        //new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.In).withTimeout(1500)
-                ),
-                new ParallelCommandGroup(
-                        new AutoDriveCommand(driveSubsystem, 40, 60, 45, 0.5, 0.3, telemetry)
-                        //new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 0.9),
-                        //new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.FULL_EXTEND - 200, 0.9)
-                )
+                new WaitCommand(5000),
 //                new ParallelCommandGroup(
-//                        new PivotRunToPositionCommand(pivotSubsystem, 0, 0.75),
-//                        new ArmRunToPositionCommand(armSubsystem, telemetry, 0, 0.75)
+//                        //new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.LOWEST_POS + 50, 0.9)
+//                        //new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.In).withTimeout(1500)
+//                ),
+
+//                new ParallelCommandGroup(
+//                        new AutoDriveCommand(driveSubsystem, 40, 60, 45, 0.5, 0.3, telemetry)
+//                        //new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 0.9),
+//                        //new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.FULL_EXTEND - 200, 0.9)
 //                )
+
+                new ArmRunToPositionCommand(armSubsystem, telemetry, 0, 1),
+                new PivotRunToPositionCommand(pivotSubsystem, 0, 1)
         ).schedule();
     }
 }
