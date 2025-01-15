@@ -1,17 +1,8 @@
-Pivot
-
-Start -7896 -7900  0 
-limit -10460 -10500 -2600
-Bot -12651 -12500 -4600
-Top -3399 -3500 4400
-
-start 3130 3100
-limit 2661 2700
-top -4846 - 3200 = -8000
-
-start -2407
-touch 2909
-2950 + 2400 = 5350
-
--1540
--8990
+AUTO:
+- close:
+  - 1 score
+  - 2 score
+- far:
+  - 1 score (with delay)
+  - 2 score (with delay, if possible)
+  - park
