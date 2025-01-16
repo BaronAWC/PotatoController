@@ -12,7 +12,7 @@ public class AutoDriveCommand extends CommandBase {
     private final DriveSubsystem driveSubsystem;
     private final double distance, driveAngle, rotateAngle, driveSpeed, rotateSpeed;
 
-    private double FL_and_BR_TargetChange, FR_and_BL_TargetChange, FL_and_BR_Theta, FR_and_BL_Theta;
+    private double FL_and_BR_TargetChange, FR_and_BL_TargetChange;
     private double FL_previous = 0, FL_change = 0, BR_previous = 0, BR_change = 0;
     private double FR_previous = 0, FR_change = 0, BL_previous = 0, BL_change = 0;
     private final Telemetry telemetry;
@@ -37,10 +37,10 @@ public class AutoDriveCommand extends CommandBase {
         driveSubsystem.resetEncoders();
         driveSubsystem.setStartAngle();
 
-        FL_and_BR_Theta = (driveAngle <= 45 && driveAngle >= -90) ? Math.abs(driveAngle + 45) : (135 - driveAngle);
+        double FL_and_BR_Theta = (driveAngle <= 45 && driveAngle >= -90) ? Math.abs(driveAngle + 45) : (135 - driveAngle);
         FL_and_BR_TargetChange = distance * Math.cos(Math.toRadians(FL_and_BR_Theta)) * TICKS_PER_REV / WHEEL_CIRCUMFERENCE * MULTIPLIER;
 
-        FR_and_BL_Theta = (driveAngle <= 90 && driveAngle >= -45) ? Math.abs(driveAngle - 45) : (135 - Math.abs(driveAngle));
+        double FR_and_BL_Theta = (driveAngle <= 90 && driveAngle >= -45) ? Math.abs(driveAngle - 45) : (135 - Math.abs(driveAngle));
         FR_and_BL_TargetChange = distance * Math.cos(Math.toRadians(FR_and_BL_Theta)) * TICKS_PER_REV / WHEEL_CIRCUMFERENCE * MULTIPLIER;
 
     }
@@ -55,11 +55,11 @@ public class AutoDriveCommand extends CommandBase {
         BR_change += Math.abs(BR_current - BR_previous);
         BR_previous = BR_current;
 
-        double FR_current = driveSubsystem.getFLChange();
+        double FR_current = driveSubsystem.getFRChange();
         FR_change += Math.abs(FR_current - FR_previous);
         FR_previous = FR_current;
 
-        double BL_current = driveSubsystem.getBRChange();
+        double BL_current = driveSubsystem.getBLChange();
         BL_change += Math.abs(BL_current - BL_previous);
         BL_previous = BL_current;
 

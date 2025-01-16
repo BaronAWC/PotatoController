@@ -66,8 +66,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     public double getStartAngle() { return startAngle; }
 
-    //public double getAngleChange() { return getAngle() - startAngle; }
-
     public void stop(){
         drive.stop();
     }
@@ -82,16 +80,5 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void autoDrive(double startAngle, double currentAngle, double driveAngle, double rotateAngle, boolean rotate, double driveSpeed, double rotateSpeed){
         drive.autoDrive(startAngle, currentAngle, driveAngle, rotateAngle, rotate, driveSpeed, rotateSpeed);
-    }
-
-    public Pair<String, String>[] getInfo(){
-        //return drive.getInfo();
-        return new Pair[]{
-                new Pair<String, String>("Front Left Change", getFLChange() + ""),
-                new Pair<String, String>("Front Right Change", getFRChange() + ""),
-                new Pair<String, String>("Back Left Change", getBLChange() + ""),
-                new Pair<String, String>("Back Right Change", getBRChange() + "")
-        };
-
     }
 }

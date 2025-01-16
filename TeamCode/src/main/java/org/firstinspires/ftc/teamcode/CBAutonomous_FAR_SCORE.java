@@ -84,6 +84,7 @@ public class CBAutonomous_FAR_SCORE extends CommandOpMode {
                 - left wheels against wall
                 - front of the robot above inner groove of the tile (closer to bucket)
                  */
+
                 //drive up to be at starting position for close (maybe need to wait first) have ~6 extra seconds
                 //new WaitCommand(0), //might need wait
 //                new DriveDistanceCommand(driveSubsystem, 55, -45, 0.4, telemetry),

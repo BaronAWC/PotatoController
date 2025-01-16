@@ -77,11 +77,8 @@ public class TestAutonomous extends CommandOpMode {
         // schedule all commands in this method
         waitForStart();
         new SequentialCommandGroup(
-//            new ParallelCommandGroup(
-//                new DriveDistanceCommand(driveSubsystem, 30, -45, 0.1, telemetry),
-//                new DriveRotateCommand(driveSubsystem, -90, 0.1, telemetry)
-//            )
-            //new DriveRotateCommand(driveSubsystem, -90, 0.1, telemetry)
+
+                // Basic test:
 //                new AutoDriveCommand(driveSubsystem, 30, 0, 0, 0.5, 0, telemetry),
 //                new AutoDriveCommand(driveSubsystem, 30, -90, 0, 0.5, 0, telemetry),
 //                new AutoDriveCommand(driveSubsystem, 30, 0, 0, -0.5, 0, telemetry),
@@ -89,22 +86,20 @@ public class TestAutonomous extends CommandOpMode {
 //                new AutoDriveCommand(driveSubsystem, 0, 0, -90, 0, 0.5, telemetry),
 //                new AutoDriveCommand(driveSubsystem, 0, 0, 90, 0, 0.5, telemetry)
 
-//                new AutoDriveCommand(driveSubsystem, 0, 0, -45, 0, 0.5, telemetry),
-                //new AutoDriveCommand(driveSubsystem, 30, 0, 0, 0.5, 0, telemetry)
-                //new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.Out).withTimeout(2000)
-                //new AutoDriveCommand(driveSubsystem, 50, -45, -90, 0.3, 0.3, telemetry)
-                //new AutoDriveCommand(driveSubsystem, 20, 0, 0, 0.25, 0, telemetry)
-//                new AutoDriveCommand(driveSubsystem, 20, 0, -45, 0.15, 0.15, telemetry)
-               // new AutoDriveCommand(driveSubsystem, 40 * 4/5, 0, 0, 0.5, 0, telemetry)
-//                new AutoDriveCommand(driveSubsystem, 40, -30, 45, 0.5, 0.5, telemetry)
-//                new AutoDriveCommand(driveSubsystem, 40, -30, 45, 0.5, 0.5, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 14, 0, 45, 0.25, 0.25, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 25, 0, 0, -0.5, 0.5, telemetry)
-//                new AutoDriveCommand(driveSubsystem, 50, -30, 45, 0.5, 0.5, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 14, 0, 45, 0.25, 0.25, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 10, 0, 0, -0.25, 0.25, telemetry),
-                new AutoDriveCommand(driveSubsystem, 10, 45, 0, -0.25, 0.25, telemetry)
-                //new AutoDriveCommand(driveSubsystem, 10, -90, 0, 0.5, 0.5, telemetry)
+                // Drive + Rotate test 1:
+                new AutoDriveCommand(driveSubsystem, 30, -45, 45,0.5, 0.5, telemetry),
+                new AutoDriveCommand(driveSubsystem, 30, -45, 0, -0.5, 0.5, telemetry),
+                new AutoDriveCommand(driveSubsystem, 30, -90, 0, 0.5, 0, telemetry),
+                new AutoDriveCommand(driveSubsystem, 30, 45, -45, 0.5, 0.5, telemetry),
+                new AutoDriveCommand(driveSubsystem, 30, 45, 0, -0.5, 0.5, telemetry)
+
+                // Drive + Rotate test 2:
+//                new AutoDriveCommand(driveSubsystem, 30, 45, 45,0.5, 0.5, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 30, 45, 0, -0.5, 0.5, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 30, 90, 0, 0.5, 0, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 30, -45, -45, 0.5, 0.5, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 30, -45, 0, -0.5, 0.5, telemetry)
+
         ).schedule();
     }
 }

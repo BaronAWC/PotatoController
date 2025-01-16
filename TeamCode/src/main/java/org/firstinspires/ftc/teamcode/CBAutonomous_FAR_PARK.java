@@ -80,9 +80,9 @@ public class CBAutonomous_FAR_PARK extends CommandOpMode {
                 // starting on far side
                 /*
                 - third closest tile to observatory
-                - facing observatory
-                - right wheels against wall
-                - front of the robot above inner groove of the tile (closer to observatory)
+                - facing away from observatory
+                - left wheels against wall
+                - back of the robot above inner groove of the tile (closer to observatory)
                  */
                 //new WaitCommand(0), //might need wait
                 new AutoDriveCommand(driveSubsystem, 75, 20, 0, -0.5, 0, telemetry)
