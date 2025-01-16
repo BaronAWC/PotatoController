@@ -158,7 +158,7 @@ public class MecanumDrive {
             rx = (rotateAngle < currentAngle) ? rotateSpeed : -rotateSpeed; // negative angle means turning right, so positive for left side
         }
         double angle = Math.toRadians(startAngle + driveAngle - currentAngle) + Math.PI / 2;
-        if(Math.abs(currentAngle - rotateAngle) <= 15) rx /= 2;
+        if(Math.abs(currentAngle - rotateAngle) <= 15) rx /= 3;
         double x = driveSpeed * Math.cos(angle);
         double y = driveSpeed * Math.sin(angle);
 

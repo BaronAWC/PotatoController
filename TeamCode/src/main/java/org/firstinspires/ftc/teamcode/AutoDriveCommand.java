@@ -99,8 +99,8 @@ public class AutoDriveCommand extends CommandBase {
 //                    (Math.abs(driveSubsystem.getBRChange()) >= FL_and_BR_TargetChange) && (Math.abs(driveSubsystem.getBLChange()) >= FR_and_BL_TargetChange)) ||
 //                    (Math.abs((driveSubsystem.getFLChange() + driveSubsystem.getBRChange()) / 2) >=  FL_and_BR_TargetChange &&
 //                            Math.abs((driveSubsystem.getFRChange() + driveSubsystem.getBLChange()) / 2) >= FR_and_BL_TargetChange);
-            finishedDriving = Math.abs(FL_change + BR_change) / 2 > FR_and_BL_TargetChange &&
-                Math.abs(FR_change + BL_change) / 2 > FL_and_BR_TargetChange;
+            finishedDriving = Math.abs(FL_change + BR_change) / 2 > FL_and_BR_TargetChange &&
+                Math.abs(FR_change + BL_change) / 2 > FR_and_BL_TargetChange;
         }
 
         driveSubsystem.autoDrive(driveSubsystem.getStartAngle(), driveSubsystem.getAngle(), driveAngle, rotateAngle, !finishedRotating, (finishedDriving) ? 0 : driveSpeed, rotateSpeed);

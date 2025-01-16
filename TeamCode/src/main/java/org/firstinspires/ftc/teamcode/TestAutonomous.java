@@ -100,10 +100,11 @@ public class TestAutonomous extends CommandOpMode {
 //                new AutoDriveCommand(driveSubsystem, 40, -30, 45, 0.5, 0.5, telemetry),
 //                new AutoDriveCommand(driveSubsystem, 14, 0, 45, 0.25, 0.25, telemetry),
 //                new AutoDriveCommand(driveSubsystem, 25, 0, 0, -0.5, 0.5, telemetry)
-                new AutoDriveCommand(driveSubsystem, 50, -30, 45, 0.5, 0.5, telemetry),
-                new AutoDriveCommand(driveSubsystem, 14, 0, 45, 0.25, 0.25, telemetry),
-                new AutoDriveCommand(driveSubsystem, 31, 0, 0, -0.5, 0.5, telemetry),
-                new AutoDriveCommand(driveSubsystem, 10, -90, 0, 0.5, 0.5, telemetry)
+//                new AutoDriveCommand(driveSubsystem, 50, -30, 45, 0.5, 0.5, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 14, 0, 45, 0.25, 0.25, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 10, 0, 0, -0.25, 0.25, telemetry),
+                new AutoDriveCommand(driveSubsystem, 10, 45, 0, -0.25, 0.25, telemetry)
+                //new AutoDriveCommand(driveSubsystem, 10, -90, 0, 0.5, 0.5, telemetry)
         ).schedule();
     }
 }
