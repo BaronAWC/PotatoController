@@ -152,7 +152,11 @@ public class CBAutonomous_CLOSE_SCORE extends CommandOpMode {
                 new ParallelCommandGroup(
                         new AutoDriveCommand(driveSubsystem, 40, 60, 45, 0.5, 0.5, telemetry), // TODO fix distance and angle
                         new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 0.9),
-                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.FULL_EXTEND, 0.9)
+                        new SequentialCommandGroup(
+                                new WaitCommand(1000),
+                                new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.FULL_EXTEND, 0.9)
+                        )
+
                 ),
                 new AutoDriveCommand(driveSubsystem, 5, 0, 45, 0.25, 0.25, telemetry), // TODO fix distance
 

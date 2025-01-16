@@ -86,19 +86,26 @@ public class TestAutonomous extends CommandOpMode {
 //                new AutoDriveCommand(driveSubsystem, 0, 0, -90, 0, 0.5, telemetry),
 //                new AutoDriveCommand(driveSubsystem, 0, 0, 90, 0, 0.5, telemetry)
 
+                // Diagonal test:
+//                new AutoDriveCommand(driveSubsystem, 30, -45, 0, 0.5, 0, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 30, -45, 0, -0.5, 0, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 30, -90, 0, 0.5, 0, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 30, 45, 0, 0.5, 0, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 30, 45, 0, -0.5, 0, telemetry)
+
                 // Drive + Rotate test 1:
                 new AutoDriveCommand(driveSubsystem, 30, -45, 45,0.5, 0.5, telemetry),
-                new AutoDriveCommand(driveSubsystem, 30, -45, 0, -0.5, 0.5, telemetry),
+                new AutoDriveCommand(driveSubsystem, 30, 90, 0, -0.5, 0.5, telemetry),
                 new AutoDriveCommand(driveSubsystem, 30, -90, 0, 0.5, 0, telemetry),
                 new AutoDriveCommand(driveSubsystem, 30, 45, -45, 0.5, 0.5, telemetry),
-                new AutoDriveCommand(driveSubsystem, 30, 45, 0, -0.5, 0.5, telemetry)
+                new AutoDriveCommand(driveSubsystem, 30, -90, 0, -0.5, 0.5, telemetry)
 
                 // Drive + Rotate test 2:
-//                new AutoDriveCommand(driveSubsystem, 30, 45, 45,0.5, 0.5, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 30, 45, 0, -0.5, 0.5, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 30, 45, 45, 0.5, 0.5, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 30, 0, 0, -0.5, 0.5, telemetry),
 //                new AutoDriveCommand(driveSubsystem, 30, 90, 0, 0.5, 0, telemetry),
 //                new AutoDriveCommand(driveSubsystem, 30, -45, -45, 0.5, 0.5, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 30, -45, 0, -0.5, 0.5, telemetry)
+//                new AutoDriveCommand(driveSubsystem, 30, 0, 0, -0.5, 0.5, telemetry)
 
         ).schedule();
     }
