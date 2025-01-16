@@ -114,7 +114,7 @@ public class CBAutonomous_CLOSE_SCORE extends CommandOpMode {
 
                 // 1. drive up to the bucket
                 new ParallelCommandGroup(
-                        new AutoDriveCommand(driveSubsystem, 34, -30, 45, 0.5, 0.5, telemetry), // TODO fix distance
+                        new AutoDriveCommand(driveSubsystem, 50, -30, 45, 0.5, 0.5, telemetry), // TODO fix distance
                         new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 0.9),
                         new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.LIMITED_EXTEND, 1)
                 ),
@@ -130,14 +130,14 @@ public class CBAutonomous_CLOSE_SCORE extends CommandOpMode {
                 // 3. back away from the bucket
                 new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 0.9),
                 new ParallelCommandGroup(
-                        new AutoDriveCommand(driveSubsystem, 20, 0, 0, -0.5, 0.5, telemetry), // TODO fix distance
+                        new AutoDriveCommand(driveSubsystem, 30, 0, 0, -0.5, 0.5, telemetry), // TODO fix distance
                         new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.PICKUP, 0.9), // TODO adjust arm extension
                         new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.LOWEST_POS + 1800, 0.9)
                 ),
 
                 // 4. drive to pick up second block
                 new ParallelCommandGroup(
-                        new AutoDriveCommand(driveSubsystem, 5, -90, 0, 0.5, 0.5, telemetry), // TODO fix distance
+                        new AutoDriveCommand(driveSubsystem, 10, -90, 0, 0.5, 0.5, telemetry), // TODO fix distance
                         new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.LOWEST_POS + 1000, 0.9) // TODO adjust pivot angle
                 ),
 

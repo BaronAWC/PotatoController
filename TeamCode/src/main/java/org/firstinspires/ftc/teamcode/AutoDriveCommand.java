@@ -55,10 +55,18 @@ public class AutoDriveCommand extends CommandBase {
         BR_change += Math.abs(BR_current - BR_previous);
         BR_previous = BR_current;
 
+        double FR_current = driveSubsystem.getFLChange();
+        FR_change += Math.abs(FR_current - FR_previous);
+        FR_previous = FR_current;
+
+        double BL_current = driveSubsystem.getBRChange();
+        BL_change += Math.abs(BL_current - BL_previous);
+        BL_previous = BL_current;
+
         telemetry.addData("FL and BR Target Change", FL_and_BR_TargetChange);
         telemetry.addData("FL change", driveSubsystem.getFLChange());
         telemetry.addData("BR change", driveSubsystem.getBRChange());
-        telemetry.addData("Fl and BR avg", (driveSubsystem.getFLChange() + driveSubsystem.getBRChange()) / 2);
+        telemetry.addData("Fl and BR avg", Math.abs(driveSubsystem.getFLChange() + driveSubsystem.getBRChange()) / 2);
         telemetry.addData("FL accumulation", FL_change);
         telemetry.addData("BR accumulation", BR_change);
         telemetry.addData("FL and BR accumulation avg", (FL_change + BR_change) / 2);
@@ -66,11 +74,17 @@ public class AutoDriveCommand extends CommandBase {
         telemetry.addData("FR and BL Target Change", FR_and_BL_TargetChange);
         telemetry.addData("FR change", driveSubsystem.getFRChange());
         telemetry.addData("BL change", driveSubsystem.getBLChange());
-        telemetry.addData("FR and BL avg", (driveSubsystem.getFRChange() + driveSubsystem.getBLChange()) / 2);
+        telemetry.addData("FR and BL avg", Math.abs(driveSubsystem.getFRChange() + driveSubsystem.getBLChange()) / 2);
+        telemetry.addData("FR accumulation", FR_change);
+        telemetry.addData("BL accumulation", BL_change);
+        telemetry.addData("FR and BL accumulation avg", (FR_change + BL_change) / 2);
         telemetry.addLine("#####################");
         telemetry.addData("Current angle", driveSubsystem.getAngle());
         telemetry.addData("Start angle", driveSubsystem.getStartAngle());
         telemetry.addData("Target angle", rotateAngle);
+        telemetry.addLine("#####################");
+        telemetry.addData("Finished rotating", finishedRotating);
+        telemetry.addData("Finished driving", finishedDriving);
         telemetry.update();
 
 
@@ -81,10 +95,12 @@ public class AutoDriveCommand extends CommandBase {
         }
         if(!finishedDriving){
             // check if driving is finished
-            finishedDriving = ((Math.abs(driveSubsystem.getFLChange()) >= FL_and_BR_TargetChange) && (Math.abs(driveSubsystem.getFRChange()) >= FR_and_BL_TargetChange) &&
-                    (Math.abs(driveSubsystem.getBRChange()) >= FL_and_BR_TargetChange) && (Math.abs(driveSubsystem.getBLChange()) >= FR_and_BL_TargetChange)) ||
-                    (Math.abs((driveSubsystem.getFLChange() + driveSubsystem.getBRChange()) / 2) >=  FL_and_BR_TargetChange &&
-                            Math.abs((driveSubsystem.getFRChange() + driveSubsystem.getBLChange()) / 2) >= FR_and_BL_TargetChange);
+//            finishedDriving = ((Math.abs(driveSubsystem.getFLChange()) >= FL_and_BR_TargetChange) && (Math.abs(driveSubsystem.getFRChange()) >= FR_and_BL_TargetChange) &&
+//                    (Math.abs(driveSubsystem.getBRChange()) >= FL_and_BR_TargetChange) && (Math.abs(driveSubsystem.getBLChange()) >= FR_and_BL_TargetChange)) ||
+//                    (Math.abs((driveSubsystem.getFLChange() + driveSubsystem.getBRChange()) / 2) >=  FL_and_BR_TargetChange &&
+//                            Math.abs((driveSubsystem.getFRChange() + driveSubsystem.getBLChange()) / 2) >= FR_and_BL_TargetChange);
+            finishedDriving = Math.abs(FL_change + BR_change) / 2 > FR_and_BL_TargetChange &&
+                Math.abs(FR_change + BL_change) / 2 > FL_and_BR_TargetChange;
         }
 
         driveSubsystem.autoDrive(driveSubsystem.getStartAngle(), driveSubsystem.getAngle(), driveAngle, rotateAngle, !finishedRotating, (finishedDriving) ? 0 : driveSpeed, rotateSpeed);
