@@ -70,14 +70,6 @@ public class DriveSubsystem extends SubsystemBase {
         drive.stop();
     }
 
-    public void setDrive(double angle, double speed, boolean end){
-        drive.setDrive(angle, speed, end);
-    }
-
-    public void setRotation(double angle, double speed, boolean end){
-        drive.setRotation(angle, speed, end);
-    }
-
     public void autoDrive(double startAngle, double currentAngle, double driveAngle, double rotateAngle, boolean rotate, double driveSpeed, double rotateSpeed){
         drive.autoDrive(startAngle, currentAngle, driveAngle, rotateAngle, rotate, driveSpeed, rotateSpeed);
     }

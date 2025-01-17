@@ -86,29 +86,6 @@ public class CBAutonomous_FAR_SCORE extends CommandOpMode {
                 - front of the robot above inner groove of the tile (closer to bucket)
                  */
 
-                //drive up to be at starting position for close (maybe need to wait first) have ~6 extra seconds
-                //new WaitCommand(0), //might need wait
-//                new DriveDistanceCommand(driveSubsystem, 55, -45, 0.4, telemetry),
-//
-//                //drop off piece
-//                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 95, 0, 0.6, telemetry),
-//                        new ArmRunToPositionCommand(armSubsystem, telemetry, -4000, 0.8),
-//                        new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 0.5)),
-//                new ParallelCommandGroup(new DriveRotateCommand(driveSubsystem, 45, 0.25, telemetry),
-//                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.LIMITED_EXTEND, 0.8)),
-//                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 31.5, 0, 0.3, telemetry),
-//                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.FULL_EXTEND, 0.8)),
-//                new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS - 800, 0.5),
-//                new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.Out).withTimeout(2000),
-//
-//                // park in observatory
-//                new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 0.5),
-//                new DriveRotateCommand(driveSubsystem, -1, 0.20, telemetry),
-//                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 275, 0, -0.75, telemetry),
-//                        new ArmRunToPositionCommand(armSubsystem, telemetry, 0, 0.75),
-//                        new PivotRunToPositionCommand(pivotSubsystem, 0, 0.75))
-
-                // copy close score, but edit driving up and parking
 
                 // 1. move away from wall (and maybe wait)
                 new AutoDriveCommand(driveSubsystem, 10, -90, 0, 0.5, 0, telemetry),
