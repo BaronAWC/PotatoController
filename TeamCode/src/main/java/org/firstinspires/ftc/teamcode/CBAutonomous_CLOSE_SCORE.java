@@ -86,33 +86,6 @@ public class CBAutonomous_CLOSE_SCORE extends CommandOpMode {
                 - back of the robot above inner groove of the tile
                  */
 
-                //drop off piece
-//                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 55, -45, 0.4, telemetry),
-//                        new ArmRunToPositionCommand(armSubsystem, telemetry, -4000, 0.8),
-//                        new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 0.5)),
-//                new ParallelCommandGroup(new DriveRotateCommand(driveSubsystem, 45, 0.25, telemetry),
-//                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.LIMITED_EXTEND, 0.8)),
-//                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 27, 0, 0.3, telemetry),
-//                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.FULL_EXTEND, 0.8)),
-//                new ParallelCommandGroup(new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS - 800, 0.5),
-//                        new DriveDistanceCommand(driveSubsystem, 3, -90, 0.4, telemetry)),
-//                new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.Out).withTimeout(2000),
-//
-//                // park by submersible
-//                new ParallelCommandGroup(new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS - 200, 0.5),
-//                        new DriveDistanceCommand(driveSubsystem, 14, 90, 0.3, telemetry)),
-//                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 54, 0, -0.4, telemetry),
-//                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.LIMITED_EXTEND, 1)),
-//                new ParallelCommandGroup(new DriveRotateCommand(driveSubsystem, 90, 0.25, telemetry),
-//                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.LIMITED_EXTEND / 2, 0.75)),
-//                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 100, 0, -0.6, telemetry), // driving down
-//                    new ArmRunToPositionCommand(armSubsystem, telemetry, 0, 0.75)),
-//                new ParallelCommandGroup(new DriveRotateCommand(driveSubsystem, 0, 0.25, telemetry),
-//                    new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS / 2, 0.5)),
-//                new ParallelCommandGroup(new DriveDistanceCommand(driveSubsystem, 40, 0, -0.6, telemetry),
-//                        new PivotRunToPositionCommand(pivotSubsystem, 0, 0.5)),
-//                        new DriveStopCommand(driveSubsystem, telemetry)
-
                 // 1. drive up to the bucket
                 new ParallelCommandGroup(
                         new SequentialCommandGroup(
@@ -131,16 +104,16 @@ public class CBAutonomous_CLOSE_SCORE extends CommandOpMode {
                 new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 1),
                 new ParallelCommandGroup(
                         new SequentialCommandGroup(
-                                new AutoDriveCommand(driveSubsystem, 25, 0, 0, -0.5, 0.5, telemetry), // TODO fix distance
+                                new AutoDriveCommand(driveSubsystem, 25, 0, 0, -0.5, 0.5, telemetry),
                                 new AutoDriveCommand(driveSubsystem, 54, 73, 0, -0.5, 0.25, telemetry)
                         ),
-                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.PICKUP, 1), // TODO adjust arm extension
+                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.PICKUP, 1),
                         new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.LOWEST_POS + 1000, 1)
                 ),
 
                 // 4. pick up second block
                 new ParallelCommandGroup(
-                        new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.LOWEST_POS + 75, 1), // TODO adjust pivot angle
+                        new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.LOWEST_POS + 75, 1),
                         new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.In).withTimeout(1250)
                 ),
 
@@ -175,7 +148,7 @@ public class CBAutonomous_CLOSE_SCORE extends CommandOpMode {
 
                 // 8. drive to submersible and touch
                 new ParallelCommandGroup(
-                        new AutoDriveCommand(driveSubsystem, 60, 0, 0, -0.9, 0, telemetry),
+                        new AutoDriveCommand(driveSubsystem, 65, 0, 0, -0.5, 0, telemetry),
                         new SequentialCommandGroup(
                                 new WaitCommand(1000),
                                 new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.AUTO_POS, 0.75)

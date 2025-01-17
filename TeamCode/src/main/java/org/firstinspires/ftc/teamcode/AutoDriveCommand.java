@@ -46,7 +46,7 @@ public class AutoDriveCommand extends CommandBase {
     }
 
     @Override
-    public void execute(){ // TODO test this command
+    public void execute(){
         double FL_current = driveSubsystem.getFLChange();
         FL_change += Math.abs(FL_current - FL_previous);
         FL_previous = FL_current;

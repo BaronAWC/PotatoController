@@ -3,17 +3,17 @@ package org.firstinspires.ftc.teamcode;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
+import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 
-@Autonomous(name="Test Auto")
-public class TestAutonomous extends CommandOpMode {
+@Autonomous(name="CB Autonomous COOKING")
+public class COOKING extends CommandOpMode {
 
     private DcMotorEx FrontL, FrontR, BackL, BackR;
     private DcMotorEx arm, pivot;
@@ -77,40 +77,43 @@ public class TestAutonomous extends CommandOpMode {
         // schedule all commands in this method
         waitForStart();
         new SequentialCommandGroup(
+                // starting on close side
+                /*
+                - third closest tile to observatory
+                - facing submersible
+                - back wheels against the wall
+                - left of the robot above inner groove of the tile
+                 */
 
-                // Basic test:
-//                new AutoDriveCommand(driveSubsystem, 30, 0, 0, 0.5, 0, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 30, -90, 0, 0.5, 0, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 30, 0, 0, -0.5, 0, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 30, 90, 0, 0.5, 0, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 0, 0, -90, 0, 0.5, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 0, 0, 90, 0, 0.5, telemetry)
+                // 1. drive up and extend arm
+                new ParallelCommandGroup(
+                        new AutoDriveCommand(driveSubsystem, 80, 20, 0, 0.5, 0, telemetry),
+                        new PivotRunToPositionCommand(pivotSubsystem, 2900, 0.3)
+                ),
+                new ArmRunToPositionCommand(armSubsystem, telemetry, -1400, 0.3),
 
-                // Diagonal test:
-//                new AutoDriveCommand(driveSubsystem, 30, -45, 0, 0.5, 0, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 30, -45, 0, -0.5, 0, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 30, -90, 0, 0.5, 0, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 30, 45, 0, 0.5, 0, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 30, 45, 0, -0.5, 0, telemetry)
+                // 2. release specimen
+                new ParallelCommandGroup(
+                        new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 1),
+                        new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.In).withTimeout(1500)
+                ),
 
-                // Drive + Rotate test 1:
-//                new AutoDriveCommand(driveSubsystem, 30, -45, 45,0.5, 0.5, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 30, 90, 0, 0.5, 0.5, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 30, -90, 0, 0.5, 0, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 30, 45, -45, 0.5, 0.5, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 30, -90, 0, 0.5, 0.5, telemetry)
-
-                // Drive + Rotate test 2:
-//                new AutoDriveCommand(driveSubsystem, 30, 45, 45, 0.5, 0.5, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 30, 0, 0, -0.5, 0.5, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 30, 90, 0, 0.5, 0, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 30, -45, -45, 0.5, 0.5, telemetry),
-//                new AutoDriveCommand(driveSubsystem, 30, 0, 0, -0.5, 0.5, telemetry)
-
-                // Auto driving
-                new AutoDriveCommand(driveSubsystem, 10, -90, 0, 0.5, 0, telemetry),
-                new AutoDriveCommand(driveSubsystem, 84, -10, 45, 0.5, 0.5, telemetry)
-
+                // 3. drive away and park
+                new AutoDriveCommand(driveSubsystem, 20, 0, 0, -0.5, 0, telemetry),
+                new ParallelCommandGroup(
+                        new SequentialCommandGroup(
+                                new AutoDriveCommand(driveSubsystem, 70, 70, 90, -0.5, 0.5, telemetry),
+                                new AutoDriveCommand(driveSubsystem, 50, -45, 90, -0.5, 0.5, telemetry)
+                        ),
+                        new ArmRunToPositionCommand(armSubsystem, telemetry, 0, 0.8),
+                        new PivotRunToPositionCommand(pivotSubsystem, 0, 0.8)
+                )
+//
+//
+//                // reset the arm and pivot
+//                new WaitCommand(5000),
+//                new ArmRunToPositionCommand(armSubsystem, telemetry, 0, 1),
+//                new PivotRunToPositionCommand(pivotSubsystem, 0, 1)
         ).schedule();
     }
 }

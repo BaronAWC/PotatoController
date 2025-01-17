@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class PivotSubsystem extends SubsystemBase {
 
-    public static final int HIGHEST_POS = 4400, LOWEST_POS = -5000, AUTO_POS = 6000;
+    public static final int HIGHEST_POS = 4400, LOWEST_POS = -5000, AUTO_POS = 6200;
     private final DcMotorEx pivot;
     private int startPos;
     private ArmSubsystem armSubsystem;
