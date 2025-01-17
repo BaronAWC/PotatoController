@@ -94,11 +94,11 @@ public class TestAutonomous extends CommandOpMode {
 //                new AutoDriveCommand(driveSubsystem, 30, 45, 0, -0.5, 0, telemetry)
 
                 // Drive + Rotate test 1:
-                new AutoDriveCommand(driveSubsystem, 30, -45, 45,0.5, 0.5, telemetry),
-                new AutoDriveCommand(driveSubsystem, 30, 90, 0, -0.5, 0.5, telemetry),
-                new AutoDriveCommand(driveSubsystem, 30, -90, 0, 0.5, 0, telemetry),
-                new AutoDriveCommand(driveSubsystem, 30, 45, -45, 0.5, 0.5, telemetry),
-                new AutoDriveCommand(driveSubsystem, 30, -90, 0, -0.5, 0.5, telemetry)
+//                new AutoDriveCommand(driveSubsystem, 30, -45, 45,0.5, 0.5, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 30, 90, 0, 0.5, 0.5, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 30, -90, 0, 0.5, 0, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 30, 45, -45, 0.5, 0.5, telemetry),
+//                new AutoDriveCommand(driveSubsystem, 30, -90, 0, 0.5, 0.5, telemetry)
 
                 // Drive + Rotate test 2:
 //                new AutoDriveCommand(driveSubsystem, 30, 45, 45, 0.5, 0.5, telemetry),
@@ -106,6 +106,13 @@ public class TestAutonomous extends CommandOpMode {
 //                new AutoDriveCommand(driveSubsystem, 30, 90, 0, 0.5, 0, telemetry),
 //                new AutoDriveCommand(driveSubsystem, 30, -45, -45, 0.5, 0.5, telemetry),
 //                new AutoDriveCommand(driveSubsystem, 30, 0, 0, -0.5, 0.5, telemetry)
+
+                // Auto driving
+                new AutoDriveCommand(driveSubsystem, 50, -30, 45, 0.5, 0.5, telemetry),
+                new AutoDriveCommand(driveSubsystem, 14, 0, 45, 0.25, 0.25, telemetry),
+                new AutoDriveCommand(driveSubsystem, 25, 0, 0, -0.5, 0.5, telemetry),
+                new AutoDriveCommand(driveSubsystem, 50, 70, 0, -0.5, 0.25, telemetry),
+                new AutoDriveCommand(driveSubsystem, 40, 60, 45, 0.5, 0.5, telemetry)
 
         ).schedule();
     }

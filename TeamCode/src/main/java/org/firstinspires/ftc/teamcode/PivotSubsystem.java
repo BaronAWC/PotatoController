@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class PivotSubsystem extends SubsystemBase {
 
-    public static final int HIGHEST_POS = 4400, LOWEST_POS = -5000, LIMIT_POS = -2200, AUTO_POS = 5350;
+    public static final int HIGHEST_POS = 4400, LOWEST_POS = -5000, AUTO_POS = 6000;
     private final DcMotorEx pivot;
     private int startPos;
     private ArmSubsystem armSubsystem;
@@ -41,8 +41,7 @@ public class PivotSubsystem extends SubsystemBase {
     public void lower(boolean overrideLimits, boolean slowMode){
         double power = slowMode ? 0.5 : 1;
         if(!overrideLimits){
-            if(armSubsystem.getPosition() < armSubsystem.getStartPos() - 400) pivot.setTargetPosition(startPos + LOWEST_POS);
-            else pivot.setTargetPosition(startPos + LIMIT_POS);
+            pivot.setTargetPosition(startPos + LOWEST_POS);
             pivot.setPower(-power);
             pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }

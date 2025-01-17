@@ -49,10 +49,6 @@ public class ArmSubsystem extends SubsystemBase {
             arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             arm.setPower(power);
         }
-        if(arm.getCurrentPosition() >= startPos - 400 &&
-                pivotSubsystem.getCurrentPos() < pivotSubsystem.getStartPos() + PivotSubsystem.LIMIT_POS){
-            pivotSubsystem.runToPosition(PivotSubsystem.LIMIT_POS, 0.75);
-        }
 
     }
 
