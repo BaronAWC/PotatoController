@@ -19,9 +19,9 @@ public class MecanumDrive {
     final DcMotorEx BackL;
     final DcMotorEx BackR;
     final BHI260IMU imu;
-    static final double MAX_DRIVE_PWR = 0.6, AUTO_DRIVE_PWR = 0.5;
+    static final double MAX_DRIVE_PWR = 0.7, AUTO_DRIVE_PWR = 0.5;
     static final double X_AXIS_ADJ = 1.15; // x axis is a bit slower than y axis on strafer wheels
-    static final double SLOW_MODE_POWER = 0.5;
+    static final double SLOW_MODE_POWER = 3.0/7.0;
     final double powerFactor = 1;
 
     private double autoFL = 0, autoFR = 0, autoBL = 0, autoBR = 0, autoRotation = 0;

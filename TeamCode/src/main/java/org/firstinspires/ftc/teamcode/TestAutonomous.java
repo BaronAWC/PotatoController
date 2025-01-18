@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
+import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -107,10 +108,88 @@ public class TestAutonomous extends CommandOpMode {
 //                new AutoDriveCommand(driveSubsystem, 30, -45, -45, 0.5, 0.5, telemetry),
 //                new AutoDriveCommand(driveSubsystem, 30, 0, 0, -0.5, 0.5, telemetry)
 
-                // Auto driving
-                new AutoDriveCommand(driveSubsystem, 10, -90, 0, 0.5, 0, telemetry),
-                new AutoDriveCommand(driveSubsystem, 84, -10, 45, 0.5, 0.5, telemetry)
+                // 1. drive up to the bucket
+                new ParallelCommandGroup(
+                        new SequentialCommandGroup(
+                                new AutoDriveCommand(driveSubsystem, 50, -30, 45, 1, 1, telemetry),
+                                new AutoDriveCommand(driveSubsystem, 17, 0, 45, 1, 1, telemetry)
+                        ),
+                        new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 1),
+                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.FULL_EXTEND, 1)
+                ),
 
+                // 2. place first block
+                new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS - 825, 0.65),
+                new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.Out).withTimeout(1500),
+
+                // 3. back away from the bucket and drive to second block
+                new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 1),
+                new ParallelCommandGroup(
+                        new SequentialCommandGroup(
+                                new AutoDriveCommand(driveSubsystem, 25, 0, 0, -1, 1, telemetry),
+                                new AutoDriveCommand(driveSubsystem, 54, 73, 0, -1, 1, telemetry)
+                        ),
+                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.PICKUP, 1),
+                        new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.LOWEST_POS + 1000, 1)
+                ),
+
+                // 4. pick up second block
+                new ParallelCommandGroup(
+                        new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.LOWEST_POS + 75, 1),
+                        new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.In).withTimeout(1250)
+                ),
+
+                // 5. drive up to bucket
+                new ParallelCommandGroup(
+                        new SequentialCommandGroup(
+                                new AutoDriveCommand(driveSubsystem, 40, 60, 45, 1, 1, telemetry),
+                                new WaitCommand(1000),
+                                new AutoDriveCommand(driveSubsystem, 33, 10, 45, 1, 1, telemetry)
+                        ),
+                        new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 1),
+                        new SequentialCommandGroup(
+                                new WaitCommand(2250),
+                                new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.FULL_EXTEND, 1)
+                        )
+                ),
+
+                // 6. place second block -- copied from first
+                // ****
+                new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS - 825, 0.65),
+                new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.Out).withTimeout(1500),
+
+                // 7. back away from the bucket and drive in front of submersible
+                new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.HIGHEST_POS, 1),
+                new ParallelCommandGroup(
+                        new SequentialCommandGroup(
+                                new AutoDriveCommand(driveSubsystem, 25, 0, 0, -1, 1, telemetry),
+                                new AutoDriveCommand(driveSubsystem, 54, 73, 0, -1, 1, telemetry),
+                                new AutoDriveCommand(driveSubsystem, 6, -10, 0, 1, 0, telemetry)
+                        ),
+                        new ArmRunToPositionCommand(armSubsystem, telemetry, ArmSubsystem.PICKUP - 1500, 1),
+                        new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.LOWEST_POS + 1400, 1)
+                ),
+
+                new ParallelCommandGroup(
+                        new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.LOWEST_POS + 150, 1),
+                        new IntakeRunCommand(intakeSubsystem, IntakeRunCommand.Direction.In).withTimeout(1250)
+                )
+//                new ParallelCommandGroup(
+//                        new SequentialCommandGroup(
+//                                new AutoDriveCommand(driveSubsystem, 25, 0, 0, -1, 0.5, telemetry),
+//                                new AutoDriveCommand(driveSubsystem, 110, -90, 0, 1, 0.85, telemetry)
+//                        ),
+//                        new ArmRunToPositionCommand(armSubsystem, telemetry, 0, 1)
+//                ),
+//
+//                // 8. drive to submersible and touch
+//                new ParallelCommandGroup(
+//                        new AutoDriveCommand(driveSubsystem, 65, 0, 0, -0.5, 0, telemetry),
+//                        new SequentialCommandGroup(
+//                                new WaitCommand(1000),
+//                                new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.AUTO_POS, 0.75)
+//                        )
+//                )
         ).schedule();
     }
 }
