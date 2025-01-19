@@ -141,18 +141,19 @@ public class CBAutonomous_CLOSE_SCORE extends CommandOpMode {
                 new ParallelCommandGroup(
                         new SequentialCommandGroup(
                                 new AutoDriveCommand(driveSubsystem, 25, 0, 0, -0.5, 0.5, telemetry),
-                                new AutoDriveCommand(driveSubsystem, 110, -90, 0, 1, 0.85, telemetry)
+                                new AutoDriveCommand(driveSubsystem, 110, -90, 0, 1, 0.85, telemetry),
+
+                                // 8. drive to submersible and touch
+                                new ParallelCommandGroup(
+                                        new AutoDriveCommand(driveSubsystem, 65, 0, 0, -0.5, 0, telemetry),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(1000),
+                                                new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.AUTO_POS, 0.75)
+                                        )
+                                )
+
                         ),
                         new ArmRunToPositionCommand(armSubsystem, telemetry, 0, 1)
-                ),
-
-                // 8. drive to submersible and touch
-                new ParallelCommandGroup(
-                        new AutoDriveCommand(driveSubsystem, 65, 0, 0, -0.5, 0, telemetry),
-                        new SequentialCommandGroup(
-                                new WaitCommand(1000),
-                                new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.AUTO_POS, 0.75)
-                        )
                 )
 //
 //

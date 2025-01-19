@@ -87,7 +87,7 @@ public class CB_Autonomous_COOKING extends CommandOpMode {
                 // 1. drive up and extend arm
                 new ParallelCommandGroup(
                         new AutoDriveCommand(driveSubsystem, 80, 20, 0, 0.5, 0, telemetry),
-                        new PivotRunToPositionCommand(pivotSubsystem, 2900, 0.3)
+                        new PivotRunToPositionCommand(pivotSubsystem, 3125, 0.3)
                 ),
                 new ArmRunToPositionCommand(armSubsystem, telemetry, -1400, 0.3),
 

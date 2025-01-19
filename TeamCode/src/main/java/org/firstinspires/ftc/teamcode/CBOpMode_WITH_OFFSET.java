@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
@@ -26,6 +27,7 @@ public class CBOpMode_WITH_OFFSET extends CommandOpMode {
     private DcMotorEx FrontL, FrontR, BackL, BackR;
     private DcMotorEx arm, pivot;
     private CRServo intakeFront, intakeBack;
+    private Servo claw;
     private BHI260IMU imu;
     private DriveSubsystem driveSubsystem;
     private DriveCommand driveCommand;
@@ -42,6 +44,9 @@ public class CBOpMode_WITH_OFFSET extends CommandOpMode {
     private IntakeSubsystem intakeSubsystem;
     private IntakeForwardCommand intakeForwardCommand;
     private IntakeBackwardCommand intakeBackwardCommand;
+
+    private ClawSubsystem clawSubsystem;
+    private ClawCommand clawCommand;
 
     private ResetStartPositionCommand resetPosCommand;
 
@@ -88,6 +93,7 @@ public class CBOpMode_WITH_OFFSET extends CommandOpMode {
         pivot = hardwareMap.get(DcMotorEx.class, "Pivot");
         intakeFront = hardwareMap.get(CRServo.class, "spinnything");
         intakeBack = hardwareMap.get(CRServo.class, "spinnything2");
+        claw = hardwareMap.get(Servo.class, "claw");
 
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -111,6 +117,11 @@ public class CBOpMode_WITH_OFFSET extends CommandOpMode {
         intakeSubsystem = new IntakeSubsystem(intakeFront, intakeBack);
         intakeForwardCommand = new IntakeForwardCommand(intakeSubsystem);
         intakeBackwardCommand = new IntakeBackwardCommand(intakeSubsystem);
+
+        clawSubsystem = new ClawSubsystem(claw);
+        clawCommand = new ClawCommand(clawSubsystem, () -> operator.getRightY());
+        register(clawSubsystem);
+        clawSubsystem.setDefaultCommand(clawCommand);
 
         resetPosCommand = new ResetStartPositionCommand(armSubsystem, pivotSubsystem);
         autoOffsetCommand = new AutoOffsetCommand(pivotSubsystem);

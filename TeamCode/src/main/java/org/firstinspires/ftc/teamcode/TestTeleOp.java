@@ -2,27 +2,27 @@ package org.firstinspires.ftc.teamcode;
 
 import android.util.Pair;
 
+import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
-import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.arcrobotics.ftclib.gamepad.GamepadKeys;
-
-import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+@Disabled
+@TeleOp(name="CommandBase OpMode TEST")
 
-@TeleOp(name="CommandBase OpMode NO OFFSET")
-
-public class CBOpMode_NO_OFFSET extends CommandOpMode {
+public class TestTeleOp extends CommandOpMode {
 
     private GamepadEx driver, operator;
     private DcMotorEx FrontL, FrontR, BackL, BackR;
@@ -144,7 +144,6 @@ public class CBOpMode_NO_OFFSET extends CommandOpMode {
         // reset start position command
         (new GamepadButton(operator, GamepadKeys.Button.BACK)).whenPressed(resetPosCommand);
 
-
         //driving
         driveSubsystem = new DriveSubsystem(FrontL, FrontR, BackL, BackR, imu);
 
@@ -171,7 +170,8 @@ public class CBOpMode_NO_OFFSET extends CommandOpMode {
                         new Pair<String, DoubleSupplier>("Back left change", () -> driveSubsystem.getBLChange()),
                         new Pair<String, DoubleSupplier>("Back right change", () -> driveSubsystem.getBRChange()),
                         new Pair<String, DoubleSupplier>("Front intake power", () -> intakeFront.getPower()),
-                        new Pair<String, DoubleSupplier>("Back intake power", () -> intakeBack.getPower())
+                        new Pair<String, DoubleSupplier>("Back intake power", () -> intakeBack.getPower()),
+                        new Pair<String, DoubleSupplier>("Claw", () -> claw.getPosition())
                 },
 
                 new Pair[]{

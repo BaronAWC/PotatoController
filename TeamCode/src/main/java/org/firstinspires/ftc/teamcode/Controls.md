@@ -23,3 +23,6 @@
   - Intake:
     - B = Spin forward (intake)
     - X = Spin backward (outtake)
+  - Claw:
+    - Right joystick up = Open
+    - Right joystick down = Closed
