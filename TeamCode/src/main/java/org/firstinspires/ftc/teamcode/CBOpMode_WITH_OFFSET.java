@@ -40,6 +40,7 @@ public class CBOpMode_WITH_OFFSET extends CommandOpMode {
     private PivotSubsystem pivotSubsystem;
     private PivotRaiseCommand pivotRaiseCommand;
     private PivotLowerCommand pivotLowerCommand;
+    private PivotRunToPositionCommand specimenScorePivotCommand;
 
     private IntakeSubsystem intakeSubsystem;
     private IntakeForwardCommand intakeForwardCommand;
@@ -110,6 +111,7 @@ public class CBOpMode_WITH_OFFSET extends CommandOpMode {
         pivotSubsystem = new PivotSubsystem(pivot);
         pivotRaiseCommand = new PivotRaiseCommand(pivotSubsystem, () -> operator.isDown(GamepadKeys.Button.LEFT_BUMPER), () -> operator.isDown(GamepadKeys.Button.RIGHT_BUMPER));
         pivotLowerCommand = new PivotLowerCommand(pivotSubsystem, () -> operator.isDown(GamepadKeys.Button.LEFT_BUMPER), () -> operator.isDown(GamepadKeys.Button.RIGHT_BUMPER));
+        specimenScorePivotCommand = new PivotRunToPositionCommand(pivotSubsystem, PivotSubsystem.SPECIMEN_POS, 0.75);
 
         armSubsystem.setPivotSubsystem(pivotSubsystem);
         pivotSubsystem.setArmSubsystem(armSubsystem);
@@ -135,6 +137,7 @@ public class CBOpMode_WITH_OFFSET extends CommandOpMode {
         // pivot
         (new GamepadButton(operator, GamepadKeys.Button.DPAD_UP)).whileHeld(pivotRaiseCommand);
         (new GamepadButton(operator, GamepadKeys.Button.DPAD_DOWN)).whileHeld(pivotLowerCommand);
+        (new GamepadButton(operator, GamepadKeys.Button.A)).whenPressed(specimenScorePivotCommand, true);
 
         // intake
         (new GamepadButton(operator, GamepadKeys.Button.B)).whileHeld(intakeForwardCommand);
